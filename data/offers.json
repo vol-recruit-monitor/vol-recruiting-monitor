@@ -5065,8 +5065,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Ohio",
         "Ohio State",
+        "Ohio",
         "Kentucky"
       ],
       "category": "SEC",
@@ -5103,9 +5103,9 @@
       "height": 0,
       "weight": 0,
       "offers": [
+        "Kansas State",
         "Alabama",
-        "Kansas",
-        "Kansas State"
+        "Kansas"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5348,12 +5348,12 @@
       "found_date": "2026-06-01T19:15:22.919204+00:00"
     }
   ],
-  "last_updated": "2026-06-01T19:22:44.069599+00:00",
+  "last_updated": "2026-06-01T19:23:15.238405+00:00",
   "sources": {
     "x": 0,
     "on3": 0,
     "247sports": 0,
-    "news": 16
+    "news": 15
   },
   "total": 169
 }
