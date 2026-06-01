@@ -1,0 +1,72 @@
+name: 🏈 Vol Recruiting Monitor – Scrape & Deploy
+
+on:
+  schedule:
+    # Runs every 20 minutes, 24/7
+    - cron: '*/20 * * * *'
+  workflow_dispatch:  # Manual trigger button in GitHub
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  scrape-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # 1. Checkout the repo
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: 🐍 Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. Cache pip dependencies
+      - name: 📦 Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+      # 4. Install dependencies
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt
+
+      # 5. Ensure data folder exists
+      - name: 📁 Ensure data folder exists
+        run: mkdir -p data
+
+      # 6. Run the scraper (continue even if scraper hits errors)
+      - name: 🏈 Run Recruiting Scraper
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+        run: python scraper.py
+        continue-on-error: true
+
+      # 7. Commit updated data (only if offers.json changed)
+      - name: 💾 Commit updated offer data
+        run: |
+          git config user.name "Vol Recruiting Bot"
+          git config user.email "bot@vols.utk.edu"
+          git add data/ || true
+          git diff --staged --quiet || git commit -m "🏈 Update offers — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push || true
+
+      # 8. Deploy to GitHub Pages
+      - name: 🌐 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          exclude_assets: '.github,scraper.py,requirements.txt,.gitignore,README.md'
