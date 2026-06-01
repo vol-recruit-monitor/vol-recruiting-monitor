@@ -4738,8 +4738,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Tennessee",
-        "Auburn"
+        "Auburn",
+        "Tennessee"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5065,9 +5065,9 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Ohio State",
         "Ohio",
-        "Kentucky"
+        "Kentucky",
+        "Ohio State"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5320,8 +5320,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Florida",
-        "Texas"
+        "Texas",
+        "Florida"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5385,12 +5385,12 @@
       "found_date": "2026-06-01T19:23:37.137756+00:00"
     }
   ],
-  "last_updated": "2026-06-01T19:35:05.237394+00:00",
+  "last_updated": "2026-06-01T19:37:57.573300+00:00",
   "sources": {
     "x": 0,
     "on3": 0,
     "247sports": 0,
-    "news": 14
+    "news": 17
   },
   "total": 170
 }
