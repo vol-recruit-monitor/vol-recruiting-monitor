@@ -5103,8 +5103,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Kansas State",
         "Alabama",
+        "Kansas State",
         "Kansas"
       ],
       "category": "SEC",
@@ -5311,12 +5311,12 @@
       "found_date": "2026-06-01T19:01:11.481516+00:00"
     }
   ],
-  "last_updated": "2026-06-01T19:02:57.096667+00:00",
+  "last_updated": "2026-06-01T19:14:15.235053+00:00",
   "sources": {
     "x": 0,
     "on3": 0,
     "247sports": 0,
-    "news": 16
+    "news": 14
   },
   "total": 168
 }
