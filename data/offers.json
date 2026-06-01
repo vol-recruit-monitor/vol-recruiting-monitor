@@ -4738,8 +4738,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Tennessee",
-        "Auburn"
+        "Auburn",
+        "Tennessee"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -4775,8 +4775,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Virginia",
-        "Virginia Tech"
+        "Virginia Tech",
+        "Virginia"
       ],
       "category": "P4",
       "gem_score": 0,
@@ -4812,8 +4812,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Virginia",
-        "Virginia Tech"
+        "Virginia Tech",
+        "Virginia"
       ],
       "category": "P4",
       "gem_score": 0,
@@ -5065,9 +5065,9 @@
       "height": 0,
       "weight": 0,
       "offers": [
+        "Ohio State",
         "Kentucky",
-        "Ohio",
-        "Ohio State"
+        "Ohio"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5103,8 +5103,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Kansas",
         "Alabama",
+        "Kansas",
         "Kansas State"
       ],
       "category": "SEC",
@@ -5176,8 +5176,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Florida",
-        "Pitt"
+        "Pitt",
+        "Florida"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5249,8 +5249,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Virginia",
-        "Virginia Tech"
+        "Virginia Tech",
+        "Virginia"
       ],
       "category": "P4",
       "gem_score": 0,
@@ -5357,8 +5357,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "West Virginia",
-        "Virginia"
+        "Virginia",
+        "West Virginia"
       ],
       "category": "P4",
       "gem_score": 0,
@@ -5385,7 +5385,7 @@
       "found_date": "2026-06-01T19:23:37.137756+00:00"
     }
   ],
-  "last_updated": "2026-06-01T19:23:38.142611+00:00",
+  "last_updated": "2026-06-01T19:27:03.700012+00:00",
   "sources": {
     "x": 0,
     "on3": 0,
