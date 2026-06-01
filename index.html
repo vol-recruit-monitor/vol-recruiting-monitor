@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vol Recruiting Monitor | Tennessee Footprint</title>
+<style>
+  :root {
+    --vol-orange: #FF8200;
+    --vol-white: #FFFFFF;
+    --smoky-gray: #58595B;
+    --dark-bg: #1a1a2e;
+    --card-bg: #16213e;
+    --card-border: #0f3460;
+    --sec-color: #FF8200;
+    --p4-color: #4cc9f0;
+    --g6-color: #7209b7;
+    --gem-color: #06d6a0;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  /* ============================================ */
+  /* PASSWORD GATE                                */
+  /* ============================================ */
+  .password-gate {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 40%, #0f0f1a 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+
+  .password-gate.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .password-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: fadeInUp 0.6s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pw-power-t {
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--vol-orange);
+    text-shadow: 2px 2px 8px rgba(255,130,0,0.4);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .pw-title {
+    font-size: 1.1rem;
+    color: var(--vol-white);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .pw-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .pw-input-wrap {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .pw-input {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    padding-right: 3rem;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid var(--card-border);
+    border-radius: 10px;
+    color: var(--vol-white);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .pw-input:focus { border-color: var(--vol-orange); }
+  .pw-input::placeholder { color: var(--text-secondary); }
+
+  .pw-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px;
+  }
+
+  .pw-toggle:hover { color: var(--vol-orange); }
+
+  .pw-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--vol-orange);
+    color: var(--vol-white);
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.5px;
+  }
+
+  .pw-btn:hover { background: #e67400; }
+  .pw-btn:active { transform: scale(0.98); }
+
+  .pw-error {
+    color: #ff6b6b;
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+    min-height: 1.2rem;
+    font-weight: 600;
+  }
+
+  .pw-error.shake { animation: shake 0.5s ease; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+
+  .pw-case-hint {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    opacity: 0.7;
+  }
+
+  /* === DASHBOARD (hidden until authenticated) === */
+  .dashboard-wrap { display: none; }
+  .dashboard-wrap.unlocked { display: block; }
+
+  /* === HEADER === */
+  .header {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
+    border-bottom: 3px solid var(--vol-orange);
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 1rem; }
+
+  .power-t {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--vol-orange);
+    text-shadow: 2px 2px 4px rgba(255,130,0,0.3);
+    line-height: 1;
+  }
+
+  .header-title h1 { font-size: 1.4rem; color: var(--vol-white); font-weight: 700; }
+  .header-title p { font-size: 0.8rem; color: var(--text-secondary); }
+
+  .last-updated {
+    background: rgba(255,130,0,0.1);
+    border: 1px solid rgba(255,130,0,0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--vol-orange);
+  }
+
+  .live-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #06d6a0;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* === FILTERS === */
+  .filters {
+    background: rgba(15,52,96,0.4);
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255,130,0,0.15);
+  }
+
+  .filter-group { display: flex; align-items: center; gap: 0.5rem; }
+
+  .filter-group label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  select, input[type="text"] {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--card-border);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  select:focus, input[type="text"]:focus { border-color: var(--vol-orange); }
+  input[type="text"] { width: 220px; }
+
+  .stat-pills { margin-left: auto; display: flex; gap: 0.75rem; }
+
+  .stat-pill {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .stat-pill.sec { background: rgba(255,130,0,0.15); color: var(--sec-color); border: 1px solid rgba(255,130,0,0.3); }
+  .stat-pill.p4  { background: rgba(76,201,240,0.15); color: var(--p4-color);  border: 1px solid rgba(76,201,240,0.3); }
+  .stat-pill.g6  { background: rgba(114,9,183,0.15);  color: var(--g6-color);  border: 1px solid rgba(114,9,183,0.3); }
+  .stat-pill.gem { background: rgba(6,214,160,0.15);  color: var(--gem-color); border: 1px solid rgba(6,214,160,0.3); }
+
+  /* === TABS === */
+  .tabs {
+    display: flex;
+    padding: 0 2rem;
+    background: rgba(15,52,96,0.2);
+    border-bottom: 1px solid rgba(255,130,0,0.1);
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .tab:hover { color: var(--text-primary); }
+  .tab.active-sec { color: var(--sec-color); border-bottom-color: var(--sec-color); }
+  .tab.active-p4  { color: var(--p4-color);  border-bottom-color: var(--p4-color); }
+  .tab.active-g6  { color: var(--g6-color);  border-bottom-color: var(--g6-color); }
+  .tab.active-gem { color: var(--gem-color); border-bottom-color: var(--gem-color); }
+  .tab.active-all { color: var(--vol-orange); border-bottom-color: var(--vol-orange); }
+
+  .tab .tab-count {
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* === GRID === */
+  .content { padding: 1.5rem 2rem; }
+
+  .players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* === PLAYER CARD === */
+  .player-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .player-card:hover { transform: translateY(-2px); border-color: rgba(255,130,0,0.4); }
+  .player-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .player-card.sec-card::before  { background: var(--sec-color); }
+  .player-card.p4-card::before   { background: var(--p4-color); }
+  .player-card.g6-card::before   { background: var(--g6-color); }
+  .player-card.gem-card::before  { background: var(--gem-color); }
+
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+
+  .player-name { font-size: 1.1rem; font-weight: 700; color: var(--vol-white); }
+  .player-meta { font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
+
+  .gem-score {
+    text-align: center;
+    background: rgba(6,214,160,0.1);
+    border: 1px solid rgba(6,214,160,0.3);
+    border-radius: 8px;
+    padding: 0.3rem 0.6rem;
+    min-width: 55px;
+  }
+
+  .gem-score .score-num { font-size: 1.2rem; font-weight: 800; color: var(--gem-color); }
+  .gem-score .score-label { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; }
+
+  .offers-section { margin-bottom: 0.75rem; }
+  .offers-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.35rem; font-weight: 600; }
+
+  .offer-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+  .offer-tag {
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .offer-tag.sec { background: rgba(255,130,0,0.15); color: var(--sec-color); border: 1px solid rgba(255,130,0,0.25); }
+  .offer-tag.p4  { background: rgba(76,201,240,0.15); color: var(--p4-color);  border: 1px solid rgba(76,201,240,0.25); }
+  .offer-tag.g6  { background: rgba(114,9,183,0.15);  color: #b44cff;          border: 1px solid rgba(114,9,183,0.25); }
+
+  /* === AI EVALUATION === */
+  .ai-eval {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .ai-eval-title { font-size: 0.68rem; color: var(--vol-orange); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; margin-bottom: 0.4rem; }
+
+  .strength { color: #06d6a0; }
+  .weakness { color: #ff6b6b; }
+
+  /* === LINKS === */
+  .card-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+  .card-link {
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .card-link:hover { opacity: 0.8; }
+  .link-x    { background: rgba(255,255,255,0.08); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.15); }
+  .link-hudl { background: rgba(255,130,0,0.12);   color: var(--vol-orange);   border: 1px solid rgba(255,130,0,0.25); }
+  .link-uc   { background: rgba(76,201,240,0.1);   color: var(--p4-color);     border: 1px solid rgba(76,201,240,0.25); }
+
+  /* === EMPTY STATE === */
+  .empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+  }
+
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-state h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-primary); }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 600px) {
+    .header { padding: 1rem; }
+    .filters { padding: 0.75rem 1rem; }
+    .content { padding: 1rem; }
+    .players-grid { grid-template-columns: 1fr; }
+    .stat-pills { display: none; }
+    input[type="text"] { width: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- PASSWORD GATE                               -->
+<!-- ============================================ -->
+<div class="password-gate" id="passwordGate">
+  <div class="password-box">
+    <div class="pw-power-t">T</div>
+    <div class="pw-title">Vol Recruiting Monitor</div>
+    <div class="pw-subtitle">Restricted Access — Authorized Personnel Only</div>
+
+    <div class="pw-input-wrap">
+      <input
+        class="pw-input"
+        type="password"
+        id="pwInput"
+        placeholder="Enter password"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+      />
+      <button class="pw-toggle" onclick="togglePwVisibility()" title="Show/hide password">👁</button>
+    </div>
+
+    <button class="pw-btn" onclick="checkPassword()">🔓 Unlock Dashboard</button>
+    <div class="pw-error" id="pwError"></div>
+    <div class="pw-case-hint">⚠️ Password is case-sensitive</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- DASHBOARD                                   -->
+<!-- ============================================ -->
+<div class="dashboard-wrap" id="dashboardWrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="power-t">T</div>
+      <div class="header-title">
+        <h1>Vol Recruiting Monitor</h1>
+        <p>Tennessee Footprint — 15-State Coverage | Updated every 20 min</p>
+      </div>
+    </div>
+    <div class="last-updated">
+      <span class="live-dot"></span>
+      Last updated: <span id="lastUpdated">Loading...</span>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>Grad Year</label>
+      <select id="filterYear" onchange="applyFilters()">
+        <option value="all">All Years</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+        <option value="2029">2029</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Position</label>
+      <select id="filterPos" onchange="applyFilters()">
+        <option value="all">All Positions</option>
+        <option value="QB">QB</option>
+        <option value="RB">RB</option>
+        <option value="WR">WR</option>
+        <option value="TE">TE</option>
+        <option value="OL">OL</option>
+        <option value="DL">DL</option>
+        <option value="EDGE">EDGE</option>
+        <option value="LB">LB</option>
+        <option value="CB">CB</option>
+        <option value="S">S</option>
+        <option value="ATH">ATH</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>State</label>
+      <select id="filterState" onchange="applyFilters()">
+        <option value="all">All States</option>
+        <option value="TN">TN</option>
+        <option value="KY">KY</option>
+        <option value="VA">VA</option>
+        <option value="NC">NC</option>
+        <option value="GA">GA</option>
+        <option value="AL">AL</option>
+        <option value="MS">MS</option>
+        <option value="AR">AR</option>
+        <option value="MO">MO</option>
+        <option value="SC">SC</option>
+        <option value="FL">FL</option>
+        <option value="OH">OH</option>
+        <option value="IN">IN</option>
+        <option value="WV">WV</option>
+        <option value="LA">LA</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Search</label>
+      <input type="text" id="filterSearch" placeholder="Player name or school..." oninput="applyFilters()" />
+    </div>
+    <div class="stat-pills">
+      <span class="stat-pill sec" id="pillSec">SEC: 0</span>
+      <span class="stat-pill p4"  id="pillP4">P4: 0</span>
+      <span class="stat-pill g6"  id="pillG6">G6: 0</span>
+      <span class="stat-pill gem" id="pillGem">💎 Gems: 0</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active-all" id="tab-all" onclick="switchTab('all')">🏈 All Players <span class="tab-count" id="count-all">0</span></button>
+    <button class="tab" id="tab-sec"  onclick="switchTab('sec')">🟠 SEC Offers <span class="tab-count" id="count-sec">0</span></button>
+    <button class="tab" id="tab-p4"   onclick="switchTab('p4')">🔵 Other P4 <span class="tab-count" id="count-p4">0</span></button>
+    <button class="tab" id="tab-g6"   onclick="switchTab('g6')">🟣 G6 Footprint <span class="tab-count" id="count-g6">0</span></button>
+    <button class="tab" id="tab-gem"  onclick="switchTab('gem')">💎 Hidden Gems <span class="tab-count" id="count-gem">0</span></button>
+  </div>
+
+  <!-- PLAYER GRID -->
+  <div class="content">
+    <div class="players-grid" id="playersGrid"></div>
+  </div>
+
+</div><!-- end dashboard-wrap -->
+
+<script>
+// ============================================================
+// PASSWORD — direct comparison, case-sensitive
+// ============================================================
+const CORRECT_PASSWORD = 'BelieveTheHeup26@UT';
+
+function checkPassword() {
+  const entered = document.getElementById('pwInput').value;
+  const errEl   = document.getElementById('pwError');
+
+  if (entered === CORRECT_PASSWORD) {
+    // Correct — unlock dashboard
+    document.getElementById('passwordGate').classList.add('hidden');
+    document.getElementById('dashboardWrap').classList.add('unlocked');
+    sessionStorage.setItem('vol_auth', '1');
+    loadData();
+  } else {
+    // Wrong — shake and show message
+    errEl.textContent = '❌ Incorrect password. Remember: case-sensitive.';
+    errEl.classList.remove('shake');
+    void errEl.offsetWidth; // force reflow for re-animation
+    errEl.classList.add('shake');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+// Allow Enter key to submit
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pwInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  // Auto-unlock if already authenticated this session
+  if (sessionStorage.getItem('vol_auth') === '1') {
+    document.getElementById('passwordGate').classList.add('hidden');
+    document.getElementById('dashboardWrap').classList.add('unlocked');
+    loadData();
+  }
+});
+
+function togglePwVisibility() {
+  const inp = document.getElementById('pwInput');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+// ============================================================
+// DATA & STATE
+// ============================================================
+let allPlayers   = [];
+let activeTab    = 'all';
+let activeYear   = 'all';
+let activePos    = 'all';
+let activeState  = 'all';
+let activeSearch = '';
+
+const SEC_SCHOOLS = [
+  "tennessee","alabama","auburn","florida","georgia","kentucky",
+  "lsu","mississippi state","missouri","ole miss","south carolina",
+  "vanderbilt","arkansas","texas","texas a&m","oklahoma"
+];
+
+const P4_SCHOOLS = [
+  // Big Ten
+  "ohio state","michigan","penn state","oregon","usc","wisconsin","iowa",
+  "minnesota","illinois","indiana","purdue","nebraska","northwestern",
+  "maryland","rutgers","michigan state","ucla","washington",
+  // ACC
+  "clemson","florida state","miami","nc state","duke","wake forest",
+  "louisville","virginia tech","virginia","boston college","pitt",
+  "syracuse","georgia tech","north carolina","notre dame","smu","stanford","cal",
+  // Big 12
+  "oklahoma state","texas tech","tcu","baylor","kansas","kansas state",
+  "iowa state","west virginia","cincinnati","ucf","houston","byu",
+  "colorado","arizona","arizona state","utah"
+];
+
+const POSITION_IDEALS = {
+  QB:   [75, 215], RB:   [71, 210], WR:   [73, 195],
+  TE:   [77, 240], OL:   [77, 300], DL:   [75, 275],
+  EDGE: [76, 245], LB:   [74, 225], CB:   [72, 185],
+  S:    [73, 200], ATH:  [73, 195], "K/P":[73, 195]
+};
+
+function calcGemScore(player) {
+  const ideal = POSITION_IDEALS[player.position] || POSITION_IDEALS['ATH'];
+  const [ih, iw] = ideal;
+  const hScore = Math.max(0, 100 - Math.abs((player.height_in || ih) - ih) * 8);
+  const wScore = Math.max(0, 100 - Math.abs((player.weight || iw) - iw) * 0.4);
+  return Math.round((hScore + wScore) / 2);
+}
+
+function classifyPlayer(player) {
+  const offers = (player.offers || []).map(o => o.toLowerCase());
+  const hasSEC = offers.some(o => SEC_SCHOOLS.some(s => o.includes(s)));
+  const hasP4  = offers.some(o => P4_SCHOOLS.some(s => o.includes(s)));
+  const gemScore = calcGemScore(player);
+  const g6Only = !hasSEC && !hasP4;
+
+  return { hasSEC, hasP4, g6Only, isGem: g6Only && gemScore >= 80, gemScore };
+}
+
+// ============================================================
+// SAMPLE DATA (replaced by live data/offers.json when scraped)
+// ============================================================
+const SAMPLE_PLAYERS = [
+  {
+    id: "p1", name: "Marcus Johnson", position: "QB", grad_year: 2027,
+    state: "TN", city: "Nashville", height: "6-3", height_in: 75, weight: 215,
+    offers: ["Tennessee", "Alabama", "Georgia", "Ohio State"],
+    source: "x", timestamp: new Date().toISOString(),
+    x_handle: "MarcusJohnsonQB", hudl_id: "123456",
+    strengths: "Elite arm talent, exceptional pocket presence, mobility under pressure",
+    weaknesses: "Decision-making speed needs development, reads single-high coverage well but struggles with 2-high"
+  },
+  {
+    id: "p2", name: "DeShawn Williams", position: "EDGE", grad_year: 2027,
+    state: "GA", city: "Atlanta", height: "6-4", height_in: 76, weight: 238,
+    offers: ["Kentucky", "Louisville", "Tennessee", "Clemson"],
+    source: "x", timestamp: new Date().toISOString(),
+    x_handle: "DWilliamsEdge", hudl_id: "234567",
+    strengths: "Elite first-step quickness, natural pass rush moves, high motor",
+    weaknesses: "Needs weight room development, raw against the run at this stage"
+  },
+  {
+    id: "p3", name: "Caleb Turner", position: "WR", grad_year: 2028,
+    state: "TN", city: "Memphis", height: "6-2", height_in: 74, weight: 185,
+    offers: ["App State", "Western Kentucky", "MTSU"],
+    source: "nextgen", timestamp: new Date().toISOString(),
+    x_handle: "CalebTurner_WR", hudl_id: "345678",
+    strengths: "Elite route runner, elite separation at the top of routes, exceptional hands",
+    weaknesses: "Frame needs development, limited P4 exposure — underrecruited gem"
+  },
+  {
+    id: "p4", name: "Jordan Hayes", position: "OL", grad_year: 2026,
+    state: "KY", city: "Louisville", height: "6-5", height_in: 77, weight: 295,
+    offers: ["Tennessee", "Florida", "Michigan", "Penn State", "Alabama"],
+    source: "x", timestamp: new Date().toISOString(),
+    x_handle: "JHayes_OL", hudl_id: "456789",
+    strengths: "Prototype P4 frame, elite footwork, high IQ in pass protection",
+    weaknesses: "Still developing power at point of attack, consistency in run game"
+  },
+  {
+    id: "p5", name: "Tre Davis", position: "CB", grad_year: 2027,
+    state: "AL", city: "Birmingham", height: "6-0", height_in: 72, weight: 182,
+    offers: ["UAB", "Coastal Carolina", "Troy", "Southern Miss"],
+    source: "247", timestamp: new Date().toISOString(),
+    x_handle: "TreDavis_CB", hudl_id: "567890",
+    strengths: "Elite athleticism, ball production, press coverage skills",
+    weaknesses: "Needs refinement in zone coverage, tackling technique"
+  },
+  {
+    id: "p6", name: "Isaiah Brooks", position: "RB", grad_year: 2027,
+    state: "NC", city: "Charlotte", height: "5-11", height_in: 71, weight: 208,
+    offers: ["NC State", "Louisville", "Virginia Tech", "Tennessee"],
+    source: "x", timestamp: new Date().toISOString(),
+    x_handle: "IsaiahBrooks_RB", hudl_id: "678901",
+    strengths: "Exceptional vision, elite contact balance, versatile in pass game",
+    weaknesses: "Long speed development, needs refinement as pass protector"
+  }
+];
+
+// ============================================================
+// LOAD DATA
+// ============================================================
+async function loadData() {
+  try {
+    const res = await fetch('data/offers.json?t=' + Date.now());
+    if (!res.ok) throw new Error('No data file yet');
+    const data = await res.json();
+    allPlayers = data.players || data;
+    document.getElementById('lastUpdated').textContent =
+      data.updated ? new Date(data.updated).toLocaleString() : 'Just now';
+  } catch {
+    allPlayers = SAMPLE_PLAYERS;
+    document.getElementById('lastUpdated').textContent = 'Sample data (scraper not yet run)';
+  }
+  applyFilters();
+}
+
+// ============================================================
+// FILTERING
+// ============================================================
+function applyFilters() {
+  activeYear   = document.getElementById('filterYear').value;
+  activePos    = document.getElementById('filterPos').value;
+  activeState  = document.getElementById('filterState').value;
+  activeSearch = document.getElementById('filterSearch').value.toLowerCase();
+  renderGrid();
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach(t => {
+    t.className = 'tab';
+    const id = t.id.replace('tab-', '');
+    if (id === tab) t.classList.add('active-' + (tab === 'all' ? 'all' : tab));
+  });
+  renderGrid();
+}
+
+function filterPlayer(p) {
+  if (activeYear  !== 'all' && String(p.grad_year) !== activeYear) return false;
+  if (activePos   !== 'all' && p.position !== activePos)           return false;
+  if (activeState !== 'all' && p.state !== activeState)            return false;
+  if (activeSearch && !p.name.toLowerCase().includes(activeSearch) &&
+      !(p.offers || []).join(' ').toLowerCase().includes(activeSearch)) return false;
+  return true;
+}
+
+function tabFilter(p, cls) {
+  if (activeTab === 'all') return true;
+  if (activeTab === 'sec') return cls.hasSEC;
+  if (activeTab === 'p4')  return cls.hasP4 && !cls.hasSEC;
+  if (activeTab === 'g6')  return cls.g6Only;
+  if (activeTab === 'gem') return cls.isGem;
+  return true;
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderGrid() {
+  const grid = document.getElementById('playersGrid');
+  let secCount = 0, p4Count = 0, g6Count = 0, gemCount = 0;
+
+  const cards = allPlayers
+    .filter(p => {
+      const cls = classifyPlayer(p);
+      if (cls.hasSEC)  secCount++;
+      if (cls.hasP4 && !cls.hasSEC) p4Count++;
+      if (cls.g6Only)  g6Count++;
+      if (cls.isGem)   gemCount++;
+      return filterPlayer(p) && tabFilter(p, cls);
+    })
+    .map(p => buildCard(p));
+
+  // Update pill counts
+  document.getElementById('pillSec').textContent = `SEC: ${secCount}`;
+  document.getElementById('pillP4').textContent  = `P4: ${p4Count}`;
+  document.getElementById('pillG6').textContent  = `G6: ${g6Count}`;
+  document.getElementById('pillGem').textContent = `💎 Gems: ${gemCount}`;
+
+  // Update tab counts
+  document.getElementById('count-all').textContent = allPlayers.filter(filterPlayer).length;
+  document.getElementById('count-sec').textContent = allPlayers.filter(p => filterPlayer(p) && classifyPlayer(p).hasSEC).length;
+  document.getElementById('count-p4').textContent  = allPlayers.filter(p => filterPlayer(p) && classifyPlayer(p).hasP4 && !classifyPlayer(p).hasSEC).length;
+  document.getElementById('count-g6').textContent  = allPlayers.filter(p => filterPlayer(p) && classifyPlayer(p).g6Only).length;
+  document.getElementById('count-gem').textContent = allPlayers.filter(p => filterPlayer(p) && classifyPlayer(p).isGem).length;
+
+  if (cards.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🏈</div>
+        <h3>No players match your filters</h3>
+        <p>Try adjusting the grad year, position, or state filter</p>
+      </div>`;
+  } else {
+    grid.innerHTML = cards.join('');
+  }
+}
+
+function buildCard(p) {
+  const cls = classifyPlayer(p);
+  const cardClass = cls.hasSEC ? 'sec-card' : cls.hasP4 ? 'p4-card' : cls.isGem ? 'gem-card' : 'g6-card';
+
+  const offerTags = (p.offers || []).map(o => {
+    const ol = o.toLowerCase();
+    const type = SEC_SCHOOLS.some(s => ol.includes(s)) ? 'sec'
+               : P4_SCHOOLS.some(s => ol.includes(s))  ? 'p4' : 'g6';
+    return `<span class="offer-tag ${type}">${o}</span>`;
+  }).join('');
+
+  const xUrl    = p.x_handle ? `https://x.com/${p.x_handle}` : `https://x.com/search?q=${encodeURIComponent(p.name + ' football recruit')}`;
+  const hudlUrl = p.hudl_id  ? `https://www.hudl.com/profile/athlete/${p.hudl_id}` : `https://www.hudl.com/search#${encodeURIComponent(p.name)}`;
+  const ucUrl   = `https://universitycollege.utk.edu/?s=${encodeURIComponent(p.name)}`;
+
+  const strengths = p.strengths || 'Evaluating...';
+  const weaknesses = p.weaknesses || 'Evaluating...';
+
+  return `
+  <div class="player-card ${cardClass}">
+    <div class="card-header">
+      <div>
+        <div class="player-name">${p.name} ${cls.isGem ? '💎' : ''}</div>
+        <div class="player-meta">
+          ${p.position} • ${p.grad_year} • ${p.city || ''}, ${p.state}
+          ${p.height ? ` • ${p.height}` : ''}
+          ${p.weight ? ` / ${p.weight}lbs` : ''}
+        </div>
+      </div>
+      <div class="gem-score">
+        <div class="score-num">${cls.gemScore}</div>
+        <div class="score-label">Gem</div>
+      </div>
+    </div>
+
+    <div class="offers-section">
+      <div class="offers-label">Offers (${(p.offers||[]).length})</div>
+      <div class="offer-tags">${offerTags || '<span style="color:var(--text-secondary);font-size:0.75rem;">No offers tracked yet</span>'}</div>
+    </div>
+
+    <div class="ai-eval">
+      <div class="ai-eval-title">⚡ AI Evaluation</div>
+      <div><span class="strength">✅ Strengths:</span> ${strengths}</div>
+      <div style="margin-top:0.3rem"><span class="weakness">⚠️ Weaknesses:</span> ${weaknesses}</div>
+    </div>
+
+    <div class="card-links">
+      <a href="${xUrl}" target="_blank" class="card-link link-x">𝕏 Profile</a>
+      <a href="${hudlUrl}" target="_blank" class="card-link link-hudl">🎬 Hudl Film</a>
+      <a href="${ucUrl}" target="_blank" class="card-link link-uc">📋 UC Report</a>
+    </div>
+  </div>`;
+}
+
+// Auto-refresh every 20 minutes
+setInterval(() => { if (sessionStorage.getItem('vol_auth') === '1') loadData(); }, 20 * 60 * 1000);
+</script>
+</body>
+</html>
