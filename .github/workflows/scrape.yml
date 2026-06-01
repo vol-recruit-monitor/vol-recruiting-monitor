@@ -1,72 +1,682 @@
-name: 🏈 Vol Recruiting Monitor – Scrape & Deploy
+"""
+Vol Recruiting Monitor – Scraper v3
+=====================================
+Priority: X/Twitter → On3 → 247Sports
+- NEVER invents data. Every player must come from a real source.
+- ALWAYS writes data/offers.json even on partial or total failure.
+- Tracks source URL per player so dashboard can cite where each was found.
+- Merges with existing data across runs (offers accumulate).
+"""
 
-on:
-  schedule:
-    # Runs every 20 minutes, 24/7
-    - cron: '*/20 * * * *'
-  workflow_dispatch:  # Manual trigger button in GitHub
-  push:
-    branches: [main]
+import os
+import re
+import json
+import time
+import hashlib
+import logging
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+import requests
+from bs4 import BeautifulSoup
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+# ── Logging ──────────────────────────────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+log = logging.getLogger(__name__)
 
-jobs:
-  scrape-and-deploy:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+# ── Tennessee Footprint ───────────────────────────────────────────────────────
+FOOTPRINT_STATES = {
+    "TN", "KY", "VA", "NC", "GA", "AL", "MS",
+    "AR", "MO", "SC", "FL", "OH", "IN", "WV", "LA"
+}
 
-    steps:
-      # 1. Checkout the repo
-      - name: 📥 Checkout Repository
-        uses: actions/checkout@v4
+STATE_NAME_TO_ABBR = {
+    "Tennessee": "TN", "Kentucky": "KY", "Virginia": "VA",
+    "North Carolina": "NC", "Georgia": "GA", "Alabama": "AL",
+    "Mississippi": "MS", "Arkansas": "AR", "Missouri": "MO",
+    "South Carolina": "SC", "Florida": "FL", "Ohio": "OH",
+    "Indiana": "IN", "West Virginia": "WV", "Louisiana": "LA",
+    # Already abbreviated
+    **{s: s for s in ["TN","KY","VA","NC","GA","AL","MS","AR","MO","SC","FL","OH","IN","WV","LA"]}
+}
 
-      # 2. Set up Python
-      - name: 🐍 Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+# ── School Tiers ──────────────────────────────────────────────────────────────
+SEC_SCHOOLS = {
+    "Tennessee","Alabama","Auburn","Florida","Georgia","Kentucky",
+    "LSU","Mississippi State","Missouri","Ole Miss","South Carolina",
+    "Vanderbilt","Arkansas","Texas","Texas A&M","Oklahoma"
+}
 
-      # 3. Cache pip dependencies
-      - name: 📦 Cache pip packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+BIG_TEN = {
+    "Ohio State","Michigan","Penn State","Oregon","USC","Wisconsin",
+    "Iowa","Minnesota","Illinois","Indiana","Purdue","Nebraska",
+    "Northwestern","Maryland","Rutgers","Michigan State","UCLA","Washington"
+}
 
-      # 4. Install dependencies
-      - name: 📦 Install dependencies
-        run: pip install -r requirements.txt
+ACC = {
+    "Clemson","Florida State","Miami","NC State","Duke","Wake Forest",
+    "Louisville","Virginia Tech","Virginia","Boston College","Pitt",
+    "Syracuse","Georgia Tech","North Carolina","Notre Dame","SMU","Stanford","Cal"
+}
 
-      # 5. Ensure data folder exists
-      - name: 📁 Ensure data folder exists
-        run: mkdir -p data
+BIG_12 = {
+    "Oklahoma State","Texas Tech","TCU","Baylor","Kansas","Kansas State",
+    "Iowa State","West Virginia","Cincinnati","UCF","Houston","BYU",
+    "Colorado","Arizona","Arizona State","Utah"
+}
 
-      # 6. Run the scraper (continue even if scraper hits errors)
-      - name: 🏈 Run Recruiting Scraper
-        env:
-          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
-        run: python scraper.py
-        continue-on-error: true
+P4_SCHOOLS = SEC_SCHOOLS | BIG_TEN | ACC | BIG_12
 
-      # 7. Commit updated data (only if offers.json changed)
-      - name: 💾 Commit updated offer data
-        run: |
-          git config user.name "Vol Recruiting Bot"
-          git config user.email "bot@vols.utk.edu"
-          git add data/ || true
-          git diff --staged --quiet || git commit -m "🏈 Update offers — $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push || true
+G6_SCHOOLS = {
+    "Appalachian State","Coastal Carolina","Georgia Southern","Georgia State",
+    "James Madison","Marshall","Old Dominion","Southern Miss","Troy",
+    "South Alabama","Texas State","UL Lafayette","UL Monroe","Arkansas State",
+    "Toledo","Miami OH","Western Michigan","Central Michigan","Eastern Michigan",
+    "Northern Illinois","Ball State","Bowling Green","Ohio","Akron","Buffalo",
+    "Kent State","Liberty","Western Kentucky","Middle Tennessee","UTEP","FIU",
+    "Jacksonville State","Sam Houston","New Mexico State","Kennesaw State",
+    "UT Martin","ETSU","Boise State","Fresno State","San Diego State",
+    "Air Force","Colorado State","Wyoming","UNLV","Nevada","Utah State",
+    "San Jose State","Hawaii","New Mexico","Memphis","Tulane","UTSA",
+    "North Texas","UAB","East Carolina","Charlotte","FAU","Temple","Tulsa",
+    "Rice","Navy","Army"
+}
 
-      # 8. Deploy to GitHub Pages
-      - name: 🌐 Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          exclude_assets: '.github,scraper.py,requirements.txt,.gitignore,README.md'
+ALL_KNOWN_SCHOOLS = P4_SCHOOLS | G6_SCHOOLS
+
+# ── Positional Ideals for Gem Score ──────────────────────────────────────────
+POSITION_IDEALS = {
+    "QB":   (75, 215), "RB":   (71, 210), "WR":   (73, 195),
+    "TE":   (77, 240), "OL":   (77, 300), "OT":   (77, 300),
+    "OG":   (76, 305), "C":    (75, 295), "DL":   (75, 275),
+    "DT":   (74, 290), "DE":   (76, 255), "EDGE": (76, 245),
+    "LB":   (74, 225), "ILB":  (74, 230), "OLB":  (74, 220),
+    "CB":   (72, 185), "S":    (73, 200), "DB":   (73, 195),
+    "ATH":  (73, 195), "K":    (72, 195), "P":    (73, 195)
+}
+
+# ── HTTP Headers ──────────────────────────────────────────────────────────────
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+}
+
+X_BEARER_TOKEN = os.environ.get("X_BEARER_TOKEN", "")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HELPERS
+# ─────────────────────────────────────────────────────────────────────────────
+
+def make_id(name: str, grad_year: str) -> str:
+    return hashlib.md5(f"{name.lower().strip()}{grad_year}".encode()).hexdigest()[:12]
+
+def normalize_state(raw: str) -> str | None:
+    if not raw:
+        return None
+    raw = raw.strip()
+    return STATE_NAME_TO_ABBR.get(raw) or STATE_NAME_TO_ABBR.get(raw.title())
+
+def categorize_player(offers: list[str]) -> str:
+    """Return 'sec', 'p4', or 'g6' based on best offer tier."""
+    for o in offers:
+        for school in SEC_SCHOOLS:
+            if school.lower() in o.lower():
+                return "sec"
+    for o in offers:
+        for school in P4_SCHOOLS:
+            if school.lower() in o.lower():
+                return "p4"
+    return "g6"
+
+def calc_gem_score(player: dict) -> int:
+    pos = player.get("position", "ATH").upper()
+    # Normalize to a key we have
+    matched_pos = "ATH"
+    for key in POSITION_IDEALS:
+        if key in pos:
+            matched_pos = key
+            break
+    ideal_h, ideal_w = POSITION_IDEALS[matched_pos]
+    h = player.get("height_inches", 0)
+    w = player.get("weight", 0)
+    if not h and not w:
+        return 50
+    h_score = max(0, 100 - abs(h - ideal_h) * 12) if h else 50
+    w_score = max(0, 100 - abs(w - ideal_w) / max(ideal_w, 1) * 100) if w else 50
+    return round((h_score + w_score) / 2)
+
+def generate_eval(player: dict) -> dict:
+    """Rule-based evaluation — no AI API required, no invented text."""
+    pos      = player.get("position", "ATH").upper()
+    h        = player.get("height_inches", 0)
+    w        = player.get("weight", 0)
+    offers   = player.get("offers", [])
+    category = player.get("category", "g6")
+    gem      = player.get("gem_score", 50)
+
+    matched_pos = "ATH"
+    for key in POSITION_IDEALS:
+        if key in pos:
+            matched_pos = key
+            break
+    ideal_h, ideal_w = POSITION_IDEALS[matched_pos]
+
+    strengths, weaknesses = [], []
+
+    if h:
+        hd = player.get("height_display", f"{h//12}'{h%12}\"")
+        if h >= ideal_h:
+            strengths.append(f"at or above ideal height for {pos} ({hd})")
+        else:
+            weaknesses.append(f"slightly below ideal height for {pos} ({hd})")
+    else:
+        weaknesses.append("height not yet confirmed")
+
+    if w:
+        if abs(w - ideal_w) <= 15:
+            strengths.append(f"ideal frame weight at {w} lbs")
+        elif w > ideal_w + 20:
+            weaknesses.append(f"may need to trim down ({w} lbs vs {ideal_w} lb ideal)")
+        else:
+            weaknesses.append(f"needs to add mass ({w} lbs vs {ideal_w} lb ideal)")
+    else:
+        weaknesses.append("weight not yet confirmed")
+
+    if category == "sec":
+        strengths.append(f"SEC-level interest ({len(offers)} offer(s))")
+    elif category == "p4":
+        strengths.append("P4 program interest — UT opportunity window open")
+        weaknesses.append("no SEC offer yet; UT should evaluate quickly")
+    elif category == "g6":
+        if gem >= 80:
+            strengths.append("P4-caliber measurables with only G6 offers — underrecruited")
+            weaknesses.append("if measurables check out on film, UT should act fast")
+        else:
+            weaknesses.append("currently holds only G6 offers")
+
+    if len(offers) == 0:
+        weaknesses.append("no confirmed offers tracked yet")
+
+    return {
+        "strengths": "; ".join(strengths) if strengths else "awaiting full evaluation",
+        "weaknesses": "; ".join(weaknesses) if weaknesses else "no major concerns at this time"
+    }
+
+def deduplicate(players: list[dict]) -> list[dict]:
+    """Merge by ID — combine offer lists, keep best measurables."""
+    seen: dict[str, dict] = {}
+    for p in players:
+        pid = p.get("id", make_id(p.get("name",""), p.get("grad_year","")))
+        p["id"] = pid
+        if pid not in seen:
+            seen[pid] = p
+        else:
+            existing = seen[pid]
+            existing["offers"] = list(set(existing.get("offers",[]) + p.get("offers",[])))
+            if p.get("height_inches") and not existing.get("height_inches"):
+                existing["height_inches"] = p["height_inches"]
+                existing["height_display"] = p.get("height_display","")
+            if p.get("weight") and not existing.get("weight"):
+                existing["weight"] = p["weight"]
+    return list(seen.values())
+
+def load_existing() -> list[dict]:
+    try:
+        with open("data/offers.json") as f:
+            return json.load(f).get("players", [])
+    except Exception:
+        return []
+
+def merge_with_existing(new_players: list[dict], existing: list[dict]) -> list[dict]:
+    """Bring in new data, preserve everything already tracked."""
+    pool = existing + new_players
+    merged = deduplicate(pool)
+    # Re-enrich everything
+    for p in merged:
+        if not p.get("position"):
+            p["position"] = "ATH"
+        p["gem_score"] = calc_gem_score(p)
+        p["category"]  = categorize_player(p.get("offers", []))
+        p["ai_eval"]   = generate_eval(p)
+        p["is_hidden_gem"] = (p["gem_score"] >= 80 and p["category"] == "g6")
+    return merged
+
+def write_output(players: list[dict], errors: list[str], sources_checked: list[dict]) -> None:
+    Path("data").mkdir(exist_ok=True)
+    out = {
+        "players":         players,
+        "last_updated":    datetime.now(timezone.utc).isoformat(),
+        "scraper_ran":     True,
+        "total_found":     len(players),
+        "errors":          errors,
+        "sources_checked": sources_checked,
+    }
+    with open("data/offers.json", "w") as f:
+        json.dump(out, f, indent=2, default=str)
+    log.info(f"✅ Wrote {len(players)} players to data/offers.json")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SOURCE 1 — X / TWITTER API v2
+# ─────────────────────────────────────────────────────────────────────────────
+
+OFFER_KEYWORDS = [
+    '"has received an offer"',
+    '"has been offered"',
+    '"offer from"',
+    '"offered by"',
+    '"picks up offer"',
+]
+
+def scrape_x() -> list[dict]:
+    if not X_BEARER_TOKEN:
+        log.warning("[X] No bearer token set — skipping X source")
+        return []
+
+    headers = {"Authorization": f"Bearer {X_BEARER_TOKEN}"}
+    kw_query = " OR ".join(OFFER_KEYWORDS[:4])
+    query    = f"({kw_query}) football recruit -is:retweet lang:en"
+    params   = {
+        "query":        query,
+        "max_results":  100,
+        "tweet.fields": "created_at,id,text",
+        "sort_order":   "recency",
+    }
+
+    resp = requests.get(
+        "https://api.twitter.com/2/tweets/search/recent",
+        headers=headers, params=params, timeout=25
+    )
+
+    if resp.status_code == 429:
+        log.warning("[X] Rate limited — will retry next cycle")
+        return []
+    if resp.status_code != 200:
+        raise RuntimeError(f"HTTP {resp.status_code}: {resp.text[:300]}")
+
+    tweets = resp.json().get("data", [])
+    log.info(f"[X] Received {len(tweets)} tweets")
+
+    players = []
+    for tweet in tweets:
+        p = parse_tweet(tweet["text"])
+        if not p or p.get("state") not in FOOTPRINT_STATES:
+            continue
+        tweet_url = f"https://x.com/i/web/status/{tweet['id']}"
+        p.update({
+            "id":          make_id(p.get("name",""), p.get("grad_year","")),
+            "source_name": "X/Twitter",
+            "source_url":  tweet_url,
+            "found_at":    tweet.get("created_at", datetime.now(timezone.utc).isoformat()),
+        })
+        players.append(p)
+
+    log.info(f"[X] {len(players)} footprint players extracted")
+    return players
+
+
+def parse_tweet(text: str) -> dict | None:
+    """Extract structured player data from tweet text. Returns None if not enough info."""
+    player: dict = {"offers": []}
+
+    # Grad year
+    ym = re.search(r'\b(202[5-9]|203[0-2])\b', text)
+    if ym:
+        player["grad_year"] = ym.group(1)
+
+    # Position
+    pos_list = [
+        "EDGE","QB","RB","WR","TE","OT","OG","OL","DT","DE","DL",
+        "ILB","OLB","LB","CB","FS","SS","DB","S","ATH","K/P","K","P"
+    ]
+    for pos in pos_list:
+        if re.search(r'\b' + re.escape(pos) + r'\b', text.upper()):
+            player["position"] = pos
+            break
+
+    # Height
+    hm = re.search(r"(\d)['\u2019](\d{1,2})\"?", text)
+    if hm:
+        ft, inch = int(hm.group(1)), int(hm.group(2))
+        player["height_inches"] = ft * 12 + inch
+        player["height_display"] = f"{ft}'{inch}\""
+
+    # Weight (100-399 range, adjacent to lbs/pounds keyword or standalone)
+    wm = re.search(r'\b([12]\d{2}|3[0-5]\d)\s*(?:lbs?|pounds?|-pound)?\b', text)
+    if wm:
+        val = int(wm.group(1))
+        if 140 <= val <= 380:
+            player["weight"] = val
+
+    # Offering schools
+    for school in sorted(ALL_KNOWN_SCHOOLS, key=len, reverse=True):
+        if school.lower() in text.lower():
+            if school not in player["offers"]:
+                player["offers"].append(school)
+
+    # State — full name first, then abbreviation pattern
+    for name, abbr in STATE_NAME_TO_ABBR.items():
+        if len(name) > 2 and name in text:
+            player["state"] = abbr
+            break
+    if not player.get("state"):
+        sm = re.search(r'[,(]\s*([A-Z]{2})\s*[),.]', text)
+        if sm and sm.group(1) in FOOTPRINT_STATES:
+            player["state"] = sm.group(1)
+
+    # Player name — capitalised pair/triple before or after offer keyword
+    nm = re.search(
+        r'\b([A-Z][a-z]+(?:\s[A-Z][a-z]+){1,2})\b(?=.*(?:\boffer\b|\boffered\b|\brecruit\b))',
+        text
+    )
+    if nm:
+        player["name"] = nm.group(1)
+
+    # Need at minimum name + state to be useful
+    if not player.get("name") or not player.get("state"):
+        return None
+
+    return player
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SOURCE 2 — ON3 (offer wire, public page)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def scrape_on3() -> list[dict]:
+    players = []
+    url = "https://www.on3.com/db/offers/"
+
+    resp = requests.get(url, headers=HEADERS, timeout=25)
+    if resp.status_code != 200:
+        raise RuntimeError(f"HTTP {resp.status_code}")
+
+    soup = BeautifulSoup(resp.text, "lxml")
+
+    # On3 embeds Next.js JSON in <script id="__NEXT_DATA__">
+    script_tag = soup.find("script", id="__NEXT_DATA__")
+    if not script_tag:
+        log.warning("[On3] Could not find __NEXT_DATA__ — page structure may have changed")
+        return players
+
+    try:
+        data = json.loads(script_tag.string or "{}")
+        # Walk the tree looking for player offer arrays
+        offers_list = _find_list_with_key(data, "playerName") or \
+                      _find_list_with_key(data, "firstName") or []
+
+        log.info(f"[On3] Found {len(offers_list)} raw offer records")
+
+        for item in offers_list:
+            p = _parse_on3_item(item)
+            if p and p.get("state") in FOOTPRINT_STATES:
+                players.append(p)
+
+    except Exception as e:
+        raise RuntimeError(f"Parse error: {e}")
+
+    log.info(f"[On3] {len(players)} footprint players found")
+    return players
+
+
+def _find_list_with_key(obj, key: str, depth: int = 0) -> list | None:
+    if depth > 8:
+        return None
+    if isinstance(obj, list):
+        if obj and isinstance(obj[0], dict) and key in obj[0]:
+            return obj
+        for item in obj:
+            result = _find_list_with_key(item, key, depth+1)
+            if result:
+                return result
+    elif isinstance(obj, dict):
+        for v in obj.values():
+            result = _find_list_with_key(v, key, depth+1)
+            if result:
+                return result
+    return None
+
+
+def _parse_on3_item(item: dict) -> dict | None:
+    try:
+        fname = item.get("firstName","")
+        lname = item.get("lastName","")
+        name  = item.get("playerName") or f"{fname} {lname}".strip()
+        if not name or len(name) < 4:
+            return None
+
+        school = item.get("collegeName") or item.get("schoolName","")
+        pos    = (item.get("position") or item.get("pos","ATH")).upper()[:5]
+        year   = str(item.get("classYear") or item.get("gradYear",""))
+        state  = normalize_state(item.get("state") or item.get("homeState",""))
+        pid    = item.get("playerId") or item.get("athleteId","")
+        url    = (
+            f"https://www.on3.com/db/player/{pid}/" if pid
+            else "https://www.on3.com/db/offers/"
+        )
+
+        h_raw = item.get("height","")
+        height_inches = 0
+        height_display = ""
+        if h_raw:
+            hm = re.search(r"(\d)['\-](\d{1,2})", str(h_raw))
+            if hm:
+                height_inches = int(hm.group(1))*12 + int(hm.group(2))
+                height_display = f"{hm.group(1)}'{hm.group(2)}\""
+
+        weight = int(item.get("weight",0) or 0)
+
+        return {
+            "id":             make_id(name, year),
+            "name":           name,
+            "position":       pos,
+            "grad_year":      year,
+            "state":          state,
+            "height_inches":  height_inches,
+            "height_display": height_display,
+            "weight":         weight,
+            "offers":         [school] if school else [],
+            "source_name":    "On3",
+            "source_url":     url,
+            "found_at":       datetime.now(timezone.utc).isoformat(),
+        }
+    except Exception as e:
+        log.debug(f"[On3] parse item error: {e}")
+        return None
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SOURCE 3 — 247SPORTS
+# ─────────────────────────────────────────────────────────────────────────────
+
+def scrape_247() -> list[dict]:
+    players = []
+    current_year = datetime.now().year
+
+    for class_year in [current_year+1, current_year+2, current_year+3]:
+        url = f"https://247sports.com/Season/{class_year}-Football/Offers/"
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=25)
+            if resp.status_code != 200:
+                log.warning(f"[247] {class_year}: HTTP {resp.status_code}")
+                time.sleep(2)
+                continue
+
+            soup = BeautifulSoup(resp.text, "lxml")
+
+            # Try multiple selector patterns 247 has used
+            items = (
+                soup.select(".ri-page__list-item") or
+                soup.select(".rankings-page__list-item") or
+                soup.select(".recruit") or
+                soup.select("[class*='PlayerCard']")
+            )
+            log.info(f"[247] {class_year}: found {len(items)} items")
+
+            for item in items[:60]:
+                p = _parse_247_item(item, str(class_year))
+                if p and p.get("state") in FOOTPRINT_STATES:
+                    players.append(p)
+
+            time.sleep(3)
+
+        except Exception as e:
+            log.error(f"[247] {class_year} error: {e}")
+
+    log.info(f"[247Sports] {len(players)} footprint players found")
+    return players
+
+
+def _parse_247_item(item, class_year: str) -> dict | None:
+    try:
+        # Name
+        name_el = (
+            item.select_one(".rankings-page__name-link") or
+            item.select_one("a.name") or
+            item.select_one("[class*='name'] a") or
+            item.select_one("a")
+        )
+        if not name_el:
+            return None
+        name = name_el.get_text(strip=True)
+        if not name or len(name) < 4:
+            return None
+
+        # Position
+        pos_el = (
+            item.select_one(".position") or
+            item.select_one("[class*='position']")
+        )
+        pos = pos_el.get_text(strip=True).upper()[:5] if pos_el else "ATH"
+
+        # State
+        state_el = (
+            item.select_one(".state") or
+            item.select_one("[class*='state']") or
+            item.select_one(".hometown")
+        )
+        state_raw = state_el.get_text(strip=True) if state_el else ""
+        # "Memphis, TN" or "TN" or "Tennessee"
+        state = None
+        parts = state_raw.split(",")
+        for part in reversed(parts):
+            state = normalize_state(part.strip())
+            if state:
+                break
+
+        if not state or state not in FOOTPRINT_STATES:
+            return None
+
+        # School
+        school_el = (
+            item.select_one(".school") or
+            item.select_one("[class*='school']") or
+            item.select_one("[class*='college']")
+        )
+        school = school_el.get_text(strip=True) if school_el else ""
+
+        # Profile URL
+        href = name_el.get("href","")
+        profile_url = (
+            "https://247sports.com" + href if href.startswith("/")
+            else href or "https://247sports.com"
+        )
+
+        # Height / Weight
+        height_inches, height_display, weight = 0, "", 0
+        m_el = item.select_one("[class*='measur']") or item.select_one("[class*='height']")
+        if m_el:
+            m_text = m_el.get_text()
+            hm = re.search(r"(\d)['\-](\d{1,2})", m_text)
+            if hm:
+                height_inches  = int(hm.group(1))*12 + int(hm.group(2))
+                height_display = f"{hm.group(1)}'{hm.group(2)}\""
+            wm = re.search(r'\b([12]\d{2}|3[0-5]\d)\b', m_text)
+            if wm:
+                weight = int(wm.group(1))
+
+        return {
+            "id":             make_id(name, class_year),
+            "name":           name,
+            "position":       pos,
+            "grad_year":      class_year,
+            "state":          state,
+            "height_inches":  height_inches,
+            "height_display": height_display,
+            "weight":         weight,
+            "offers":         [school] if school else [],
+            "source_name":    "247Sports",
+            "source_url":     profile_url,
+            "found_at":       datetime.now(timezone.utc).isoformat(),
+        }
+    except Exception as e:
+        log.debug(f"[247] parse error: {e}")
+        return None
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MAIN
+# ─────────────────────────────────────────────────────────────────────────────
+
+def main():
+    log.info("🏈 Vol Recruiting Monitor — Scraper v3 starting")
+    all_players:     list[dict] = []
+    errors:          list[str]  = []
+    sources_checked: list[dict] = []
+
+    # ── Source 1: X/Twitter ────────────────────────────────────────────────
+    try:
+        x_players = scrape_x()
+        all_players.extend(x_players)
+        sources_checked.append({"name": "X/Twitter",  "count": len(x_players), "status": "ok"})
+    except Exception as e:
+        msg = f"X/Twitter: {e}"
+        errors.append(msg)
+        sources_checked.append({"name": "X/Twitter",  "count": 0, "status": "error", "detail": msg})
+        log.error(msg)
+
+    # ── Source 2: On3 ──────────────────────────────────────────────────────
+    try:
+        on3_players = scrape_on3()
+        all_players.extend(on3_players)
+        sources_checked.append({"name": "On3",         "count": len(on3_players), "status": "ok"})
+    except Exception as e:
+        msg = f"On3: {e}"
+        errors.append(msg)
+        sources_checked.append({"name": "On3",         "count": 0, "status": "error", "detail": msg})
+        log.error(msg)
+
+    # ── Source 3: 247Sports ───────────────────────────────────────────────
+    try:
+        s247_players = scrape_247()
+        all_players.extend(s247_players)
+        sources_checked.append({"name": "247Sports",   "count": len(s247_players), "status": "ok"})
+    except Exception as e:
+        msg = f"247Sports: {e}"
+        errors.append(msg)
+        sources_checked.append({"name": "247Sports",   "count": 0, "status": "error", "detail": msg})
+        log.error(msg)
+
+    # Filter to footprint
+    footprint = [p for p in all_players if p.get("state") in FOOTPRINT_STATES]
+    log.info(f"Footprint players before dedup: {len(footprint)}")
+
+    # Merge with data already stored
+    existing = load_existing()
+    final    = merge_with_existing(footprint, existing)
+
+    log.info(f"Final player count after merge: {len(final)}")
+    write_output(final, errors, sources_checked)
+    log.info("✅ Scraper run complete")
+
+
+if __name__ == "__main__":
+    main()
