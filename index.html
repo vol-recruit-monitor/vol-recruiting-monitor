@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vol Recruiting Monitor | Tennessee Footprint</title>
+<style>
+  :root {
+    --vol-orange: #FF8200;
+    --vol-white: #FFFFFF;
+    --smoky-gray: #58595B;
+    --dark-bg: #1a1a2e;
+    --card-bg: #16213e;
+    --card-border: #0f3460;
+    --sec-color: #FF8200;
+    --p4-color: #4cc9f0;
+    --g6-color: #7209b7;
+    --gem-color: #06d6a0;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  /* ============================================ */
+  /* PASSWORD GATE                                */
+  /* ============================================ */
+  .password-gate {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 40%, #0f0f1a 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+
+  .password-gate.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .password-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: fadeInUp 0.6s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pw-power-t {
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--vol-orange);
+    text-shadow: 2px 2px 8px rgba(255,130,0,0.4);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .pw-title {
+    font-size: 1.1rem;
+    color: var(--vol-white);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .pw-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .pw-input-wrap {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .pw-input {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    padding-right: 3rem;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid var(--card-border);
+    border-radius: 10px;
+    color: var(--vol-white);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .pw-input:focus {
+    border-color: var(--vol-orange);
+  }
+
+  .pw-input::placeholder {
+    color: var(--text-secondary);
+  }
+
+  .pw-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px;
+  }
+
+  .pw-toggle:hover { color: var(--vol-orange); }
+
+  .pw-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--vol-orange);
+    color: var(--vol-white);
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.5px;
+  }
+
+  .pw-btn:hover { background: #e67400; }
+  .pw-btn:active { transform: scale(0.98); }
+
+  .pw-error {
+    color: #ff6b6b;
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+    min-height: 1.2rem;
+    font-weight: 600;
+  }
+
+  .pw-error.shake {
+    animation: shake 0.5s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+
+  .pw-lock-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .pw-case-hint {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    opacity: 0.7;
+  }
+
+  /* === DASHBOARD (hidden until authenticated) === */
+  .dashboard-wrap {
+    display: none;
+  }
+
+  .dashboard-wrap.unlocked {
+    display: block;
+  }
+
+  /* === HEADER === */
+  .header {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
+    border-bottom: 3px solid var(--vol-orange);
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 1rem; }
+
+  .power-t {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--vol-orange);
+    text-shadow: 2px 2px 4px rgba(255,130,0,0.3);
+    line-height: 1;
+  }
+
+  .header-title h1 {
+    font-size: 1.4rem;
+    color: var(--vol-white);
+    font-weight: 700;
+  }
+
+  .header-title p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .last-updated {
+    background: rgba(255,130,0,0.1);
+    border: 1px solid rgba(255,130,0,0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--vol-orange);
+  }
+
+  .live-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #06d6a0;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* === FILTERS === */
+  .filters {
+    background: rgba(15,52,96,0.4);
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255,130,0,0.15);
+  }
+
+  .filter-group { display: flex; align-items: center; gap: 0.5rem; }
+
+  .filter-group label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  select, input[type="text"] {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--card-border);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  select:focus, input[type="text"]:focus {
+    border-color: var(--vol-orange);
+  }
+
+  input[type="text"] { width: 220px; }
+
+  .stat-pills {
+    margin-left: auto;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .stat-pill {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .stat-pill.sec { background: rgba(255,130,0,0.15); color: var(--sec-color); border: 1px solid rgba(255,130,0,0.3); }
+  .stat-pill.p4 { background: rgba(76,201,240,0.15); color: var(--p4-color); border: 1px solid rgba(76,201,240,0.3); }
+  .stat-pill.g6 { background: rgba(114,9,183,0.15); color: var(--g6-color); border: 1px solid rgba(114,9,183,0.3); }
+  .stat-pill.gem { background: rgba(6,214,160,0.15); color: var(--gem-color); border: 1px solid rgba(6,214,160,0.3); }
+
+  /* === TABS === */
+  .tabs {
+    display: flex;
+    padding: 0 2rem;
+    background: rgba(15,52,96,0.2);
+    border-bottom: 1px solid rgba(255,130,0,0.1);
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .tab:hover { color: var(--text-primary); }
+  .tab.active-sec { color: var(--sec-color); border-bottom-color: var(--sec-color); }
+  .tab.active-p4 { color: var(--p4-color); border-bottom-color: var(--p4-color); }
+  .tab.active-g6 { color: var(--g6-color); border-bottom-color: var(--g6-color); }
+  .tab.active-gem { color: var(--gem-color); border-bottom-color: var(--gem-color); }
+  .tab.active-all { color: var(--vol-orange); border-bottom-color: var(--vol-orange); }
+
+  .tab .tab-count {
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* === MAIN GRID === */
+  .main { padding: 1.5rem 2rem; }
+
+  .player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* === PLAYER CARD === */
+  .player-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .player-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  .card-header {
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .card-tier-bar {
+    height: 3px;
+    width: 100%;
+  }
+
+  .card-tier-bar.sec { background: var(--sec-color); }
+  .card-tier-bar.p4 { background: var(--p4-color); }
+  .card-tier-bar.g6 { background: var(--g6-color); }
+  .card-tier-bar.gem { background: var(--gem-color); }
+
+  .player-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--vol-white);
+    margin-bottom: 0.2rem;
+  }
+
+  .player-meta {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .player-meta span { margin-right: 0.5rem; }
+
+  .position-badge {
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: rgba(255,130,0,0.15);
+    color: var(--vol-orange);
+    border: 1px solid rgba(255,130,0,0.3);
+    white-space: nowrap;
+  }
+
+  .grad-badge {
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.08);
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+  }
+
+  .card-body { padding: 1rem 1.25rem; }
+
+  .measurables {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .measurable {
+    text-align: center;
+  }
+
+  .measurable .val {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--vol-white);
+  }
+
+  .measurable .label {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  .offers-section { margin-bottom: 0.85rem; }
+
+  .offers-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .offer-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .offer-chip {
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .offer-chip.sec-chip { background: rgba(255,130,0,0.12); color: var(--sec-color); }
+  .offer-chip.p4-chip { background: rgba(76,201,240,0.12); color: var(--p4-color); }
+  .offer-chip.g6-chip { background: rgba(114,9,183,0.12); color: var(--g6-color); }
+  .offer-chip.other-chip { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+
+  /* AI Eval */
+  .ai-eval {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .ai-eval-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--vol-orange);
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .eval-row { display: flex; gap: 0.75rem; }
+
+  .strengths, .weaknesses { flex: 1; }
+
+  .eval-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .strengths .eval-label { color: #06d6a0; }
+  .weaknesses .eval-label { color: #ff6b6b; }
+
+  .eval-items {
+    list-style: none;
+    padding: 0;
+  }
+
+  .eval-items li {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    padding: 0.15rem 0;
+    padding-left: 0.7rem;
+    position: relative;
+  }
+
+  .eval-items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+
+  .strengths .eval-items li::before { background: #06d6a0; }
+  .weaknesses .eval-items li::before { background: #ff6b6b; }
+
+  /* Links */
+  .card-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .link-x { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+  .link-x:hover { background: rgba(255,255,255,0.12); }
+
+  .link-hudl { background: rgba(255,130,0,0.1); color: var(--vol-orange); }
+  .link-hudl:hover { background: rgba(255,130,0,0.2); }
+
+  .link-uc { background: rgba(6,214,160,0.1); color: var(--gem-color); }
+  .link-uc:hover { background: rgba(6,214,160,0.2); }
+
+  .link-icon { font-size: 0.85rem; }
+
+  /* Gem Score Badge */
+  .gem-score-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+  }
+
+  .gem-score-badge.high { background: rgba(6,214,160,0.15); color: var(--gem-color); border: 1px solid rgba(6,214,160,0.3); }
+  .gem-score-badge.med { background: rgba(255,130,0,0.15); color: var(--vol-orange); border: 1px solid rgba(255,130,0,0.3); }
+  .gem-score-badge.low { background: rgba(255,255,255,0.06); color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.1); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+  }
+
+  .empty-state .emoji { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-state h3 { color: var(--text-primary); margin-bottom: 0.5rem; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 1rem; }
+    .filters { padding: 0.75rem 1rem; }
+    .main { padding: 1rem; }
+    .player-grid { grid-template-columns: 1fr; }
+    .stat-pills { margin-left: 0; width: 100%; justify-content: flex-start; }
+    input[type="text"] { width: 160px; }
+    .eval-row { flex-direction: column; }
+    .password-box { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PASSWORD GATE ==================== -->
+<div class="password-gate" id="passwordGate">
+  <div class="password-box">
+    <div class="pw-power-t">T</div>
+    <div class="pw-title">Vol Recruiting Monitor</div>
+    <div class="pw-subtitle">Authorized Access Only</div>
+    <span class="pw-lock-icon">🔒</span>
+    <form id="pwForm" onsubmit="return checkPassword(event)">
+      <div class="pw-input-wrap">
+        <input
+          type="password"
+          class="pw-input"
+          id="pwInput"
+          placeholder="Enter access code"
+          autocomplete="off"
+          autofocus
+        />
+        <button type="button" class="pw-toggle" onclick="togglePwVisibility()" id="pwToggle" aria-label="Show password">👁️</button>
+      </div>
+      <button type="submit" class="pw-btn">ACCESS DASHBOARD</button>
+      <p class="pw-case-hint">⚠️ Password is case-sensitive</p>
+    </form>
+    <p class="pw-error" id="pwError">&nbsp;</p>
+  </div>
+</div>
+
+<!-- ==================== DASHBOARD (hidden until password entered) ==================== -->
+<div class="dashboard-wrap" id="dashboardWrap">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="power-t">T</div>
+      <div class="header-title">
+        <h1>Vol Recruiting Monitor</h1>
+        <p>Tennessee Footprint · 15 States · Live Offer Tracking</p>
+      </div>
+    </div>
+    <div class="last-updated">
+      <span class="live-dot"></span>
+      <span id="lastUpdated">Updated: Loading...</span>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>Class</label>
+      <select id="filterYear" onchange="applyFilters()">
+        <option value="all">All Years</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+        <option value="2029">2029</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Position</label>
+      <select id="filterPos" onchange="applyFilters()">
+        <option value="all">All Positions</option>
+        <option value="QB">QB</option>
+        <option value="RB">RB</option>
+        <option value="WR">WR</option>
+        <option value="TE">TE</option>
+        <option value="OL">OL</option>
+        <option value="DL">DL</option>
+        <option value="EDGE">EDGE</option>
+        <option value="LB">LB</option>
+        <option value="CB">CB</option>
+        <option value="S">S</option>
+        <option value="ATH">ATH</option>
+        <option value="K/P">K/P</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>State</label>
+      <select id="filterState" onchange="applyFilters()">
+        <option value="all">All States</option>
+        <option value="TN">Tennessee</option>
+        <option value="KY">Kentucky</option>
+        <option value="VA">Virginia</option>
+        <option value="NC">North Carolina</option>
+        <option value="GA">Georgia</option>
+        <option value="AL">Alabama</option>
+        <option value="MS">Mississippi</option>
+        <option value="AR">Arkansas</option>
+        <option value="MO">Missouri</option>
+        <option value="SC">South Carolina</option>
+        <option value="FL">Florida</option>
+        <option value="OH">Ohio</option>
+        <option value="IN">Indiana</option>
+        <option value="WV">West Virginia</option>
+        <option value="LA">Louisiana</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Search</label>
+      <input type="text" id="filterSearch" placeholder="Name, school, city..." oninput="applyFilters()" />
+    </div>
+    <div class="stat-pills" id="statPills">
+      <span class="stat-pill sec" id="pillSec">SEC: 0</span>
+      <span class="stat-pill p4" id="pillP4">P4: 0</span>
+      <span class="stat-pill g6" id="pillG6">G6: 0</span>
+      <span class="stat-pill gem" id="pillGem">💎 0</span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabBar">
+    <button class="tab active-all" data-tab="all" onclick="switchTab('all', this)">
+      All Offers <span class="tab-count" id="countAll">0</span>
+    </button>
+    <button class="tab" data-tab="sec" onclick="switchTab('sec', this)">
+      🟠 SEC <span class="tab-count" id="countSec">0</span>
+    </button>
+    <button class="tab" data-tab="p4" onclick="switchTab('p4', this)">
+      🔵 Other P4 <span class="tab-count" id="countP4">0</span>
+    </button>
+    <button class="tab" data-tab="g6" onclick="switchTab('g6', this)">
+      🟣 G6 Footprint <span class="tab-count" id="countG6">0</span>
+    </button>
+    <button class="tab" data-tab="gem" onclick="switchTab('gem', this)">
+      💎 Hidden Gems <span class="tab-count" id="countGem">0</span>
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main">
+    <div class="player-grid" id="playerGrid"></div>
+  </main>
+
+  <footer class="footer">
+    Vol Recruiting Monitor &copy; 2025 · Data from X, NextGen Prospect, 247Sports · Go Vols 🍊
+  </footer>
+
+</div><!-- end dashboard-wrap -->
+
+<script>
+// ================================================================
+// PASSWORD AUTHENTICATION
+// ================================================================
+
+// Obfuscated password check (not truly secure — this is client-side
+// deterrent. For real security, use server-side auth.)
+// SHA-256 hash of the password for comparison
+const PW_HASH = "a0f2e29635e6b26e6c1be9de4186ed2683e498e976982bcd1e3a03be6ed4ca87";
+
+async function hashPassword(pw) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(pw);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPassword(e) {
+  e.preventDefault();
+  const input = document.getElementById('pwInput').value;
+  const errorEl = document.getElementById('pwError');
+
+  const inputHash = await hashPassword(input);
+
+  if (inputHash === PW_HASH) {
+    // Correct password
+    sessionStorage.setItem('vol_auth', inputHash);
+    document.getElementById('passwordGate').classList.add('hidden');
+    document.getElementById('dashboardWrap').classList.add('unlocked');
+    loadData();
+  } else {
+    // Wrong password
+    errorEl.textContent = '❌ Incorrect password. It is case-sensitive.';
+    errorEl.classList.remove('shake');
+    void errorEl.offsetWidth; // trigger reflow
+    errorEl.classList.add('shake');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+  return false;
+}
+
+function togglePwVisibility() {
+  const input = document.getElementById('pwInput');
+  const toggle = document.getElementById('pwToggle');
+  if (input.type === 'password') {
+    input.type = 'text';
+    toggle.textContent = '🔒';
+  } else {
+    input.type = 'password';
+    toggle.textContent = '👁️';
+  }
+}
+
+// Check if already authenticated this session
+(async function checkSession() {
+  const stored = sessionStorage.getItem('vol_auth');
+  if (stored === PW_HASH) {
+    document.getElementById('passwordGate').classList.add('hidden');
+    document.getElementById('dashboardWrap').classList.add('unlocked');
+    loadData();
+  }
+})();
+
+// Allow Enter key on password form
+document.getElementById('pwInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPassword(e);
+});
+
+// ================================================================
+// DASHBOARD DATA & RENDERING
+// ================================================================
+
+const SEC_SCHOOLS = new Set([
+  "tennessee","alabama","auburn","florida","georgia","kentucky","lsu",
+  "mississippi state","missouri","ole miss","south carolina","vanderbilt",
+  "arkansas","texas","texas a&m","oklahoma"
+]);
+
+const P4_SCHOOLS = new Set([
+  ...SEC_SCHOOLS,
+  "ohio state","michigan","penn state","oregon","usc","wisconsin","iowa",
+  "minnesota","illinois","indiana","purdue","nebraska","northwestern",
+  "maryland","rutgers","michigan state","ucla","washington",
+  "clemson","florida state","miami","nc state","duke","wake forest",
+  "louisville","virginia tech","virginia","boston college","pitt","syracuse",
+  "georgia tech","north carolina","notre dame","smu","stanford","cal",
+  "oklahoma state","texas tech","tcu","baylor","kansas","kansas state",
+  "iowa state","west virginia","cincinnati","ucf","houston","byu",
+  "colorado","arizona","arizona state","utah"
+]);
+
+let allPlayers = [];
+let currentTab = 'all';
+
+function loadData() {
+  fetch('data/offers.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      allPlayers = data.players || data || [];
+      document.getElementById('lastUpdated').textContent =
+        'Updated: ' + (data.last_updated || new Date().toLocaleString());
+      renderAll();
+    })
+    .catch(() => {
+      allPlayers = getSampleData();
+      document.getElementById('lastUpdated').textContent =
+        'Updated: Sample Data (scraper will replace)';
+      renderAll();
+    });
+}
+
+function categorize(player) {
+  const offers = (player.offers || []).map(o => o.toLowerCase());
+  const hasSec = offers.some(o => SEC_SCHOOLS.has(o));
+  const hasP4 = offers.some(o => P4_SCHOOLS.has(o));
+  if (hasSec) return 'sec';
+  if (hasP4) return 'p4';
+  return 'g6';
+}
+
+function calcGemScore(player) {
+  const ideals = {
+    QB: [75, 215], RB: [71, 210], WR: [73, 195], TE: [77, 240],
+    OL: [77, 300], DL: [75, 275], EDGE: [76, 245], LB: [74, 225],
+    CB: [72, 185], S: [73, 200], ATH: [73, 195], "K/P": [73, 195]
+  };
+  const ideal = ideals[player.position] || [73, 200];
+  const h = player.height_inches || 72;
+  const w = player.weight || 190;
+  const hScore = Math.max(0, 100 - Math.abs(h - ideal[0]) * 12);
+  const wScore = Math.max(0, 100 - Math.abs(w - ideal[1]) * 0.5);
+  const cat = categorize(player);
+  const tierBonus = cat === 'g6' ? 15 : cat === 'p4' ? 5 : 0;
+  const offerCount = (player.offers || []).length;
+  const volumeBonus = offerCount <= 3 ? 10 : offerCount <= 6 ? 5 : 0;
+  return Math.min(100, Math.round(hScore * 0.4 + wScore * 0.3 + (tierBonus + volumeBonus) * 0.3 + tierBonus));
+}
+
+function getFiltered() {
+  const year = document.getElementById('filterYear').value;
+  const pos = document.getElementById('filterPos').value;
+  const state = document.getElementById('filterState').value;
+  const search = document.getElementById('filterSearch').value.toLowerCase();
+
+  return allPlayers.filter(p => {
+    if (year !== 'all' && String(p.grad_year) !== year) return false;
+    if (pos !== 'all' && p.position !== pos) return false;
+    if (state !== 'all' && p.state !== state) return false;
+    if (search) {
+      const blob = [p.name, p.high_school, p.city, p.state, p.position].join(' ').toLowerCase();
+      if (!blob.includes(search)) return false;
+    }
+    const cat = categorize(p);
+    if (currentTab === 'sec' && cat !== 'sec') return false;
+    if (currentTab === 'p4' && cat !== 'p4') return false;
+    if (currentTab === 'g6' && cat !== 'g6') return false;
+    if (currentTab === 'gem') {
+      if (cat !== 'g6') return false;
+      if (calcGemScore(p) < 80) return false;
+    }
+    return true;
+  });
+}
+
+function renderAll() {
+  const filtered = getFiltered();
+  updateCounts();
+  const grid = document.getElementById('playerGrid');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column: 1/-1;">
+        <div class="emoji">🔍</div>
+        <h3>No players match your filters</h3>
+        <p>Try adjusting your filters or switching tabs</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => renderCard(p)).join('');
+}
+
+function renderCard(p) {
+  const cat = categorize(p);
+  const gem = calcGemScore(p);
+  const heightStr = p.height || `${Math.floor((p.height_inches||72)/12)}-${(p.height_inches||72)%12}`;
+  const weightStr = p.weight ? `${p.weight} lbs` : '—';
+
+  const gemBadgeClass = gem >= 85 ? 'high' : gem >= 70 ? 'med' : 'low';
+
+  const offerChips = (p.offers || []).map(o => {
+    const ol = o.toLowerCase();
+    if (SEC_SCHOOLS.has(ol)) return `<span class="offer-chip sec-chip">${o}</span>`;
+    if (P4_SCHOOLS.has(ol)) return `<span class="offer-chip p4-chip">${o}</span>`;
+    return `<span class="offer-chip g6-chip">${o}</span>`;
+  }).join('');
+
+  const strengths = (p.strengths || ['Good frame for position', 'Active in recruiting process']).map(s => `<li>${s}</li>`).join('');
+  const weaknesses = (p.weaknesses || ['Film evaluation needed', 'Offer sheet developing']).map(w => `<li>${w}</li>`).join('');
+
+  const xName = (p.name || '').replace(/\s+/g, '');
+  const xLink = p.x_handle
+    ? `https://x.com/${p.x_handle}`
+    : `https://x.com/search?q=${encodeURIComponent(p.name + ' football recruit')}`;
+  const hudlLink = p.hudl_link || `https://www.hudl.com/search?query=${encodeURIComponent(p.name)}`;
+  const ucLink = p.uc_link || `https://underdogcrew.com/search?q=${encodeURIComponent(p.name)}`;
+
+  return `
+    <div class="player-card" data-category="${cat}">
+      <div class="card-tier-bar ${cat}"></div>
+      <div class="card-header">
+        <div>
+          <div class="player-name">
+            ${p.name || 'Unknown'}
+            <span class="gem-score-badge ${gemBadgeClass}">💎 ${gem}</span>
+          </div>
+          <div class="player-meta">
+            <span>📍 ${p.city || '—'}, ${p.state || '—'}</span>
+            <span>🏫 ${p.high_school || '—'}</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.4rem;">
+          <span class="position-badge">${p.position || 'ATH'}</span>
+          <span class="grad-badge">'${String(p.grad_year || '27').slice(-2)}</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="measurables">
+          <div class="measurable"><div class="val">${heightStr}</div><div class="label">Height</div></div>
+          <div class="measurable"><div class="val">${weightStr}</div><div class="label">Weight</div></div>
+          <div class="measurable"><div class="val">${(p.offers || []).length}</div><div class="label">Offers</div></div>
+          <div class="measurable"><div class="val">${gem}</div><div class="label">Gem Score</div></div>
+        </div>
+        <div class="offers-section">
+          <div class="offers-title">Offers (${(p.offers||[]).length})</div>
+          <div class="offer-chips">${offerChips || '<span class="offer-chip other-chip">None listed</span>'}</div>
+        </div>
+        <div class="ai-eval">
+          <div class="ai-eval-title">🤖 AI Evaluation</div>
+          <div class="eval-row">
+            <div class="strengths">
+              <div class="eval-label">Strengths</div>
+              <ul class="eval-items">${strengths}</ul>
+            </div>
+            <div class="weaknesses">
+              <div class="eval-label">Watch</div>
+              <ul class="eval-items">${weaknesses}</ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-links">
+          <a href="${xLink}" target="_blank" rel="noopener" class="card-link link-x">
+            <span class="link-icon">𝕏</span> X Profile
+          </a>
+          <a href="${hudlLink}" target="_blank" rel="noopener" class="card-link link-hudl">
+            <span class="link-icon">🎬</span> Hudl Film
+          </a>
+          <a href="${ucLink}" target="_blank" rel="noopener" class="card-link link-uc">
+            <span class="link-icon">📋</span> UC Report
+          </a>
+        </div>
+      </div>
+    </div>`;
+}
+
+function updateCounts() {
+  const year = document.getElementById('filterYear').value;
+  const pos = document.getElementById('filterPos').value;
+  const state = document.getElementById('filterState').value;
+  const search = document.getElementById('filterSearch').value.toLowerCase();
+
+  const base = allPlayers.filter(p => {
+    if (year !== 'all' && String(p.grad_year) !== year) return false;
+    if (pos !== 'all' && p.position !== pos) return false;
+    if (state !== 'all' && p.state !== state) return false;
+    if (search) {
+      const blob = [p.name, p.high_school, p.city, p.state, p.position].join(' ').toLowerCase();
+      if (!blob.includes(search)) return false;
+    }
+    return true;
+  });
+
+  const sec = base.filter(p => categorize(p) === 'sec');
+  const p4 = base.filter(p => categorize(p) === 'p4');
+  const g6 = base.filter(p => categorize(p) === 'g6');
+  const gems = g6.filter(p => calcGemScore(p) >= 80);
+
+  document.getElementById('countAll').textContent = base.length;
+  document.getElementById('countSec').textContent = sec.length;
+  document.getElementById('countP4').textContent = p4.length;
+  document.getElementById('countG6').textContent = g6.length;
+  document.getElementById('countGem').textContent = gems.length;
+
+  document.getElementById('pillSec').textContent = `SEC: ${sec.length}`;
+  document.getElementById('pillP4').textContent = `P4: ${p4.length}`;
+  document.getElementById('pillG6').textContent = `G6: ${g6.length}`;
+  document.getElementById('pillGem').textContent = `💎 ${gems.length}`;
+}
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => {
+    t.className = 'tab';
+  });
+  const colorClass = { all: 'active-all', sec: 'active-sec', p4: 'active-p4', g6: 'active-g6', gem: 'active-gem' };
+  el.classList.add(colorClass[tab]);
+  renderAll();
+}
+
+function applyFilters() {
+  renderAll();
+}
+
+// ================================================================
+// SAMPLE DATA (replaced automatically when scraper runs)
+// ================================================================
+
+function getSampleData() {
+  return [
+    {
+      name: "Marcus Johnson", position: "QB", grad_year: 2027,
+      height: "6-3", height_inches: 75, weight: 210,
+      city: "Memphis", state: "TN", high_school: "Whitehaven HS",
+      offers: ["Tennessee", "Alabama", "Georgia", "Oregon", "USC"],
+      strengths: ["Elite arm talent", "Pocket presence beyond his years", "Natural leader"],
+      weaknesses: ["Could add 10-15 lbs", "Mobility under pressure"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "DeAndre Williams", position: "EDGE", grad_year: 2027,
+      height: "6-4", height_inches: 76, weight: 235,
+      city: "Nashville", state: "TN", high_school: "MBA",
+      offers: ["Tennessee", "Vanderbilt", "Kentucky", "South Carolina"],
+      strengths: ["Explosive first step", "Long arms — 34\" wingspan", "High motor"],
+      weaknesses: ["Needs to add mass for SEC", "Run defense technique"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Jaylen Carter", position: "WR", grad_year: 2028,
+      height: "6-1", height_inches: 73, weight: 185,
+      city: "Atlanta", state: "GA", high_school: "Grayson HS",
+      offers: ["Ohio State", "Michigan", "Penn State", "Clemson"],
+      strengths: ["4.45 speed verified", "Route running already polished", "Tracks deep ball well"],
+      weaknesses: ["Slight frame — needs S&C investment", "Contested catch rate unknown"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Tre Brooks", position: "RB", grad_year: 2027,
+      height: "5-11", height_inches: 71, weight: 205,
+      city: "Knoxville", state: "TN", high_school: "Webb School",
+      offers: ["Appalachian State", "Coastal Carolina", "Georgia Southern", "Marshall"],
+      strengths: ["Great vision and patience", "Ideal frame for position", "Reliable pass catcher"],
+      weaknesses: ["Top-end speed question", "Limited P4 exposure camps"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Khalil Robinson", position: "CB", grad_year: 2027,
+      height: "6-0", height_inches: 72, weight: 180,
+      city: "Birmingham", state: "AL", high_school: "Hoover HS",
+      offers: ["Troy", "South Alabama", "Georgia State"],
+      strengths: ["P4 length and frame", "Ball hawk instincts", "Physical at point of attack"],
+      weaknesses: ["Camp circuit exposure needed", "Hip fluidity on deep routes"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Brandon Mitchell", position: "OL", grad_year: 2026,
+      height: "6-5", height_inches: 77, weight: 295,
+      city: "Lexington", state: "KY", high_school: "Frederick Douglass HS",
+      offers: ["Kentucky", "Louisville", "West Virginia", "Cincinnati"],
+      strengths: ["Massive frame with room to grow", "Wrestling background — leverage king", "Nasty demeanor"],
+      weaknesses: ["Footwork in pass pro", "Conditioning at next level"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Chris Palmer", position: "S", grad_year: 2028,
+      height: "6-1", height_inches: 73, weight: 195,
+      city: "Charlotte", state: "NC", high_school: "Mallard Creek HS",
+      offers: ["Appalachian State", "Charlotte", "Old Dominion"],
+      strengths: ["P4 size and range", "Versatile — plays box and single high", "Aggressive downhill"],
+      weaknesses: ["Needs more game reps", "Coverage technique raw"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Damien Foster", position: "DL", grad_year: 2027,
+      height: "6-3", height_inches: 75, weight: 270,
+      city: "Jacksonville", state: "FL", high_school: "Trinity Christian",
+      offers: ["Florida", "Auburn", "LSU", "Miami", "UCF"],
+      strengths: ["Explosive off the snap", "Natural pass rush moves", "Collapses the pocket"],
+      weaknesses: ["Pad level consistency", "Double team anchor"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Isaiah Green", position: "LB", grad_year: 2027,
+      height: "6-2", height_inches: 74, weight: 220,
+      city: "Chattanooga", state: "TN", high_school: "Baylor School",
+      offers: ["Middle Tennessee", "UT Martin", "Eastern Kentucky"],
+      strengths: ["Textbook P4 frame", "Sideline-to-sideline speed", "Film junkie — high IQ"],
+      weaknesses: ["Needs P4 camp exposure", "Block shedding vs bigger OL"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Jordan Thomas", position: "TE", grad_year: 2027,
+      height: "6-5", height_inches: 77, weight: 235,
+      city: "Richmond", state: "VA", high_school: "St. Christopher's",
+      offers: ["Virginia Tech", "Virginia", "Duke", "Wake Forest"],
+      strengths: ["Mismatch nightmare — WR skills at TE size", "Red zone weapon", "Willing blocker"],
+      weaknesses: ["Inline blocking strength", "Release at LOS vs press"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Amare Dixon", position: "WR", grad_year: 2028,
+      height: "5-11", height_inches: 71, weight: 175,
+      city: "Columbus", state: "OH", high_school: "Pickerington Central",
+      offers: ["Toledo", "Bowling Green", "Kent State", "Akron"],
+      strengths: ["Electric with ball in hands", "Return game weapon", "Shifty route runner"],
+      weaknesses: ["Undersized for outside WR", "Strength at catch point"],
+      x_handle: null, hudl_link: null, uc_link: null
+    },
+    {
+      name: "Tyson Moore", position: "ATH", grad_year: 2029,
+      height: "6-2", height_inches: 74, weight: 195,
+      city: "Murfreesboro", state: "TN", high_school: "Oakland HS",
+      offers: ["Tennessee", "Ole Miss", "Arkansas"],
+      strengths: ["Rare versatility — plays WR/DB/KR", "Top-tier athleticism for class", "Only a sophomore"],
+      weaknesses: ["Position not yet defined", "Frame still filling out — very young"],
+      x_handle: null, hudl_link: null, uc_link: null
+    }
+  ];
+}
+</script>
+</body>
+</html>
