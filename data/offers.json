@@ -4727,14 +4727,596 @@
           "Limited offer sheet \u2014 may still be early in recruitment"
         ]
       }
+    },
+    {
+      "id": "66f33f6f61db",
+      "name": "Rance Brown",
+      "position": "OT",
+      "state": "TN",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Auburn",
+        "Tennessee"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Rance+Brown",
+        "247": "https://247sports.com/Search/Player/?query=Rance+Brown",
+        "hudl": "https://www.hudl.com/search?query=Rance+Brown&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Rance+Brown%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Rance+Brown"
+      },
+      "source": "news",
+      "source_detail": "The Tennessean",
+      "source_url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNNXpqd1o0MGRvQnlKU3pLQkdadlE2UGJmQnlrZ2JZVi1YbU9YenVfVmJnRjZfSFVBbTdKUTl4MHlqU08zUUFFMXcwbm5EdFczUlBFZDdBY3dIQ2J6N21HUmNZNFRyd2s3UUxsSE8wd1lQeTZ3TEtjdWo2Um5CME16c2tNWTRzNG1peTNoZVVKcWp6d2UzTkpwSzBxdm5OS3lXNEphdXhSUXZkcnUwSFhqNzZzMTJrTWtROEFSenFnNGFRM2tXZ0dqQnNyTzZZTF9IVDRyUEM0aGliUktYUFNsODYteVZ3UQ?oc=5",
+      "found_date": "2026-06-01T19:01:00.133182+00:00"
+    },
+    {
+      "id": "5cfbd990cbc1",
+      "name": "Ben Musser",
+      "position": "QB",
+      "state": "VA",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Virginia",
+        "Virginia Tech"
+      ],
+      "category": "P4",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Ben+Musser",
+        "247": "https://247sports.com/Search/Player/?query=Ben+Musser",
+        "hudl": "https://www.hudl.com/search?query=Ben+Musser&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Ben+Musser%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Ben+Musser"
+      },
+      "source": "news",
+      "source_detail": "NC Football News",
+      "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBjWnJHOXRnanFOMFRZMnIyRzR4SVAzVmtaaVA3dks1UkNQZGRyQmtSODhRZUN5NVNBaHhicHFhdVdZNnB1dWxMYm9uc1NPQTk5Y0lCVUtUVzdvZ0JiVFdMWVo2TVF5NDlJWFk2WHZWbw?oc=5",
+      "found_date": "2026-06-01T19:01:00.133956+00:00"
+    },
+    {
+      "id": "ced82b0b21b3",
+      "name": "Weston Hicks After",
+      "position": "OL",
+      "state": "VA",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Virginia",
+        "Virginia Tech"
+      ],
+      "category": "P4",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Weston+Hicks+After",
+        "247": "https://247sports.com/Search/Player/?query=Weston+Hicks+After",
+        "hudl": "https://www.hudl.com/search?query=Weston+Hicks+After&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Weston+Hicks+After%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Weston+Hicks+After"
+      },
+      "source": "news",
+      "source_detail": "247Sports",
+      "source_url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPZFZMc18zUUxqei02eDU0dmZrNnVyS0NvamdSQXJQQWxkbl9OSllOT1o2bHVja3drbFBEdXZRSndfOFdqOGlHeU8xX2ZfeVgwWlZwa2s0MS1hRUpFUENjcmY1SGVQUWN2Y3NDMHhLVzVrTjlZV1pSQkZfV2FfS0hnY3FYZi0zMDRaYWo1a0MwRGNzSVBFRTFlQ0NrV05jRlNUaGtWb2VINXdRRmpNbGtr?oc=5",
+      "found_date": "2026-06-01T19:01:00.134639+00:00"
+    },
+    {
+      "id": "86bd40a1c386",
+      "name": "Kenneth Simon",
+      "position": "DB",
+      "state": "TN",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Tennessee"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Kenneth+Simon",
+        "247": "https://247sports.com/Search/Player/?query=Kenneth+Simon",
+        "hudl": "https://www.hudl.com/search?query=Kenneth+Simon&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Kenneth+Simon%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Kenneth+Simon"
+      },
+      "source": "news",
+      "source_detail": "Knoxville News Sentinel",
+      "source_url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNT1g5SmxTR2ZucEFMNElIcmVCN2R4QUlHSmhpTFRXWVc3RGQtSTBRRzFLR2UwcEZHM1dKZllXQjZLdVY3NHRqNW1LVVM4YjJXSXJfckFxZ3Y4REZzUmltS1dKOG90OWFuZUkwUmhGV3ppalhjVXowVEV0Z1ZrZm1sZWpxdFg3NUJleWM4Y05zMVN2SXV1bzBUV1JSV1JubHNqandZX2VsblBuOERQU0N6aXVvRVNuNmNtcTlMVjA1RUJHR1dITUFpVEFiM1AwNW1YQkJCZHlaQTRoMHJHV3Q2Q2tPdEE?oc=5",
+      "found_date": "2026-06-01T19:01:00.136005+00:00"
+    },
+    {
+      "id": "881d1eed9d84",
+      "name": "Alex Taylor",
+      "position": "WR",
+      "state": "TN",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Tennessee"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Alex+Taylor",
+        "247": "https://247sports.com/Search/Player/?query=Alex+Taylor",
+        "hudl": "https://www.hudl.com/search?query=Alex+Taylor&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Alex+Taylor%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Alex+Taylor"
+      },
+      "source": "news",
+      "source_detail": "highschoolot.com",
+      "source_url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNMGh3clJHNFpVTkEyT2FkZWlpakxnbDhDbUNwaGZMMHcxYWdYSUpFcmhxQzMyYWtWUXpORWNmbkh6d3lWZ3gyUmliYXpZS0FIX1pZZTFyalVvS2M1bzRsNV8tOTl6QXJlRnVPY1hyUjI4a0RpclN5NmJhOEZmZExSSl9KZXE2V2FrTktNckZWQjNLVzhwUlpPMVZiaFNVUkhCMVE?oc=5",
+      "found_date": "2026-06-01T19:01:01.630251+00:00"
+    },
+    {
+      "id": "0321b5bb19f2",
+      "name": "Kamari Blair",
+      "position": "ATH",
+      "state": "TN",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Tennessee"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Kamari+Blair",
+        "247": "https://247sports.com/Search/Player/?query=Kamari+Blair",
+        "hudl": "https://www.hudl.com/search?query=Kamari+Blair&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Kamari+Blair%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Kamari+Blair"
+      },
+      "source": "news",
+      "source_detail": "The Leaf Chronicle | Clarksville, TN",
+      "source_url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxNNDAtb2ozczZTbTd0SjJSb1ZwMHVKZ2ZhUFowU2FRbTJGNXo2eFNPaXlmSFZiaTI5SEJXM1BTamRLdktqY3d1OUtYXzlLUmpGNlE4c241djlyb1FqRkZJSzl5MDhVV0JvekJyUDZKSlVpNHA2VWpOX1NNUE5ObG1fWkxiZjJOS2c0NHctcDhhSkF6R1RsYmZZZzJaMWxBcHJNcTdtWG9FeU03YThPQVdKcFluR0h3WFVxcHJocTRzcTRRS2djYnlNaGNaMHFsU3NZUF8tYjdwN2hPSzB1Z0E?oc=5",
+      "found_date": "2026-06-01T19:01:03.000899+00:00"
+    },
+    {
+      "id": "b6fb94744514",
+      "name": "Ty Simpson",
+      "position": "ATH",
+      "state": "MS",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Mississippi State"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Ty+Simpson",
+        "247": "https://247sports.com/Search/Player/?query=Ty+Simpson",
+        "hudl": "https://www.hudl.com/search?query=Ty+Simpson&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Ty+Simpson%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Ty+Simpson"
+      },
+      "source": "news",
+      "source_detail": "The Jackson Sun",
+      "source_url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxPTXFuMXJobTZnUXB4NzdNcFVpeWVrMXpSdi1TY252azdVb0ZheDA3Z0doSXlyLURtS3FuRGtGOGxtLXVTeEJvdG5pRXVSRE5NdTU2YWtEU3JVb3N6My1Rd055OWdRa3ZnaS0zRkJNaE1XSFV3Mk5URUZCb1dnVWEzZWhrTXo3THI5N1p3a1BEczd3c1FocGJfWkFFT1JyN1BQV3pGZXFDdExJak1rV2ExN21XaExCNS1FWDZUQXRoLVBRWlFqeExoZTlGWUstWVQzMzFiUFg4TzB6VHc2VHJNUnoxS2R6TmFQckY4VmVJemQxaXFPOGYxOFdud2lqM0l4?oc=5",
+      "found_date": "2026-06-01T19:01:03.001236+00:00"
+    },
+    {
+      "id": "fbc909c4a420",
+      "name": "Tavorus Jones",
+      "position": "ATH",
+      "state": "AL",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Alabama"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Tavorus+Jones",
+        "247": "https://247sports.com/Search/Player/?query=Tavorus+Jones",
+        "hudl": "https://www.hudl.com/search?query=Tavorus+Jones&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Tavorus+Jones%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Tavorus+Jones"
+      },
+      "source": "news",
+      "source_detail": "El Paso Times",
+      "source_url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNY3VWMDV3a0VFdGcwMk43ZjNROEhGdXc3SFB6WTdpVEhySmVqVlUtdTYzaVJiVUtoSEpGVzFraTNFNW9BX2owR0FILUhFZExQam9KZE9zajhscll5U25mVkk0WmNMZ2FEdXdIcmtkUk9vcjRGOHJYX0U5aHVQeXBETndlR2ZUU0RuLURxbWhFSUtMck9wU3FSbnBtODg1VkxyRjNwR2pwNmQ3SHdYVnBFYjJqa0ZDX0RMV2pfRE4tY3VqRWdXNVRZenVEejFYRXNfTFdOeFh4Nm0?oc=5",
+      "found_date": "2026-06-01T19:01:03.001573+00:00"
+    },
+    {
+      "id": "26367c9faafd",
+      "name": "Ryan Estrada",
+      "position": "S",
+      "state": "AL",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Alabama"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Ryan+Estrada",
+        "247": "https://247sports.com/Search/Player/?query=Ryan+Estrada",
+        "hudl": "https://www.hudl.com/search?query=Ryan+Estrada&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Ryan+Estrada%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Ryan+Estrada"
+      },
+      "source": "news",
+      "source_detail": "El Paso Times",
+      "source_url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNQWpla21oLU1wUEl4Q2JnamkwVjFCNXJ0Z3E0M3IxM09uRkp5ZTdTNVoxWDBpaElEQXpibVVTM0YzQllQeXd5U0xXam9CNnlZWjlTRGFKZ013MTNOVnBxeFRmaFYzcExVRVdST2dzREpwb1d4SS1EeGFid3JQX0pzOTVKTUVvVUdQY3p3OXowRjRSWnN1OVRnNkdhMkd0dVowVmJMR3dkNFJaUXN1NzZEZnBZSDRKSDhRbk9WRzNNWVJEU1RFTTBvajN4VnctMnplaGx3cm9CdHVrZFNF?oc=5",
+      "found_date": "2026-06-01T19:01:03.001949+00:00"
+    },
+    {
+      "id": "d14de229593f",
+      "name": "Jeremiah Smith",
+      "position": "WR",
+      "state": "KY",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Ohio",
+        "Ohio State",
+        "Kentucky"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Jeremiah+Smith",
+        "247": "https://247sports.com/Search/Player/?query=Jeremiah+Smith",
+        "hudl": "https://www.hudl.com/search?query=Jeremiah+Smith&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Jeremiah+Smith%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Jeremiah+Smith"
+      },
+      "source": "news",
+      "source_detail": "Yahoo Sports",
+      "source_url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZm1FNTlXdmlyMVVNLXVQRW5mREVxU1FyMm9xS1ZtY20tOE11X0VSYmhLNW41TTVpUjQ1RGwwTXVUMEI4YXdxem9USVEycHVybjYxdDgxYkZWSGpFdmZMS3p5ZmNfVWMybnhnOXlOZEN5Y1VXTWdtR3BWMVBlRS1JYkFUWGdXZm8?oc=5",
+      "found_date": "2026-06-01T19:01:04.413590+00:00"
+    },
+    {
+      "id": "d4cb4e7c49eb",
+      "name": "Hudson Ingalsbe Receives",
+      "position": "OT",
+      "state": "AL",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Kansas State",
+        "Alabama",
+        "Kansas"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Strong P4 interest (3 offers)"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Hudson+Ingalsbe+Receives",
+        "247": "https://247sports.com/Search/Player/?query=Hudson+Ingalsbe+Receives",
+        "hudl": "https://www.hudl.com/search?query=Hudson+Ingalsbe+Receives&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Hudson+Ingalsbe+Receives%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Hudson+Ingalsbe+Receives"
+      },
+      "source": "news",
+      "source_detail": "Sports Illustrated",
+      "source_url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOSHFKMGdMLUZWQTNlR1RmMmlKZ2dtZXR6SEtjd3lISXNfMXdpRnZHbzdKUUV4OWRhbUE1ajBxVk5xUXRud1N5b1RBV0NoUDNlb20wWGljNDZra1pjdklUNXV6LTU1bXFPWDd5MG9lNVMtanhGWkVDZWF4TFhqOXV5SUxtb0t6akJiUmROUGpYcmttNTRZeTJjSjRkUTh5NlN5SHlSdjhJc0ZJYUE?oc=5",
+      "found_date": "2026-06-01T19:01:07.159123+00:00"
+    },
+    {
+      "id": "bef3aa15cca7",
+      "name": "Luke Farrell",
+      "position": "S",
+      "state": "AL",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Alabama"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Luke+Farrell",
+        "247": "https://247sports.com/Search/Player/?query=Luke+Farrell",
+        "hudl": "https://www.hudl.com/search?query=Luke+Farrell&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Luke+Farrell%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Luke+Farrell"
+      },
+      "source": "news",
+      "source_detail": "News-Herald",
+      "source_url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQOFhrbEVCc1dDLVN4YkM1NDIzTW40UV8zMmRWRHFJWWZYdTNXU1p1T1NBTHp5eFp5OGk4VlhDMjNFbzdmNUsxczN5X3RoWFhpYnBMM2dMcHFBMjVYQ3hpU0xrLVBsV1lkTEdrcmNCeGdQejZrWlJPX0tHYko1UG1rWjZ6elZxVUdFMG44S1dxNzBDejlMVDdyNzNKNTRZelVzSEV5UVk4bVpveVhO?oc=5",
+      "found_date": "2026-06-01T19:01:07.160071+00:00"
+    },
+    {
+      "id": "0b8291f5f4c1",
+      "name": "Jacquari Parks",
+      "position": "CB",
+      "state": "FL",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Florida",
+        "Pitt"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Jacquari+Parks",
+        "247": "https://247sports.com/Search/Player/?query=Jacquari+Parks",
+        "hudl": "https://www.hudl.com/search?query=Jacquari+Parks&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Jacquari+Parks%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Jacquari+Parks"
+      },
+      "source": "news",
+      "source_detail": "247Sports",
+      "source_url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQcElIQTd2a3RldzNiaUdjT1FCYzlxT0xISXctSTZKLVcxY1hTeUo5WUU0LXhzY3Y2TC1pWV8zeWtJUG95eG5lRVlTV2p0VWNEYVFJYW1YVzkzcEpJWFRFdlF0TUI0QUdpS2YwTHlxZHpwYXhCUkhvSGwyRU5IZmlLY1NvV1hzLTNNZXN5Z3p3S3NKYkdIVzR2X1E3OTIzVDBRVE1FQWIxWVQ4Y1FKMllUTU9rNlFBTi1CMnFiRld2TFNmS040Rm55VC1xMXFNVXA4aUNSTnlNOW5JSVRrOUhZV0dHWGlIOVozeDBDcQ?oc=5",
+      "found_date": "2026-06-01T19:01:08.571518+00:00"
+    },
+    {
+      "id": "4b25013ce765",
+      "name": "Marcus Stokes",
+      "position": "QB",
+      "state": "FL",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Florida"
+      ],
+      "category": "SEC",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Marcus+Stokes",
+        "247": "https://247sports.com/Search/Player/?query=Marcus+Stokes",
+        "hudl": "https://www.hudl.com/search?query=Marcus+Stokes&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Marcus+Stokes%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Marcus+Stokes"
+      },
+      "source": "news",
+      "source_detail": "Yahoo Sports",
+      "source_url": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBhOS1JdWwxTGhYWUR3N0hBZmNBSlJjRnRCMkx6MGNSaTI4WWowSjQ1MGZmSVNlZ2I2R2lLZFFGNm1xdnZCRmdzV0hEZllqTGl6MEZKM3RKUHJMY3hQb2ZTWDRLYUw0bnJmT21jbUpqOW1DUXp2M3FwTFFn?oc=5",
+      "found_date": "2026-06-01T19:01:08.572819+00:00"
+    },
+    {
+      "id": "4877afc84fb8",
+      "name": "Isaiah Crowell",
+      "position": "CB",
+      "state": "VA",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "Virginia",
+        "Virginia Tech"
+      ],
+      "category": "P4",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Isaiah+Crowell",
+        "247": "https://247sports.com/Search/Player/?query=Isaiah+Crowell",
+        "hudl": "https://www.hudl.com/search?query=Isaiah+Crowell&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Isaiah+Crowell%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Isaiah+Crowell"
+      },
+      "source": "news",
+      "source_detail": "highschoolot.com",
+      "source_url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPbHdsYzNyUWs1V3hBc3J6dE1oVTV3bmNWZFVWaGxKRGYtenFJdmNlZGFtRGpDLVNLZXZlMExjQk5Lam9hOHY3MjR4SU1DYzRNXzBxbmlhMU9OMjBlNFFFTm9XMDludHcxclRvRS1fRXgyZ3hyVWFtX1RKQmhNWm9QVDNNWXIzcXlYc3JjOUNOVUJQVC1LLWZEd1ZCd2pNWWRGaFE0MzMteklMNFlPcFE?oc=5",
+      "found_date": "2026-06-01T19:01:11.480964+00:00"
+    },
+    {
+      "id": "837f356b8065",
+      "name": "Target Amare Campbell",
+      "position": "LB",
+      "state": "WV",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [],
+      "category": "G6",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Target+Amare+Campbell",
+        "247": "https://247sports.com/Search/Player/?query=Target+Amare+Campbell",
+        "hudl": "https://www.hudl.com/search?query=Target+Amare+Campbell&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Target+Amare+Campbell%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Target+Amare+Campbell"
+      },
+      "source": "news",
+      "source_detail": "WV Sports Now",
+      "source_url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOX196U29NUlNaaGJiYnZvNTkyV243WEpmMmU3eXlXRXY4NUFRQlM2aVc3eG1LaWFjQUxzREYtcnZHa1A1d0pLM2FpSzlYd213VlZsUkZucEJhNWd1N1l3ZWxTTUZ4dV9ad29fVmhKQ293UkdEb2xIdnZXLUdKTVBvdWR0NEdUQUtxQUNKdXJTNUlLc1U?oc=5",
+      "found_date": "2026-06-01T19:01:11.481516+00:00"
     }
   ],
-  "last_updated": "2026-06-01T18:36:09.084340+00:00",
+  "last_updated": "2026-06-01T19:01:12.485814+00:00",
   "sources": {
     "x": 0,
-    "news": 89,
     "on3": 0,
-    "247sports": 0
+    "247sports": 0,
+    "news": 16
   },
-  "total": 152
+  "total": 168
 }
