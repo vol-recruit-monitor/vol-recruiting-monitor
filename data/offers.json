@@ -5065,9 +5065,9 @@
       "height": 0,
       "weight": 0,
       "offers": [
+        "Kentucky",
         "Ohio",
-        "Ohio State",
-        "Kentucky"
+        "Ohio State"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5311,7 +5311,7 @@
       "found_date": "2026-06-01T19:01:11.481516+00:00"
     }
   ],
-  "last_updated": "2026-06-01T19:01:12.485814+00:00",
+  "last_updated": "2026-06-01T19:02:57.096667+00:00",
   "sources": {
     "x": 0,
     "on3": 0,

@@ -229,159 +229,210 @@
   }
   .live-dot {
     width: 6px; height: 6px; border-radius: 50%; background: var(--gem-accent);
-    animation: pulse 2s infinite; flex-shrink: 0;
+    animation: pulse 2s infinite;
   }
-  @keyframes pulse {
-    0%,100%{ opacity:1; transform:scale(1) }
-    50%{ opacity:.35; transform:scale(.75) }
-  }
+  @keyframes pulse { 0%,100%{ opacity:1 } 50%{ opacity:.3 } }
 
-  .last-upd {
-    font-size: .72rem; color: var(--text-secondary);
-    display: flex; align-items: center; gap: .35rem;
+  .timestamp {
+    font-size: .68rem; color: var(--text-tertiary);
+    font-family: 'Inter', monospace;
   }
 
   /* ─── SOURCE BAR ────────────────────────────────────────────────────────── */
   .source-bar {
-    background: var(--smokey-base);
-    border-bottom: 1px solid var(--border);
-    padding: .48rem 2rem;
-    display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap;
-    flex-shrink: 0;
-  }
-  .src-label {
-    font-family: 'Anton', sans-serif;
-    font-size: .65rem; color: var(--text-tertiary);
-    letter-spacing: .07em; text-transform: uppercase;
-    display: flex; align-items: center; gap: .3rem;
-  }
-  .src-pill {
-    display: flex; align-items: center; gap: .35rem;
-    font-size: .7rem; color: var(--text-secondary);
-  }
-  .src-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .src-dot.on  { background: var(--gem-accent); }
-  .src-dot.off { background: var(--text-tertiary); }
-
-  /* ─── FILTERS ───────────────────────────────────────────────────────────── */
-  .filters {
     background: var(--smokey-deeper);
     border-bottom: 1px solid var(--border);
-    padding: .85rem 2rem;
-    display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
-    flex-shrink: 0;
+    padding: .55rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    font-size: .72rem; color: var(--text-secondary);
   }
+  .source-bar-label {
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: .05em; color: var(--vol-orange);
+    display: flex; align-items: center; gap: .35rem;
+  }
+  .src-item {
+    display: flex; align-items: center; gap: .35rem;
+  }
+  .src-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .src-dot.on  { background: var(--gem-accent); }
+  .src-dot.off { background: #ff4444; }
+  .src-count { color: var(--gem-accent); font-weight: 700; }
+  .src-zero  { color: var(--text-tertiary); }
+
+  /* ─── HERO BANNER (optional bg image) ───────────────────────────────────── */
+  .hero-banner {
+    position: relative;
+    background: linear-gradient(135deg, var(--smokey-base) 0%, var(--smokey-deep) 100%);
+    min-height: 0;
+    overflow: hidden;
+  }
+  .hero-banner.has-image {
+    min-height: 200px;
+  }
+  .hero-banner .hero-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: .22;
+    filter: grayscale(60%) contrast(1.15);
+  }
+  .hero-overlay {
+    position: relative; z-index: 1;
+    padding: 2rem 2rem 1.25rem;
+    background: linear-gradient(to top, var(--smokey-floor) 0%, transparent 100%);
+  }
+  .hero-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.5rem; color: var(--white);
+    text-transform: uppercase; letter-spacing: .06em;
+    line-height: 1.05;
+    text-shadow: 0 4px 30px rgba(0,0,0,.7);
+  }
+  .hero-title span { color: var(--vol-orange); }
+  .hero-sub {
+    font-size: .82rem; color: var(--text-secondary);
+    margin-top: .4rem; letter-spacing: .02em;
+  }
+
+  /* ─── FILTER BAR ────────────────────────────────────────────────────────── */
+  .filter-bar {
+    background: var(--smokey-base);
+    padding: .7rem 2rem;
+    display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+
   .filter-group {
     display: flex; align-items: center; gap: .4rem;
   }
   .filter-label {
-    font-size: .68rem; color: var(--text-tertiary); font-weight: 700;
-    text-transform: uppercase; letter-spacing: .04em;
-    display: flex; align-items: center; gap: .25rem;
+    font-size: .68rem; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: .06em;
+    font-weight: 700;
+    display: flex; align-items: center; gap: .3rem;
   }
-  .filter-btn {
-    padding: .32rem .7rem;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text-secondary);
+  .filter-label i { font-size: .65rem; }
+
+  .pill {
+    padding: .28rem .65rem; border-radius: 5px;
     font-size: .72rem; font-weight: 600;
-    cursor: pointer; transition: all .2s;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer; transition: all .15s;
     font-family: 'Inter', sans-serif;
   }
-  .filter-btn:hover { border-color: var(--vol-orange); color: var(--white); }
-  .filter-btn.active {
-    background: var(--vol-orange); border-color: var(--vol-orange);
-    color: #fff; font-weight: 700;
+  .pill:hover { border-color: var(--vol-orange-bdr); color: var(--text-primary); }
+  .pill.active {
+    background: var(--vol-orange);
+    border-color: var(--vol-orange);
+    color: #fff;
   }
 
   .filter-select {
-    padding: .32rem .6rem;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text-secondary);
+    padding: .28rem .55rem; border-radius: 5px;
     font-size: .72rem; font-weight: 600;
-    cursor: pointer;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer; outline: none;
     font-family: 'Inter', sans-serif;
   }
-  .filter-select:focus { border-color: var(--vol-orange); outline: none; }
-  .filter-select option { background: var(--smokey-deep); color: var(--text-primary); }
+  .filter-select:focus { border-color: var(--vol-orange); }
+
+  .filter-search {
+    margin-left: auto;
+    padding: .34rem .7rem;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text-primary);
+    font-size: .75rem; outline: none;
+    width: 180px;
+    font-family: 'Inter', sans-serif;
+  }
+  .filter-search::placeholder { color: var(--text-tertiary); }
+  .filter-search:focus { border-color: var(--vol-orange); }
 
   .export-btn {
-    margin-left: auto;
-    padding: .38rem .9rem;
-    background: transparent;
-    border: 1.5px solid var(--vol-orange);
-    border-radius: 6px;
-    color: var(--vol-orange);
+    padding: .34rem .8rem; border-radius: 5px;
     font-size: .72rem; font-weight: 700;
-    cursor: pointer; transition: all .2s;
-    display: flex; align-items: center; gap: .35rem;
+    background: var(--vol-orange-dim);
+    border: 1px solid var(--vol-orange-bdr);
+    color: var(--vol-orange);
+    cursor: pointer; transition: all .15s;
+    text-transform: uppercase; letter-spacing: .04em;
     font-family: 'Inter', sans-serif;
-    text-transform: uppercase; letter-spacing: .03em;
+    display: flex; align-items: center; gap: .3rem;
   }
   .export-btn:hover { background: var(--vol-orange); color: #fff; }
 
   /* ─── TABS ──────────────────────────────────────────────────────────────── */
-  .tabs {
+  .tab-bar {
     display: flex; gap: 0;
+    padding: 0 2rem;
     background: var(--smokey-deeper);
     border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    flex-shrink: 0;
-    overflow-x: auto;
   }
+
   .tab {
-    display: flex; align-items: center; gap: .45rem;
-    padding: .75rem 1.25rem;
+    padding: .7rem 1.3rem;
     font-size: .78rem; font-weight: 700;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     cursor: pointer;
     border-bottom: 3px solid transparent;
-    transition: all .2s;
-    white-space: nowrap;
-    font-family: 'Inter', sans-serif;
+    transition: all .15s;
     text-transform: uppercase;
-    letter-spacing: .03em;
+    letter-spacing: .04em;
+    display: flex; align-items: center; gap: .45rem;
+    font-family: 'Inter', sans-serif;
   }
-  .tab:hover { color: var(--white); }
-  .tab-icon { font-size: .82rem; }
-  .tab-logo { height: 16px; width: auto; opacity: .7; transition: opacity .2s; vertical-align: middle; }
-  .tab:hover .tab-logo { opacity: 1; }
-  .tab-count {
-    font-size: .62rem; padding: .12rem .42rem;
-    border-radius: 8px; font-weight: 800;
-    background: rgba(255,255,255,.06);
-    color: var(--text-tertiary);
-  }
+  .tab:hover { color: var(--text-primary); }
 
   .tab.active-sec {
-    color: var(--vol-orange); border-bottom-color: var(--vol-orange);
+    color: var(--sec-accent);
+    border-bottom-color: var(--sec-accent);
   }
-  .tab.active-sec .tab-count { background: var(--vol-orange-dim); color: var(--vol-orange); }
-  .tab.active-sec .tab-logo { opacity: 1; }
-
   .tab.active-p4 {
-    color: var(--p4-accent); border-bottom-color: var(--p4-accent);
+    color: var(--p4-accent);
+    border-bottom-color: var(--p4-accent);
   }
-  .tab.active-p4 .tab-count { background: var(--p4-dim); color: var(--p4-accent); }
-  .tab.active-p4 .tab-logo { opacity: 1; }
-
   .tab.active-g6 {
-    color: var(--g6-accent); border-bottom-color: var(--g6-accent);
+    color: var(--g6-accent);
+    border-bottom-color: var(--g6-accent);
   }
-  .tab.active-g6 .tab-count { background: var(--g6-dim); color: var(--g6-accent); }
-
   .tab.active-gem {
-    color: var(--gem-accent); border-bottom-color: var(--gem-accent);
+    color: var(--gem-accent);
+    border-bottom-color: var(--gem-accent);
   }
+
+  .tab-icon {
+    width: 18px; height: 18px;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .tab-icon img {
+    width: 100%; height: 100%; object-fit: contain;
+  }
+  .tab-count {
+    font-size: .65rem;
+    padding: .1rem .4rem;
+    border-radius: 3px;
+    font-weight: 800;
+  }
+  .tab.active-sec .tab-count { background: var(--vol-orange-dim); color: var(--sec-accent); }
+  .tab.active-p4 .tab-count  { background: var(--p4-dim); color: var(--p4-accent); }
+  .tab.active-g6 .tab-count  { background: var(--g6-dim); color: var(--g6-accent); }
   .tab.active-gem .tab-count { background: var(--gem-dim); color: var(--gem-accent); }
 
   /* ─── GRID ──────────────────────────────────────────────────────────────── */
-  .grid-wrap {
-    flex: 1; overflow-y: auto; padding: 1.5rem 2rem 2rem;
-  }
+  .main { flex: 1; padding: 1.5rem 2rem 3rem; }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -394,81 +445,90 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
-    transition: border-color .2s, transform .15s;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+    cursor: pointer;
+    position: relative;
   }
-  .card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,.45);
+    border-color: var(--border-light);
+  }
 
   .card-accent {
-    height: 4px; width: 100%;
+    height: 4px;
   }
-  .card-accent.sec  { background: var(--vol-orange); }
-  .card-accent.p4   { background: var(--p4-accent); }
-  .card-accent.g6   { background: var(--g6-accent); }
-  .card-accent.gem  { background: var(--gem-accent); }
+  .card-accent.sec { background: var(--sec-accent); }
+  .card-accent.p4  { background: var(--p4-accent); }
+  .card-accent.g6  { background: var(--g6-accent); }
+  .card-accent.gem { background: var(--gem-accent); }
 
   .card-body { padding: 1rem 1.1rem; }
 
-  .card-header {
+  .card-top {
     display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: .6rem;
+    margin-bottom: .65rem;
   }
+
   .card-name {
     font-family: 'Anton', sans-serif;
-    font-size: 1.1rem; font-weight: 400; color: var(--white);
-    letter-spacing: .03em; text-transform: uppercase;
-    line-height: 1.2;
+    font-size: 1.15rem; color: var(--white);
+    text-transform: uppercase; letter-spacing: .03em;
+    line-height: 1.15;
   }
+
   .card-pos {
-    font-size: .62rem; font-weight: 800;
-    padding: .2rem .55rem; border-radius: 4px;
+    font-size: .65rem; font-weight: 800;
+    padding: .2rem .5rem; border-radius: 4px;
     text-transform: uppercase; letter-spacing: .05em;
     flex-shrink: 0;
   }
-  .card-pos.sec  { background: var(--vol-orange-dim); color: var(--vol-orange); border: 1px solid var(--vol-orange-bdr); }
-  .card-pos.p4   { background: var(--p4-dim); color: var(--p4-accent); border: 1px solid var(--p4-bdr); }
-  .card-pos.g6   { background: var(--g6-dim); color: var(--g6-accent); border: 1px solid var(--g6-bdr); }
-  .card-pos.gem  { background: var(--gem-dim); color: var(--gem-accent); border: 1px solid var(--gem-bdr); }
+  .card-pos.sec { background: var(--vol-orange-dim); color: var(--sec-accent); border: 1px solid var(--vol-orange-bdr); }
+  .card-pos.p4  { background: var(--p4-dim); color: var(--p4-accent); border: 1px solid var(--p4-bdr); }
+  .card-pos.g6  { background: var(--g6-dim); color: var(--g6-accent); border: 1px solid var(--g6-bdr); }
+  .card-pos.gem { background: var(--gem-dim); color: var(--gem-accent); border: 1px solid var(--gem-bdr); }
 
   .card-meta {
-    display: flex; align-items: center; gap: .9rem;
+    display: flex; gap: .8rem;
     font-size: .72rem; color: var(--text-secondary);
-    margin-bottom: .65rem;
-  }
-  .card-meta i { color: var(--text-tertiary); font-size: .65rem; width: 14px; text-align: center; }
-
-  .card-measurables {
-    display: flex; gap: .5rem; margin-bottom: .65rem; flex-wrap: wrap;
-  }
-  .measurable {
-    font-size: .65rem; font-weight: 700;
-    padding: .18rem .5rem; border-radius: 4px;
-    background: rgba(255,255,255,.04);
-    color: var(--text-secondary);
-    border: 1px solid var(--border);
-  }
-
-  .card-stars {
-    display: flex; align-items: center; gap: .15rem;
     margin-bottom: .7rem;
   }
-  .card-stars i { font-size: .7rem; }
-  .star-filled { color: var(--vol-orange); }
-  .star-empty  { color: var(--border); }
+  .card-meta i { color: var(--text-tertiary); margin-right: .2rem; font-size: .62rem; }
 
-  .gem-score {
-    display: inline-flex; align-items: center; gap: .3rem;
-    font-size: .65rem; font-weight: 800;
-    padding: .15rem .5rem; border-radius: 4px;
-    margin-left: .5rem;
+  /* Stars */
+  .card-stars { margin-bottom: .55rem; }
+  .card-stars i { font-size: .65rem; margin-right: 1px; }
+  .card-stars .filled { color: var(--vol-orange); }
+  .card-stars .empty  { color: var(--border); }
+
+  /* Measurables */
+  .card-measurables {
+    display: flex; gap: .6rem;
+    margin-bottom: .65rem;
+    font-size: .7rem;
   }
-  .gem-score.high   { background: var(--gem-dim); color: var(--gem-accent); border: 1px solid var(--gem-bdr); }
-  .gem-score.medium { background: var(--vol-orange-dim); color: var(--vol-orange); border: 1px solid var(--vol-orange-bdr); }
-  .gem-score.low    { background: rgba(255,255,255,.04); color: var(--text-secondary); border: 1px solid var(--border); }
+  .measurable {
+    padding: .2rem .5rem; border-radius: 4px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .measurable i { color: var(--text-tertiary); margin-right: .25rem; font-size: .6rem; }
+
+  /* Gem Score */
+  .gem-badge {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .2rem .55rem; border-radius: 4px;
+    font-size: .68rem; font-weight: 800;
+    background: var(--gem-dim); border: 1px solid var(--gem-bdr);
+    color: var(--gem-accent);
+    margin-bottom: .65rem;
+  }
 
   /* Offers */
-  .card-section-label {
-    font-size: .6rem; font-weight: 800; color: var(--text-tertiary);
-    text-transform: uppercase; letter-spacing: .08em;
+  .card-offers-label {
+    font-size: .62rem; font-weight: 700; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: .07em;
     margin-bottom: .35rem;
   }
   .card-offers {
@@ -476,140 +536,239 @@
     margin-bottom: .7rem;
   }
   .offer-tag {
-    font-size: .62rem; font-weight: 700;
-    padding: .18rem .48rem; border-radius: 4px;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    background: transparent;
+    font-size: .64rem; font-weight: 600;
+    padding: .18rem .5rem; border-radius: 4px;
   }
-  .offer-tag.sec {
-    border-color: var(--vol-orange-bdr);
-    color: var(--vol-orange);
-    background: var(--vol-orange-dim);
-  }
+  .offer-tag.sec { background: var(--vol-orange-dim); color: var(--sec-accent); }
+  .offer-tag.p4  { background: var(--p4-dim); color: var(--p4-accent); }
+  .offer-tag.g6  { background: var(--g6-dim); color: var(--g6-accent); }
 
-  /* AI Evaluation */
+  /* AI Eval */
   .card-eval {
     background: rgba(255,255,255,.02);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: .6rem .75rem;
+    padding: .6rem .7rem;
     margin-bottom: .7rem;
   }
   .eval-header {
-    display: flex; align-items: center; gap: .35rem;
-    font-size: .62rem; font-weight: 800; color: var(--text-tertiary);
+    font-size: .62rem; font-weight: 700; color: var(--text-tertiary);
     text-transform: uppercase; letter-spacing: .06em;
-    margin-bottom: .35rem;
+    margin-bottom: .4rem;
+    display: flex; align-items: center; gap: .3rem;
   }
-  .eval-header i { color: var(--vol-orange); font-size: .68rem; }
-  .eval-text {
-    font-size: .7rem; color: var(--text-secondary);
-    line-height: 1.55;
+  .eval-header i { color: var(--vol-orange); }
+  .eval-row {
+    display: flex; gap: .8rem;
   }
-  .eval-str { color: var(--gem-accent); font-weight: 700; }
-  .eval-wk  { color: var(--vol-orange); font-weight: 700; }
+  .eval-col { flex: 1; }
+  .eval-label {
+    font-size: .58rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; margin-bottom: .25rem;
+  }
+  .eval-label.str { color: var(--gem-accent); }
+  .eval-label.wk  { color: #ff6b6b; }
+  .eval-item {
+    font-size: .68rem; color: var(--text-secondary);
+    padding: .08rem 0;
+    display: flex; align-items: center; gap: .25rem;
+  }
+  .eval-item i { font-size: .5rem; }
+  .eval-item.str i { color: var(--gem-accent); }
+  .eval-item.wk i  { color: #ff6b6b; }
 
   /* Source */
   .card-source {
-    font-size: .65rem; color: var(--text-tertiary);
+    font-size: .62rem; color: var(--text-tertiary);
     display: flex; align-items: center; gap: .3rem;
     margin-bottom: .65rem;
   }
   .card-source a {
-    color: var(--text-secondary); text-decoration: none;
-    transition: color .2s;
+    color: var(--vol-orange); text-decoration: none;
+    font-weight: 600;
   }
-  .card-source a:hover { color: var(--vol-orange); }
+  .card-source a:hover { text-decoration: underline; }
 
-  /* Links */
+  /* Links bar */
   .card-links {
-    display: flex; flex-wrap: wrap; gap: .4rem;
+    display: flex; flex-wrap: wrap; gap: .35rem;
+    padding-top: .65rem;
+    border-top: 1px solid var(--border);
   }
   .card-link {
-    display: inline-flex; align-items: center; gap: .3rem;
-    padding: .3rem .6rem;
-    font-size: .65rem; font-weight: 700;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all .2s;
+    font-size: .66rem; font-weight: 600;
+    padding: .25rem .55rem; border-radius: 4px;
+    background: rgba(255,255,255,.03);
     border: 1px solid var(--border);
     color: var(--text-secondary);
-    background: transparent;
+    text-decoration: none;
+    display: flex; align-items: center; gap: .25rem;
+    transition: all .15s;
   }
   .card-link:hover {
-    border-color: var(--vol-orange);
+    border-color: var(--vol-orange-bdr);
     color: var(--vol-orange);
     background: var(--vol-orange-dim);
   }
-  .card-link i { font-size: .62rem; }
+  .card-link i { font-size: .6rem; }
 
   /* ─── EMPTY STATE ───────────────────────────────────────────────────────── */
-  .empty {
-    text-align: center; padding: 4rem 2rem;
+  .empty-state {
     grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
   }
   .empty-icon {
     font-size: 2.5rem; color: var(--text-tertiary);
     margin-bottom: 1rem;
   }
-  .empty h3 {
+  .empty-title {
     font-family: 'Anton', sans-serif;
-    font-size: 1.2rem; color: var(--text-secondary);
-    letter-spacing: .04em; text-transform: uppercase;
-    margin-bottom: .4rem;
+    font-size: 1.3rem; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: .04em;
   }
-  .empty p { font-size: .82rem; color: var(--text-tertiary); max-width: 380px; margin: 0 auto; line-height: 1.6; }
+  .empty-sub {
+    font-size: .8rem; color: var(--text-tertiary);
+    margin-top: .5rem; max-width: 400px;
+    margin-left: auto; margin-right: auto;
+  }
+
+  /* ─── MODAL (Player Detail) ─────────────────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.7);
+    z-index: 10000;
+    display: none; justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--smokey-deeper);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    max-width: 540px; width: 92%;
+    max-height: 85vh; overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6);
+    animation: fadeUp .3s ease;
+  }
+  .modal-accent { height: 5px; border-radius: 14px 14px 0 0; }
+  .modal-body { padding: 1.5rem; }
+
+  .modal-close {
+    float: right; background: none; border: none;
+    color: var(--text-tertiary); font-size: 1.1rem;
+    cursor: pointer; padding: .3rem;
+    transition: color .15s;
+  }
+  .modal-close:hover { color: var(--vol-orange); }
+
+  .modal-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.8rem; color: var(--white);
+    text-transform: uppercase; letter-spacing: .04em;
+    margin-bottom: .3rem;
+  }
+  .modal-meta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    font-size: .8rem; color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+  .modal-meta i { color: var(--text-tertiary); margin-right: .25rem; }
+
+  .modal-section-title {
+    font-family: 'Anton', sans-serif;
+    font-size: .9rem; color: var(--vol-orange);
+    text-transform: uppercase; letter-spacing: .06em;
+    margin: 1.2rem 0 .6rem;
+    display: flex; align-items: center; gap: .4rem;
+  }
+
+  .modal-offers { display: flex; flex-wrap: wrap; gap: .35rem; }
+
+  .modal-eval {
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .8rem;
+  }
+
+  .modal-links {
+    display: flex; flex-wrap: wrap; gap: .45rem;
+    margin-top: 1rem;
+  }
+  .modal-link {
+    padding: .45rem .85rem; border-radius: 6px;
+    font-size: .78rem; font-weight: 700;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: flex; align-items: center; gap: .35rem;
+    transition: all .15s;
+  }
+  .modal-link:hover {
+    border-color: var(--vol-orange-bdr);
+    color: var(--vol-orange);
+    background: var(--vol-orange-dim);
+  }
+
+  /* ─── FOOTER ────────────────────────────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    padding: 1rem 2rem;
+    font-size: .65rem; color: var(--text-tertiary);
+    border-top: 1px solid var(--border);
+    background: var(--smokey-base);
+  }
 
   /* ─── RESPONSIVE ────────────────────────────────────────────────────────── */
   @media (max-width: 768px) {
-    .header { padding: .8rem 1rem; }
-    .filters { padding: .65rem 1rem; gap: .6rem; }
-    .tabs { padding: 0 1rem; }
-    .grid-wrap { padding: 1rem; }
+    .header { padding: .75rem 1rem; }
+    .filter-bar { padding: .6rem 1rem; }
+    .main { padding: 1rem; }
     .grid { grid-template-columns: 1fr; }
-    .header-title h1 { font-size: 1.1rem; }
-    .export-btn { margin-left: 0; }
+    .hero-title { font-size: 1.6rem; }
+    .hero-overlay { padding: 1.5rem 1rem 1rem; }
+    .tab-bar { padding: 0 1rem; overflow-x: auto; }
+    .filter-search { width: 130px; }
+    .modal { width: 96%; }
   }
-
-  /* ─── SCROLLBAR ─────────────────────────────────────────────────────────── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--smokey-base); }
-  ::-webkit-scrollbar-thumb { background: var(--smokey-dark); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--smokey); }
 </style>
 </head>
 <body>
 
-<!-- ═══ PASSWORD GATE ═══════════════════════════════════════════════════════ -->
+<!-- ══════════ PASSWORD GATE ══════════ -->
 <div class="gate" id="gate">
   <div class="gate-box">
     <div class="gate-checker"></div>
-    <div class="gate-logo" id="gate-logo">T</div>
+    <div class="gate-logo">
+      <img src="logo.png" alt="T" onerror="this.parentElement.textContent='T'">
+    </div>
     <div class="gate-title">Vol Recruiting Monitor</div>
-    <div class="gate-sub">Authorized access only. Enter your credential to continue.</div>
+    <div class="gate-sub">Authorized access only — enter your credentials</div>
     <div class="gate-form">
       <div class="gate-wrap">
-        <input class="gate-input" type="password" id="gate-pw" placeholder="Enter password" autocomplete="off" />
-        <button class="gate-toggle" id="gate-eye" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+        <input class="gate-input" id="gate-pw" type="password" placeholder="Enter password" autocomplete="off">
+        <button class="gate-toggle" id="gate-eye" type="button"><i class="fa-solid fa-eye"></i></button>
       </div>
-      <button class="gate-btn" id="gate-btn"><i class="fa-solid fa-lock"></i> Authenticate</button>
+      <button class="gate-btn" id="gate-go"><i class="fa-solid fa-lock"></i> Enter Dashboard</button>
       <div class="gate-err" id="gate-err"></div>
     </div>
   </div>
 </div>
 
-<!-- ═══ DASHBOARD ═══════════════════════════════════════════════════════════ -->
+<!-- ══════════ MAIN DASHBOARD ══════════ -->
 <div class="dash" id="dash">
 
-  <!-- Checkerboard Strip -->
+  <!-- Checkerboard strip -->
   <div class="checker-strip"></div>
 
   <!-- Header -->
   <div class="header">
     <div class="header-left">
       <div id="logo-container">
-        <img src="logo.png" alt="Tennessee Power T" onerror="this.style.display='none';this.parentNode.innerText='T';" />
+        <img src="logo.png" alt="T" onerror="this.parentElement.textContent='T'">
       </div>
       <div class="header-title">
         <h1>Vol Recruiting Monitor</h1>
@@ -617,451 +776,459 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="live-badge"><div class="live-dot"></div>LIVE</div>
-      <div class="last-upd"><i class="fa-regular fa-clock"></i> <span id="last-updated">Loading...</span></div>
+      <div class="live-badge"><div class="live-dot"></div> Live</div>
+      <div class="timestamp" id="ts"></div>
     </div>
   </div>
 
   <!-- Source Bar -->
   <div class="source-bar" id="source-bar">
-    <span class="src-label"><i class="fa-solid fa-satellite-dish"></i> Sources</span>
-    <span class="src-pill"><span class="src-dot off" id="src-x"></span> <i class="fa-brands fa-x-twitter"></i> X/Twitter — <span id="src-x-ct">no results</span></span>
-    <span class="src-pill"><span class="src-dot off" id="src-news"></span> <i class="fa-solid fa-newspaper"></i> Google News — <span id="src-news-ct">no results</span></span>
-    <span class="src-pill"><span class="src-dot off" id="src-on3"></span> <i class="fa-solid fa-users"></i> On3 — <span id="src-on3-ct">no results</span></span>
-    <span class="src-pill"><span class="src-dot off" id="src-247"></span> <i class="fa-solid fa-chart-bar"></i> 247Sports — <span id="src-247-ct">no results</span></span>
+    <div class="source-bar-label"><i class="fa-solid fa-satellite-dish"></i> Sources</div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero-banner" id="hero-banner">
+    <img class="hero-img" src="hero.jpg" alt="" onerror="this.style.display='none'">
+    <div class="hero-overlay">
+      <div class="hero-title">Offer <span>Tracker</span></div>
+      <div class="hero-sub">Real-time recruiting offers across the Tennessee footprint — powered by X, On3 &amp; 247Sports</div>
+    </div>
   </div>
 
   <!-- Filters -->
-  <div class="filters">
+  <div class="filter-bar">
     <div class="filter-group">
       <span class="filter-label"><i class="fa-solid fa-calendar"></i> Class</span>
-      <button class="filter-btn active" data-year="all">All</button>
-      <button class="filter-btn" data-year="2025">2025</button>
-      <button class="filter-btn" data-year="2026">2026</button>
-      <button class="filter-btn" data-year="2027">2027</button>
-      <button class="filter-btn" data-year="2028">2028</button>
-      <button class="filter-btn" data-year="2029">2029</button>
+      <span class="pill active" data-year="all">All</span>
+      <span class="pill" data-year="2025">2025</span>
+      <span class="pill" data-year="2026">2026</span>
+      <span class="pill" data-year="2027">2027</span>
+      <span class="pill" data-year="2028">2028</span>
+      <span class="pill" data-year="2029">2029</span>
     </div>
-
     <div class="filter-group">
-      <span class="filter-label"><i class="fa-solid fa-football"></i> Position</span>
-      <button class="filter-btn active" data-pos="all">All</button>
-      <button class="filter-btn" data-pos="QB">QB</button>
-      <button class="filter-btn" data-pos="RB">RB</button>
-      <button class="filter-btn" data-pos="WR">WR</button>
-      <button class="filter-btn" data-pos="TE">TE</button>
-      <button class="filter-btn" data-pos="OL">OL</button>
-      <button class="filter-btn" data-pos="DL">DL</button>
-      <button class="filter-btn" data-pos="EDGE">EDGE</button>
-      <button class="filter-btn" data-pos="LB">LB</button>
-      <button class="filter-btn" data-pos="CB">CB</button>
-      <button class="filter-btn" data-pos="S">S</button>
-      <button class="filter-btn" data-pos="ATH">ATH</button>
-      <button class="filter-btn" data-pos="K/P">K/P</button>
+      <span class="filter-label"><i class="fa-solid fa-person-running"></i> Position</span>
+      <select class="filter-select" id="pos-filter">
+        <option value="all">All</option>
+        <option>QB</option><option>RB</option><option>WR</option><option>TE</option>
+        <option>OL</option><option>DL</option><option>EDGE</option><option>LB</option>
+        <option>CB</option><option>S</option><option>ATH</option><option>K/P</option>
+      </select>
     </div>
-
     <div class="filter-group">
       <span class="filter-label"><i class="fa-solid fa-location-dot"></i> State</span>
       <select class="filter-select" id="state-filter">
         <option value="all">All States</option>
-        <option value="TN">Tennessee</option>
-        <option value="KY">Kentucky</option>
-        <option value="VA">Virginia</option>
-        <option value="NC">North Carolina</option>
-        <option value="GA">Georgia</option>
-        <option value="AL">Alabama</option>
-        <option value="MS">Mississippi</option>
-        <option value="AR">Arkansas</option>
-        <option value="MO">Missouri</option>
-        <option value="SC">South Carolina</option>
-        <option value="FL">Florida</option>
-        <option value="OH">Ohio</option>
-        <option value="IN">Indiana</option>
-        <option value="WV">West Virginia</option>
-        <option value="LA">Louisiana</option>
+        <option>TN</option><option>KY</option><option>VA</option><option>NC</option>
+        <option>GA</option><option>AL</option><option>MS</option><option>AR</option>
+        <option>MO</option><option>SC</option><option>FL</option><option>OH</option>
+        <option>IN</option><option>WV</option><option>LA</option>
       </select>
     </div>
-
-    <button class="export-btn" id="export-btn"><i class="fa-solid fa-download"></i> Export CSV</button>
+    <input type="text" class="filter-search" id="search-box" placeholder="Search player...">
+    <button class="export-btn" id="export-csv"><i class="fa-solid fa-download"></i> Export CSV</button>
   </div>
 
   <!-- Tabs -->
-  <div class="tabs">
-    <div class="tab active-sec" data-tab="sec">
-      <img src="sec-logo.png" alt="SEC" class="tab-logo" onerror="this.style.display='none';" />
-      <span>SEC</span>
-      <span class="tab-count" id="ct-sec">0</span>
+  <div class="tab-bar">
+    <div class="tab active-sec" data-cat="SEC">
+      <div class="tab-icon"><img src="sec-logo.png" alt="SEC" onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-trophy\' style=\'color:var(--sec-accent);font-size:.75rem\'></i>'"></div>
+      SEC <span class="tab-count" id="cnt-sec">0</span>
     </div>
-    <div class="tab" data-tab="p4">
-      <img src="big10-logo.png" alt="P4" class="tab-logo" onerror="this.style.display='none';" />
-      <span>Other P4</span>
-      <span class="tab-count" id="ct-p4">0</span>
+    <div class="tab" data-cat="P4">
+      <div class="tab-icon"><img src="big10-logo.png" alt="P4" onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-football\' style=\'color:var(--p4-accent);font-size:.7rem\'></i>'"></div>
+      Other P4 <span class="tab-count" id="cnt-p4">0</span>
     </div>
-    <div class="tab" data-tab="g6">
-      <i class="fa-solid fa-shield-halved tab-icon"></i>
-      <span>G6 Footprint</span>
-      <span class="tab-count" id="ct-g6">0</span>
+    <div class="tab" data-cat="G6">
+      <i class="fa-solid fa-shield-halved" style="font-size:.72rem"></i>
+      G6 Footprint <span class="tab-count" id="cnt-g6">0</span>
     </div>
-    <div class="tab" data-tab="gem">
-      <i class="fa-solid fa-gem tab-icon"></i>
-      <span>Hidden Gems</span>
-      <span class="tab-count" id="ct-gem">0</span>
+    <div class="tab" data-cat="GEM">
+      <i class="fa-solid fa-gem" style="font-size:.68rem"></i>
+      Hidden Gems <span class="tab-count" id="cnt-gem">0</span>
     </div>
   </div>
 
   <!-- Grid -->
-  <div class="grid-wrap">
+  <div class="main">
     <div class="grid" id="grid"></div>
   </div>
 
+  <!-- Subtle checkerboard footer accent -->
+  <div class="checker-strip-sm"></div>
+
+  <div class="footer">
+    Vol Recruiting Monitor &middot; Data from X, On3, 247Sports &middot; Updated every 20 minutes &middot; Not affiliated with the University of Tennessee
+  </div>
+</div>
+
+<!-- ══════════ MODAL ══════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-accent" id="modal-accent"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════════════════
-   PASSWORD GATE
-   ═══════════════════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════════════════
+// PASSWORD GATE
+// ═══════════════════════════════════════════════════════════════════════════
 const PASS = "BelieveTheHeup26@UT";
+const gateEl   = document.getElementById("gate");
+const dashEl   = document.getElementById("dash");
+const pwInput  = document.getElementById("gate-pw");
+const errEl    = document.getElementById("gate-err");
 
-const gateEl = document.getElementById('gate');
-const dashEl = document.getElementById('dash');
-const pwIn   = document.getElementById('gate-pw');
-const errEl  = document.getElementById('gate-err');
-
-function tryAuth() {
-  if (pwIn.value === PASS) {
-    gateEl.classList.add('hidden');
-    dashEl.classList.add('unlocked');
-    sessionStorage.setItem('vol_auth','1');
-    loadData();
-  } else {
-    errEl.textContent = 'Incorrect password — check case and special characters';
-    errEl.classList.remove('shake');
-    void errEl.offsetWidth;
-    errEl.classList.add('shake');
-    pwIn.value = '';
-    pwIn.focus();
-  }
+if (sessionStorage.getItem("vrm_auth") === "1") {
+  gateEl.classList.add("hidden");
+  dashEl.classList.add("unlocked");
+  boot();
 }
 
-document.getElementById('gate-btn').addEventListener('click', tryAuth);
-pwIn.addEventListener('keydown', e => { if (e.key==='Enter') tryAuth(); });
+document.getElementById("gate-go").onclick = () => {
+  if (pwInput.value === PASS) {
+    sessionStorage.setItem("vrm_auth", "1");
+    gateEl.classList.add("hidden");
+    dashEl.classList.add("unlocked");
+    boot();
+  } else {
+    errEl.textContent = "Incorrect password — check case and special characters";
+    errEl.classList.remove("shake");
+    void errEl.offsetWidth;
+    errEl.classList.add("shake");
+  }
+};
+pwInput.addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("gate-go").click(); });
 
-document.getElementById('gate-eye').addEventListener('click', () => {
-  const isP = pwIn.type === 'password';
-  pwIn.type = isP ? 'text' : 'password';
-  document.querySelector('#gate-eye i').className = isP ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+document.getElementById("gate-eye").onclick = () => {
+  const isP = pwInput.type === "password";
+  pwInput.type = isP ? "text" : "password";
+  document.querySelector("#gate-eye i").className = isP ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DATA + SCHOOL SETS
+// ═══════════════════════════════════════════════════════════════════════════
+const SEC = new Set(["Tennessee","Alabama","Auburn","Florida","Georgia","Kentucky","LSU","Mississippi State","Missouri","Ole Miss","South Carolina","Vanderbilt","Arkansas","Texas","Texas A&M","Oklahoma"]);
+const P4_OTHER = new Set(["Ohio State","Michigan","Penn State","Oregon","USC","Wisconsin","Iowa","Minnesota","Illinois","Indiana","Purdue","Nebraska","Northwestern","Maryland","Rutgers","Michigan State","UCLA","Washington","Clemson","Florida State","Miami","NC State","Duke","Wake Forest","Louisville","Virginia Tech","Virginia","Boston College","Pitt","Syracuse","Georgia Tech","North Carolina","Notre Dame","SMU","Stanford","Cal","Oklahoma State","Texas Tech","TCU","Baylor","Kansas","Kansas State","Iowa State","West Virginia","Cincinnati","UCF","Houston","BYU","Colorado","Arizona","Arizona State","Utah"]);
+
+let ALL = [], FILTERED = [], activeTab = "SEC", activeYear = "all", activePos = "all", activeState = "all", searchQ = "";
+
+function offerClass(school) {
+  if (SEC.has(school)) return "sec";
+  if (P4_OTHER.has(school)) return "p4";
+  return "g6";
+}
+
+function inchesToDisplay(inches) {
+  if (!inches || inches < 48) return "";
+  return Math.floor(inches / 12) + "'" + (inches % 12) + '"';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════════════════
+function renderSources(src) {
+  const bar = document.getElementById("source-bar");
+  const items = [
+    { name: "X / Twitter", icon: "fa-brands fa-x-twitter", key: "x" },
+    { name: "On3", icon: "fa-solid fa-users-between-lines", key: "on3" },
+    { name: "247Sports", icon: "fa-solid fa-chart-column", key: "247sports" },
+    { name: "Google News", icon: "fa-solid fa-newspaper", key: "news" },
+  ];
+  bar.innerHTML = '<div class="source-bar-label"><i class="fa-solid fa-satellite-dish"></i> Sources</div>';
+  items.forEach(s => {
+    const n = (src && src[s.key]) || 0;
+    const dot = n > 0 ? "on" : "off";
+    const cls = n > 0 ? "src-count" : "src-zero";
+    const txt = n > 0 ? `${n} found` : "no results";
+    bar.innerHTML += `<div class="src-item"><span class="src-dot ${dot}"></span> <i class="${s.icon}" style="font-size:.7rem"></i> <span>${s.name}</span> — <span class="${cls}">${txt}</span></div>`;
+  });
+}
+
+function renderCards() {
+  const grid = document.getElementById("grid");
+
+  // Filter
+  let pool = ALL.filter(p => {
+    if (activeTab === "GEM") {
+      if (p.category !== "G6" || (p.gem_score || 0) < 80) return false;
+    } else if (p.category !== activeTab) return false;
+    if (activeYear !== "all" && p.year !== activeYear) return false;
+    if (activePos !== "all") {
+      if (activePos === "K/P") {
+        if (p.position !== "K" && p.position !== "P") return false;
+      } else if (p.position !== activePos) return false;
+    }
+    if (activeState !== "all" && p.state !== activeState) return false;
+    if (searchQ && !p.name.toLowerCase().includes(searchQ)) return false;
+    return true;
+  });
+
+  FILTERED = pool;
+  updateCounts();
+
+  if (!pool.length) {
+    const isWaiting = ALL.length === 0;
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fa-solid ${isWaiting ? 'fa-satellite-dish' : 'fa-filter'}"></i></div>
+        <div class="empty-title">${isWaiting ? "Waiting for First Scrape" : "No Players Match Filters"}</div>
+        <div class="empty-sub">${isWaiting
+          ? "The scraper runs every 20 minutes. Player data will appear here automatically once real recruits are found from X, On3, or 247Sports."
+          : "Try adjusting your class year, position, or state filters."
+        }</div>
+        <div style="margin-top:1.5rem"><div class="checker-strip-sm" style="max-width:200px;margin:0 auto;border-radius:4px"></div></div>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = pool.map(p => {
+    const cat = activeTab === "GEM" ? "gem" : p.category.toLowerCase();
+    const stars = Array.from({length:5},(_,i)=> `<i class="fa-solid fa-star ${i < (p.stars||0) ? 'filled' : 'empty'}"></i>`).join("");
+    const ht = inchesToDisplay(p.height);
+    const wt = p.weight ? p.weight + " lbs" : "";
+
+    let measHtml = "";
+    if (ht || wt) {
+      measHtml = `<div class="card-measurables">`;
+      if (ht) measHtml += `<span class="measurable"><i class="fa-solid fa-ruler-vertical"></i>${ht}</span>`;
+      if (wt) measHtml += `<span class="measurable"><i class="fa-solid fa-weight-scale"></i>${wt}</span>`;
+      measHtml += `</div>`;
+    }
+
+    let gemHtml = "";
+    if (p.gem_score && p.gem_score >= 70) {
+      gemHtml = `<div class="gem-badge"><i class="fa-solid fa-gem"></i> Gem Score: ${p.gem_score}</div>`;
+    }
+
+    const offersHtml = (p.offers || []).map(o =>
+      `<span class="offer-tag ${offerClass(o)}">${o}</span>`
+    ).join("");
+
+    const ev = p.evaluation || {};
+    let evalHtml = "";
+    if ((ev.strengths && ev.strengths.length) || (ev.weaknesses && ev.weaknesses.length)) {
+      const strHtml = (ev.strengths || []).map(s => `<div class="eval-item str"><i class="fa-solid fa-caret-up"></i> ${s}</div>`).join("");
+      const wkHtml  = (ev.weaknesses || []).map(w => `<div class="eval-item wk"><i class="fa-solid fa-caret-down"></i> ${w}</div>`).join("");
+      evalHtml = `
+        <div class="card-eval">
+          <div class="eval-header"><i class="fa-solid fa-brain"></i> AI Evaluation</div>
+          <div class="eval-row">
+            <div class="eval-col"><div class="eval-label str">Strengths</div>${strHtml}</div>
+            <div class="eval-col"><div class="eval-label wk">Weaknesses</div>${wkHtml}</div>
+          </div>
+        </div>`;
+    }
+
+    const srcUrl = p.source_url ? `<a href="${p.source_url}" target="_blank" rel="noopener">${p.source_detail || p.source}</a>` : (p.source_detail || p.source);
+
+    const links = p.links || {};
+    let linksHtml = '<div class="card-links">';
+    if (links.x)        linksHtml += `<a class="card-link" href="${links.x}" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i> X Profile</a>`;
+    if (links.hudl)     linksHtml += `<a class="card-link" href="${links.hudl}" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Hudl</a>`;
+    if (links.on3)      linksHtml += `<a class="card-link" href="${links.on3}" target="_blank" rel="noopener"><i class="fa-solid fa-circle-nodes"></i> On3</a>`;
+    if (links["247"])   linksHtml += `<a class="card-link" href="${links["247"]}" target="_blank" rel="noopener"><i class="fa-solid fa-chart-column"></i> 247</a>`;
+    if (links.ucreport) linksHtml += `<a class="card-link" href="${links.ucreport}" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> UC Report</a>`;
+    linksHtml += '</div>';
+
+    return `
+      <div class="card" onclick="openModal('${p.id}')">
+        <div class="card-accent ${cat}"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">${p.name}</div>
+            <div class="card-pos ${cat}">${p.position}</div>
+          </div>
+          <div class="card-meta">
+            <span><i class="fa-solid fa-location-dot"></i>${p.state || "—"}</span>
+            <span><i class="fa-solid fa-calendar"></i>Class of ${p.year}</span>
+          </div>
+          <div class="card-stars">${stars}</div>
+          ${measHtml}
+          ${gemHtml}
+          <div class="card-offers-label">Offers (${(p.offers||[]).length})</div>
+          <div class="card-offers">${offersHtml || '<span style="font-size:.68rem;color:var(--text-tertiary)">None listed</span>'}</div>
+          ${evalHtml}
+          <div class="card-source"><i class="fa-solid fa-link"></i> Found via ${srcUrl}</div>
+          ${linksHtml}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function updateCounts() {
+  const counts = { SEC: 0, P4: 0, G6: 0, GEM: 0 };
+  ALL.forEach(p => {
+    // Apply year/pos/state/search filters for count
+    if (activeYear !== "all" && p.year !== activeYear) return;
+    if (activePos !== "all") {
+      if (activePos === "K/P") { if (p.position !== "K" && p.position !== "P") return; }
+      else if (p.position !== activePos) return;
+    }
+    if (activeState !== "all" && p.state !== activeState) return;
+    if (searchQ && !p.name.toLowerCase().includes(searchQ)) return;
+
+    if (p.category === "SEC") counts.SEC++;
+    else if (p.category === "P4") counts.P4++;
+    if (p.category === "G6") {
+      counts.G6++;
+      if ((p.gem_score || 0) >= 80) counts.GEM++;
+    }
+  });
+  document.getElementById("cnt-sec").textContent = counts.SEC;
+  document.getElementById("cnt-p4").textContent = counts.P4;
+  document.getElementById("cnt-g6").textContent = counts.G6;
+  document.getElementById("cnt-gem").textContent = counts.GEM;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════════════════
+function openModal(id) {
+  const p = ALL.find(x => x.id === id);
+  if (!p) return;
+
+  const overlay = document.getElementById("modal-overlay");
+  const accent  = document.getElementById("modal-accent");
+  const body    = document.getElementById("modal-body");
+  const cat = p.category.toLowerCase();
+
+  accent.className = "modal-accent " + (activeTab === "GEM" ? "gem" : cat);
+
+  const stars = Array.from({length:5},(_,i)=> `<i class="fa-solid fa-star ${i < (p.stars||0) ? 'filled' : 'empty'}"></i>`).join("");
+  const ht = inchesToDisplay(p.height);
+  const wt = p.weight ? p.weight + " lbs" : "";
+  const ev = p.evaluation || {};
+
+  const offersHtml = (p.offers || []).map(o =>
+    `<span class="offer-tag ${offerClass(o)}">${o}</span>`
+  ).join("") || '<span style="font-size:.75rem;color:var(--text-tertiary)">None listed yet</span>';
+
+  const strHtml = (ev.strengths || []).map(s => `<div class="eval-item str"><i class="fa-solid fa-caret-up"></i> ${s}</div>`).join("");
+  const wkHtml  = (ev.weaknesses || []).map(w => `<div class="eval-item wk"><i class="fa-solid fa-caret-down"></i> ${w}</div>`).join("");
+
+  const links = p.links || {};
+  let linksHtml = "";
+  if (links.x)        linksHtml += `<a class="modal-link" href="${links.x}" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i> X Profile</a>`;
+  if (links.hudl)     linksHtml += `<a class="modal-link" href="${links.hudl}" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Hudl Film</a>`;
+  if (links.on3)      linksHtml += `<a class="modal-link" href="${links.on3}" target="_blank" rel="noopener"><i class="fa-solid fa-circle-nodes"></i> On3 Profile</a>`;
+  if (links["247"])   linksHtml += `<a class="modal-link" href="${links["247"]}" target="_blank" rel="noopener"><i class="fa-solid fa-chart-column"></i> 247Sports</a>`;
+  if (links.ucreport) linksHtml += `<a class="modal-link" href="${links.ucreport}" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> UC Report</a>`;
+
+  body.innerHTML = `
+    <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-name">${p.name}</div>
+    <div class="modal-meta">
+      <span><i class="fa-solid fa-person-running"></i>${p.position}</span>
+      <span><i class="fa-solid fa-location-dot"></i>${p.state || "—"}</span>
+      <span><i class="fa-solid fa-calendar"></i>Class of ${p.year}</span>
+      ${ht ? `<span><i class="fa-solid fa-ruler-vertical"></i>${ht}</span>` : ""}
+      ${wt ? `<span><i class="fa-solid fa-weight-scale"></i>${wt}</span>` : ""}
+      ${p.gem_score >= 70 ? `<span style="color:var(--gem-accent)"><i class="fa-solid fa-gem"></i> Gem: ${p.gem_score}</span>` : ""}
+    </div>
+    <div style="margin-bottom:.5rem">${stars}</div>
+
+    <div class="modal-section-title"><i class="fa-solid fa-envelope-open-text"></i> Offers</div>
+    <div class="modal-offers">${offersHtml}</div>
+
+    <div class="modal-section-title"><i class="fa-solid fa-brain"></i> AI Evaluation</div>
+    <div class="modal-eval">
+      <div class="eval-row">
+        <div class="eval-col"><div class="eval-label str">Strengths</div>${strHtml || '<div class="eval-item" style="color:var(--text-tertiary)">No data yet</div>'}</div>
+        <div class="eval-col"><div class="eval-label wk">Weaknesses</div>${wkHtml || '<div class="eval-item" style="color:var(--text-tertiary)">No data yet</div>'}</div>
+      </div>
+    </div>
+
+    <div class="card-source" style="margin-top:1rem"><i class="fa-solid fa-link"></i> Found via ${p.source_url ? `<a href="${p.source_url}" target="_blank">${p.source_detail || p.source}</a>` : (p.source_detail || p.source)} &middot; ${new Date(p.found_date).toLocaleDateString()}</div>
+
+    <div class="modal-links">${linksHtml}</div>
+  `;
+
+  overlay.classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("modal-overlay").classList.remove("open");
+}
+document.getElementById("modal-overlay").addEventListener("click", e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CSV EXPORT
+// ═══════════════════════════════════════════════════════════════════════════
+document.getElementById("export-csv").onclick = () => {
+  if (!FILTERED.length) return;
+  const headers = ["Name","Position","State","Class","Stars","Height","Weight","Gem Score","Category","Offers","Source","On3","247","Hudl","X","UC Report"];
+  const rows = FILTERED.map(p => [
+    p.name, p.position, p.state, p.year, p.stars||"",
+    inchesToDisplay(p.height), p.weight||"", p.gem_score||"",
+    p.category, (p.offers||[]).join("; "),
+    p.source_detail || p.source,
+    (p.links||{}).on3||"", (p.links||{})["247"]||"",
+    (p.links||{}).hudl||"", (p.links||{}).x||"",
+    (p.links||{}).ucreport||""
+  ]);
+  const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], {type: "text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `vol_recruits_${activeTab}_${activeYear}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════════════════════════════════════════
+document.querySelectorAll(".pill[data-year]").forEach(el => {
+  el.onclick = () => {
+    document.querySelectorAll(".pill[data-year]").forEach(p => p.classList.remove("active"));
+    el.classList.add("active");
+    activeYear = el.dataset.year;
+    renderCards();
+  };
 });
 
-if (sessionStorage.getItem('vol_auth') === '1') {
-  gateEl.classList.add('hidden');
-  dashEl.classList.add('unlocked');
-  loadData();
-}
+document.getElementById("pos-filter").onchange = e => { activePos = e.target.value; renderCards(); };
+document.getElementById("state-filter").onchange = e => { activeState = e.target.value; renderCards(); };
+document.getElementById("search-box").oninput = e => { searchQ = e.target.value.toLowerCase(); renderCards(); };
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   CONSTANTS
-   ═══════════════════════════════════════════════════════════════════════════ */
-const SEC = new Set(['Tennessee','Alabama','Auburn','Florida','Georgia','Kentucky','LSU',
-  'Mississippi State','Missouri','Ole Miss','South Carolina','Vanderbilt',
-  'Arkansas','Texas','Texas A&M','Oklahoma']);
+document.querySelectorAll(".tab").forEach(el => {
+  el.onclick = () => {
+    document.querySelectorAll(".tab").forEach(t => t.className = "tab");
+    const cat = el.dataset.cat;
+    activeTab = cat;
+    const cls = cat === "SEC" ? "active-sec" : cat === "P4" ? "active-p4" : cat === "G6" ? "active-g6" : "active-gem";
+    el.classList.add(cls);
+    renderCards();
+  };
+});
 
-const P4 = new Set([...SEC,
-  'Ohio State','Michigan','Penn State','Oregon','USC','Wisconsin','Iowa','Minnesota',
-  'Illinois','Indiana','Purdue','Nebraska','Northwestern','Maryland','Rutgers',
-  'Michigan State','UCLA','Washington',
-  'Clemson','Florida State','Miami','NC State','Duke','Wake Forest','Louisville',
-  'Virginia Tech','Virginia','Boston College','Pitt','Syracuse','Georgia Tech',
-  'North Carolina','Notre Dame','SMU','Stanford','Cal',
-  'Oklahoma State','Texas Tech','TCU','Baylor','Kansas','Kansas State','Iowa State',
-  'West Virginia','Cincinnati','UCF','Houston','BYU','Colorado','Arizona',
-  'Arizona State','Utah']);
-
-const OL_POS = new Set(['OL','OT','OG','C']);
-const DL_POS = new Set(['DL','DT','DE']);
-const KP_POS = new Set(['K','P']);
-
-let ALL_PLAYERS = [];
-let activeTab = 'sec';
-let activeYear = 'all';
-let activePos = 'all';
-let activeState = 'all';
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   DATA LOADING
-   ═══════════════════════════════════════════════════════════════════════════ */
-function loadData() {
-  fetch('data/offers.json?t=' + Date.now())
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+// ═══════════════════════════════════════════════════════════════════════════
+// BOOT — LOAD DATA
+// ═══════════════════════════════════════════════════════════════════════════
+function boot() {
+  // Try loading offers.json
+  fetch("data/offers.json?_=" + Date.now())
+    .then(r => {
+      if (!r.ok) throw new Error("No data yet");
+      return r.json();
+    })
     .then(data => {
-      ALL_PLAYERS = (data.players || []).filter(p => p && p.name);
-      document.getElementById('last-updated').textContent = data.last_updated || 'Unknown';
-
-      const src = data.sources || {};
-      updateSrc('x', src.x || 0);
-      updateSrc('news', src.news || 0);
-      updateSrc('on3', src.on3 || 0);
-      updateSrc('247', src['247sports'] || 0);
-      render();
+      ALL = data.players || [];
+      document.getElementById("ts").textContent = data.last_updated ? new Date(data.last_updated).toLocaleString() : "—";
+      renderSources(data.sources);
+      renderCards();
     })
     .catch(() => {
-      document.getElementById('last-updated').textContent = 'Awaiting first scrape...';
-      ALL_PLAYERS = [];
-      render();
+      ALL = [];
+      renderSources({});
+      renderCards();
     });
 }
-
-function updateSrc(key, count) {
-  const dot = document.getElementById('src-' + key);
-  const ct  = document.getElementById('src-' + key + '-ct');
-  if (!dot || !ct) return;
-  if (count > 0) {
-    dot.className = 'src-dot on';
-    ct.textContent = count + ' found';
-  } else {
-    dot.className = 'src-dot off';
-    ct.textContent = 'no results';
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   CATEGORIZATION
-   ═══════════════════════════════════════════════════════════════════════════ */
-function categorize(p) {
-  const offers = (p.offers || []).map(o => o.trim());
-  const hasSEC = offers.some(o => SEC.has(o));
-  const hasP4  = offers.some(o => P4.has(o));
-  const gem    = (p.gem_score || 0) >= 80 && !hasP4;
-
-  if (hasSEC) return 'sec';
-  if (hasP4)  return 'p4';
-  if (gem)    return 'gem';
-  return 'g6';
-}
-
-function matchPos(p) {
-  if (activePos === 'all') return true;
-  const pos = (p.position || '').toUpperCase();
-  if (activePos === 'OL') return OL_POS.has(pos);
-  if (activePos === 'DL') return DL_POS.has(pos);
-  if (activePos === 'K/P') return KP_POS.has(pos);
-  return pos === activePos;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   RENDER
-   ═══════════════════════════════════════════════════════════════════════════ */
-function render() {
-  const cats = { sec:[], p4:[], g6:[], gem:[] };
-
-  ALL_PLAYERS.forEach(p => {
-    const cat = categorize(p);
-    const yr = String(p.grad_year || '');
-    const st = (p.state || '').toUpperCase();
-    if (activeYear !== 'all' && yr !== activeYear) return;
-    if (!matchPos(p)) return;
-    if (activeState !== 'all' && st !== activeState) return;
-    cats[cat].push(p);
-  });
-
-  document.getElementById('ct-sec').textContent = cats.sec.length;
-  document.getElementById('ct-p4').textContent  = cats.p4.length;
-  document.getElementById('ct-g6').textContent  = cats.g6.length;
-  document.getElementById('ct-gem').textContent = cats.gem.length;
-
-  const list = cats[activeTab] || [];
-  const grid = document.getElementById('grid');
-
-  if (ALL_PLAYERS.length === 0) {
-    grid.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon"><i class="fa-solid fa-satellite-dish"></i></div>
-        <h3>Waiting for First Scrape</h3>
-        <p>The scraper runs every 20 minutes via GitHub Actions. Once it finds real recruiting offers in the 15-state footprint, player cards will appear here.</p>
-        <div class="checker-strip-sm" style="max-width:200px;margin:1.5rem auto 0;border-radius:4px;"></div>
-      </div>`;
-    return;
-  }
-
-  if (list.length === 0) {
-    grid.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon"><i class="fa-solid fa-filter"></i></div>
-        <h3>No Matches</h3>
-        <p>No players match the current filters. Try adjusting class year, position, or state.</p>
-      </div>`;
-    return;
-  }
-
-  grid.innerHTML = list.map(p => buildCard(p, activeTab)).join('');
-}
-
-function buildCard(p, cat) {
-  const name = esc(p.name || 'Unknown');
-  const pos  = esc(p.position || 'ATH');
-  const state = esc(p.state || '??');
-  const yr   = esc(String(p.grad_year || ''));
-  const ht   = p.height ? esc(p.height) : '';
-  const wt   = p.weight ? esc(p.weight + ' lbs') : '';
-  const stars = p.stars || 0;
-  const gem  = p.gem_score || 0;
-
-  const starsHtml = Array.from({length:5}, (_,i) =>
-    `<i class="fa-solid fa-star ${i < stars ? 'star-filled' : 'star-empty'}"></i>`
-  ).join('');
-
-  let gemClass = gem >= 80 ? 'high' : gem >= 50 ? 'medium' : 'low';
-  const gemHtml = gem > 0 ? `<span class="gem-score ${gemClass}"><i class="fa-solid fa-gem"></i> ${gem}</span>` : '';
-
-  const offers = (p.offers || []).map(o => {
-    const isSec = SEC.has(o);
-    return `<span class="offer-tag ${isSec ? 'sec' : ''}">${esc(o)}</span>`;
-  }).join('');
-
-  const evalHtml = p.evaluation ? `
-    <div class="card-eval">
-      <div class="eval-header"><i class="fa-solid fa-microchip"></i> AI Evaluation</div>
-      <div class="eval-text">${formatEval(p.evaluation)}</div>
-    </div>` : '';
-
-  const srcText = esc(p.source || 'Unknown');
-  const srcDetail = p.source_detail ? esc(p.source_detail) : '';
-  const srcLink = p.source_url ? `<a href="${esc(p.source_url)}" target="_blank" rel="noopener">${srcDetail || srcText}</a>` : (srcDetail || srcText);
-
-  const nameEnc = encodeURIComponent(p.name || '');
-  const hudlUrl = `https://www.hudl.com/search?query=${nameEnc}`;
-  const ucUrl   = p.uc_report_url || `https://www.google.com/search?q=site:ucreport.com+${nameEnc}`;
-  const xUrl    = p.x_url || `https://x.com/search?q=${nameEnc}+football`;
-
-  const measHtml = (ht || wt) ? `
-    <div class="card-measurables">
-      ${ht ? `<span class="measurable"><i class="fa-solid fa-ruler-vertical" style="margin-right:3px;font-size:.55rem;"></i> ${ht}</span>` : ''}
-      ${wt ? `<span class="measurable"><i class="fa-solid fa-weight-scale" style="margin-right:3px;font-size:.55rem;"></i> ${wt}</span>` : ''}
-    </div>` : '';
-
-  return `
-    <div class="card">
-      <div class="card-accent ${cat}"></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div class="card-name">${name}</div>
-          <span class="card-pos ${cat}">${pos}</span>
-        </div>
-        <div class="card-meta">
-          <span><i class="fa-solid fa-location-dot"></i> ${state}</span>
-          <span><i class="fa-regular fa-calendar"></i> Class of ${yr}</span>
-        </div>
-        ${measHtml}
-        <div class="card-stars">${starsHtml}${gemHtml}</div>
-        <div class="card-section-label">Offers (${(p.offers||[]).length})</div>
-        <div class="card-offers">${offers || '<span style="color:var(--text-tertiary);font-size:.7rem;">None listed</span>'}</div>
-        ${evalHtml}
-        <div class="card-source"><i class="fa-solid fa-link"></i> Found via ${srcLink}</div>
-        <div class="card-links">
-          <a class="card-link" href="${xUrl}" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i> X Profile</a>
-          <a class="card-link" href="${hudlUrl}" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Hudl</a>
-          <a class="card-link" href="${ucUrl}" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> UC Report</a>
-        </div>
-      </div>
-    </div>`;
-}
-
-function formatEval(text) {
-  return esc(text)
-    .replace(/Strengths?:/gi, '<span class="eval-str">Strengths:</span>')
-    .replace(/Weaknesses?:/gi, '<span class="eval-wk">Weaknesses:</span>');
-}
-
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   FILTERS & TABS
-   ═══════════════════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.tab').forEach(t => {
-  t.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(x => x.className = 'tab');
-    const tab = t.dataset.tab;
-    const cls = { sec:'active-sec', p4:'active-p4', g6:'active-g6', gem:'active-gem' };
-    t.classList.add(cls[tab]);
-    activeTab = tab;
-    render();
-  });
-});
-
-document.querySelectorAll('[data-year]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('[data-year]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    activeYear = b.dataset.year;
-    render();
-  });
-});
-
-document.querySelectorAll('[data-pos]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('[data-pos]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    activePos = b.dataset.pos;
-    render();
-  });
-});
-
-document.getElementById('state-filter').addEventListener('change', e => {
-  activeState = e.target.value;
-  render();
-});
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   CSV EXPORT
-   ═══════════════════════════════════════════════════════════════════════════ */
-document.getElementById('export-btn').addEventListener('click', () => {
-  const cats = { sec:[], p4:[], g6:[], gem:[] };
-  ALL_PLAYERS.forEach(p => {
-    const cat = categorize(p);
-    const yr = String(p.grad_year || '');
-    const st = (p.state || '').toUpperCase();
-    if (activeYear !== 'all' && yr !== activeYear) return;
-    if (!matchPos(p)) return;
-    if (activeState !== 'all' && st !== activeState) return;
-    cats[cat].push(p);
-  });
-
-  const list = cats[activeTab] || [];
-  if (!list.length) return alert('No data to export');
-
-  const header = 'Name,Position,State,Class,Height,Weight,Stars,Gem Score,Offers,Category,Source,Hudl,UC Report,X Profile';
-  const rows = list.map(p => {
-    const nameEnc = encodeURIComponent(p.name || '');
-    return [
-      `"${(p.name||'').replace(/"/g,'""')}"`,
-      p.position||'',
-      p.state||'',
-      p.grad_year||'',
-      p.height||'',
-      p.weight||'',
-      p.stars||'',
-      p.gem_score||'',
-      `"${(p.offers||[]).join(', ')}"`,
-      activeTab.toUpperCase(),
-      `"${(p.source||'').replace(/"/g,'""')}"`,
-      `https://www.hudl.com/search?query=${nameEnc}`,
-      p.uc_report_url || `https://www.google.com/search?q=site:ucreport.com+${nameEnc}`,
-      p.x_url || `https://x.com/search?q=${nameEnc}+football`
-    ].join(',');
-  });
-
-  const blob = new Blob([header + '\n' + rows.join('\n')], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `vol-recruits-${activeTab}-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-});
-
-/* Auto-refresh every 5 minutes */
-setInterval(() => { if (sessionStorage.getItem('vol_auth')==='1') loadData(); }, 300000);
 </script>
 </body>
 </html>
