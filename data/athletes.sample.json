@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "generatedAt": "2026-06-01T12:00:00.000Z",
+    "status": "Sample board",
+    "year": 2026,
+    "queryWindowMinutes": 20,
+    "source": "fictional starter data"
+  },
+  "athletes": [
+    {
+      "id": "sample-2027-wr-knoxville",
+      "name": "Sample Recruit",
+      "gradYear": 2027,
+      "position": "WR",
+      "heightInches": 74,
+      "weightPounds": 184,
+      "city": "Knoxville",
+      "state": "TN",
+      "highSchool": "Sample Central",
+      "offerSchools": ["Tennessee"],
+      "categories": ["sec", "hidden"],
+      "hiddenGemScore": 82,
+      "confidence": 70,
+      "isNew": true,
+      "xUrl": "https://x.com/search?q=football%20offer%20Tennessee",
+      "hudlUrl": "https://www.hudl.com/",
+      "ucReportUrl": "https://www.google.com/search?q=UC+Report+football+recruit",
+      "lastOfferAt": "2026-06-01T12:00:00.000Z",
+      "updatedAt": "2026-06-01T12:00:00.000Z",
+      "sourceText": "Fictional sample row used to test the dashboard.",
+      "brief": {
+        "strengths": ["SEC-sized receiver frame with early 2027 visibility.", "In-footprint target who should be easy to cross-check quickly."],
+        "weaknesses": ["Film, verified speed, and multi-sport profile still need staff review.", "Sample data should be replaced by live X API results."]
+      },
+      "signals": ["sample", "footprint"]
+    },
+    {
+      "id": "sample-2028-edge-georgia",
+      "name": "Example Prospect",
+      "gradYear": 2028,
+      "position": "EDGE",
+      "heightInches": 76,
+      "weightPounds": 225,
+      "city": "Rome",
+      "state": "GA",
+      "highSchool": "Example High",
+      "offerSchools": ["Memphis"],
+      "categories": ["g6-footprint", "hidden"],
+      "hiddenGemScore": 76,
+      "confidence": 64,
+      "isNew": true,
+      "xUrl": "https://x.com/search?q=football%20offer%20Memphis%20EDGE",
+      "hudlUrl": "https://www.hudl.com/",
+      "ucReportUrl": "",
+      "lastOfferAt": "2026-06-01T11:25:00.000Z",
+      "updatedAt": "2026-06-01T11:25:00.000Z",
+      "sourceText": "Fictional G6 footprint sample row.",
+      "brief": {
+        "strengths": ["Prototype edge height with room to add weight.", "Fits the two-state Tennessee footprint filter."],
+        "weaknesses": ["Needs verified burst and bend data.", "Offer source should be confirmed through the linked X post."]
+      },
+      "signals": ["sample", "g6", "frame"]
+    }
+  ]
+}
+

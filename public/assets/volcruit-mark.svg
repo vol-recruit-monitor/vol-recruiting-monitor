@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="150" viewBox="0 0 220 150" role="img" aria-label="Volcruit 2026">
+  <rect width="220" height="150" fill="#ff8200"/>
+  <rect x="14" y="14" width="70" height="70" fill="none" stroke="#fff8eb" stroke-width="7"/>
+  <path d="M30 34h38v13H58v23H40V47H30z" fill="#fff8eb"/>
+  <text x="96" y="58" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#fff8eb">2026</text>
+  <path d="M14 102h68" stroke="#fff8eb" stroke-width="7"/>
+  <path d="M14 118h36" stroke="#fff8eb" stroke-width="7"/>
+  <text x="60" y="124" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="900" fill="#fff8eb">VOLCRUIT</text>
+</svg>
+

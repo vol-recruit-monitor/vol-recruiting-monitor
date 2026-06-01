@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Orange burst with helmet silhouette and mountain shape">
+  <rect width="1600" height="900" fill="#f3efe6"/>
+  <rect width="360" height="900" fill="#ff8200"/>
+  <path d="M360 560c180-120 280-68 405-110 148-50 250-156 420-95 146 52 249 19 415-56v601H360z" fill="#222827" opacity="0.78"/>
+  <path d="M800 448 425 340 806 395 455 230 832 354 548 90 878 328 736 30 918 318 960 0 960 318 1186 34 1004 330 1360 92 1048 360 1510 238 1078 402 1600 388 1088 452 1508 646 1058 500 1340 810 1002 530 944 900 918 536 684 858 876 512 442 690z" fill="#ff8200" opacity="0.92"/>
+  <path d="M780 118c122-52 291-6 348 116 40 86 25 190-16 273-48 98-155 162-278 152-114-10-202-76-241-166-54-123-4-309 187-375z" fill="#f9f8f1" stroke="#263238" stroke-width="14" opacity="0.96"/>
+  <path d="M642 355h454c-12 78-44 143-98 190H744c-55-47-89-111-102-190z" fill="#1e2628"/>
+  <path d="M700 355v190M798 355v190M896 355v190M994 355v190" stroke="#f9f8f1" stroke-width="16"/>
+  <path d="M780 118h130v100H750z" fill="#ff8200"/>
+  <path d="M589 582c64 72 156 115 276 120 129 5 234-39 306-120" fill="none" stroke="#f9f8f1" stroke-width="28"/>
+  <path d="M632 258h122M984 258h122" stroke="#ff8200" stroke-width="22"/>
+  <path d="M0 0h1600v900H0z" fill="url(#grain)" opacity="0.24"/>
+  <defs>
+    <filter id="rough">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3"/>
+    </filter>
+    <pattern id="grain" width="90" height="90" patternUnits="userSpaceOnUse">
+      <rect width="90" height="90" filter="url(#rough)" opacity="0.25"/>
+    </pattern>
+  </defs>
+</svg>
+

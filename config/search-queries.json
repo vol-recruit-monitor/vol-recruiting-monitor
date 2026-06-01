@@ -1,0 +1,32 @@
+{
+  "queryWindowMinutes": 35,
+  "queries": [
+    {
+      "name": "offer-announcements-broad",
+      "query": "(\"blessed to receive an offer\" OR \"received an offer\" OR \"earned an offer\" OR \"honored to receive an offer\" OR \"offered by\") (football OR recruit OR QB OR RB OR WR OR TE OR OL OR DL OR LB OR DB OR ATH) -is:retweet lang:en"
+    },
+    {
+      "name": "tennessee-footprint",
+      "query": "(\"received an offer\" OR \"blessed to receive an offer\" OR \"earned an offer\") (TN OR Tennessee OR Georgia OR Alabama OR Kentucky OR Mississippi OR Missouri OR Arkansas OR Virginia OR Carolina) (football OR recruit) -is:retweet lang:en"
+    },
+    {
+      "name": "tennessee-vols-offers",
+      "query": "(\"offer from Tennessee\" OR \"Tennessee offer\" OR \"Vols offer\" OR \"offered by Tennessee\" OR \"offered by the Vols\") (football OR recruit OR QB OR RB OR WR OR DB OR OL OR DL) -is:retweet lang:en"
+    },
+    {
+      "name": "hudl-offer-posts",
+      "query": "(\"received an offer\" OR \"earned an offer\") (hudl OR \"junior highlights\" OR \"sophomore highlights\") football -is:retweet lang:en"
+    }
+  ],
+  "trustedAccounts": [
+    "Vol_Football",
+    "On3Recruits",
+    "Rivals",
+    "247Sports",
+    "SWiltfong_",
+    "ChadSimmons_",
+    "adamgorney",
+    "TomLoy247"
+  ]
+}
+
