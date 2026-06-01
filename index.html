@@ -8,7 +8,7 @@
 <style>
   :root {
     --orange:        #FF8200;
-    --orange-light:  #FF9A3C;
+    --orange-light:  #FF8200;
     --orange-dim:    rgba(255,130,0,.1);
     --orange-border: rgba(255,130,0,.28);
     --white:         #FFFFFF;
@@ -44,11 +44,11 @@
 
   /* ─── CHECKERBOARD STRIP — orange & white, 3 rows (42px) ─────────────────── */
   .checker-strip {
-    height: 42px;
+    height: 55px;
     background-image: repeating-conic-gradient(var(--orange) 0% 25%, #FFFFFF 0% 50%);
     background-size: 14px 14px;
     flex-shrink: 0;
-    opacity: .92;
+    opacity: 1.0;
   }
 
   /* ─── PASSWORD GATE ──────────────────────────────────────────────────────── */
@@ -75,10 +75,10 @@
   }
   .gate-box::before {
     content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 42px;
+    position: absolute; top: 0; left: 0; right: 0; height: 55px;
     background-image: repeating-conic-gradient(var(--orange) 0% 25%, #FFFFFF 0% 50%);
     background-size: 14px 14px;
-    opacity: .88;
+    opacity: 1.0;
   }
 
   @keyframes fadeUp {
