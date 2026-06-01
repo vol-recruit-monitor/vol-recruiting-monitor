@@ -189,6 +189,38 @@
       }
     },
     {
+      "id": "20051f1170b5",
+      "name": "Demarcus Brown",
+      "position": "WR",
+      "state": "VA",
+      "year": "2027",
+      "stars": 4,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Virginia"
+      ],
+      "category": "p4",
+      "source": "Google News (On3)",
+      "source_url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQaE1SbXFCeUlIX01DaWRCM2pPMEhGRU40NHRPR2VpYUNCX2RyRC04dEZNc09ac1Y0VU9ZVXR4NV9wVjRIYngxelZTYXQyWGNNemtVVTlDaTNDODltMkpEYVhWRnZvS0hnSmVfdkhlMlJxeFdRMWZ6Q3ZHV0NFb3dZSlZKSGQtVDNMd1hDdGFJeFVVZFJWOE1lanhSWGNjalJzWWM2UDdMZTJXeEk?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Demarcus+Brown&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Demarcus+Brown+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Demarcus+Brown+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:02.547425+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Highly rated 4-star prospect"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "a2231d980588",
       "name": "Elijah Brown",
       "position": "ATH",
@@ -505,6 +537,71 @@
       }
     },
     {
+      "id": "1cacbd131974",
+      "name": "Amare Nugent",
+      "position": "ATH",
+      "state": "FL",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Florida"
+      ],
+      "category": "sec",
+      "source": "Google News (Hail Florida Hail)",
+      "source_url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPS0M2Wkg5NUZQWmZZaUtta19LWW1NTnlfci1wWXhVMEdSc3dnRVBxdmJtREdCb0lZZHJxNGlRNFl0MmVqTDdNYkNOOGdaYVM5bEljQ2thSk54c29mbzdFd3c1NnNjc1I2TXJHR3FZcHNYaDZsWnJ6bEM1WmJnbUZWMU9KV3VOeUtoRDdJcGpVY1VfbEtndEVQY2p2M1Q4bkNJUUE?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Amare+Nugent&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Amare+Nugent+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Amare+Nugent+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:01.313949+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "SEC-caliber talent \u2014 offers from Florida"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
+      "id": "ef478531dbb2",
+      "name": "Amid Lane",
+      "position": "S",
+      "state": "GA",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Georgia",
+        "LSU"
+      ],
+      "category": "sec",
+      "source": "Google News (Sports Illustrated)",
+      "source_url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOOURpRmVMTzd4OFhfbUs5cVhPcXQ0MkpJN3U0c2p0YllOT1JESXRWZTFpUTBrWEJZRFAxdWtRNDJuTVdnVUpBQ1Q0eW5fQl9kQVNMYWxneUd2NUlqYmZzTGZHcm5kNFBGZ1p1UFE5TUNuLXhleFByTVBRMkNISHk3Q0VQV0hFSi0zY1RBRGZSTF8xSlhXTlNGd08wN2ZfSl85cm1wZW5FSTBVVU9udXQ2aURkZXJaTmUydm9yZmd5N0ZsTktCZ0NUeWdEMmhBMnl4RzJLVg?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Amid+Lane&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Amid+Lane+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Amid+Lane+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:00.072331+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "SEC-caliber talent \u2014 offers from Georgia, LSU"
+        ],
+        "weaknesses": [
+          "Unrated \u2014 limited exposure so far"
+        ]
+      }
+    },
+    {
       "id": "5c55c5c3182c",
       "name": "Among Those Visiting",
       "position": "ATH",
@@ -529,6 +626,39 @@
         "strengths": "Evaluation pending",
         "weaknesses": "Height not confirmed; Weight not confirmed; Currently G6-only offers; No confirmed offers tracked yet",
         "recommendation": "Monitor"
+      }
+    },
+    {
+      "id": "13ba188bbf57",
+      "name": "Andre Alexander",
+      "position": "LB",
+      "state": "VA",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Virginia",
+        "Virginia Tech"
+      ],
+      "category": "p4",
+      "source": "Google News (247Sports)",
+      "source_url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxON2RyQ1l1ODJJMEVRRHpQYTk5cEtYOUlHc1JDcmIxQnZ6a1RGejhCSWdsTzc4SnJPQzVSODhKT2VDb01ubTJpajVlVXRpa2Vmb1BwTlVVQTdWcjYwSGk0SDlZZjN2d29CS3Y2WVBQZWpGWGdTU3RhRkxUMXFUdnlEQ19rQ1pDUTJxZmRpXzIxRUtXWVlYdEQ0bERtbUpaTEdfWnVDdlJnSi0?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Andre+Alexander&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Andre+Alexander+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Andre+Alexander+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:00.069987+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "P4 attention \u2014 2 Power 4 offers"
+        ],
+        "weaknesses": [
+          "Unrated \u2014 limited exposure so far"
+        ]
       }
     },
     {
@@ -1275,6 +1405,39 @@
       }
     },
     {
+      "id": "63d27bdb23c2",
+      "name": "Fighting Gobbler",
+      "position": "DL",
+      "state": "VA",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Virginia",
+        "Virginia Tech"
+      ],
+      "category": "p4",
+      "source": "Google News (Fighting Gobbler)",
+      "source_url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQSVZ6Q3lxNm9jbURxSVNpYm1PdGgxUDBqZ29RdEh5cnNvWUtQSWJuY01pR1B3ZnV4emQtQTVpVmFzQnZvbnpEWjhvZi1MVnZseG9QZ1FMQWJuYWM0WmZCYzdvUHdTTU45MHNVaU85UGhJYXMtS2ZGSjlzd0wwVkdsNzI0Y2hZVFl5WWF2Uk53MWJicXdkTmlYUzZlTVJyMUw3ZUo4VDMtR1M0YTN3bW1yMHJwOA?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Fighting+Gobbler&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Fighting+Gobbler+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Fighting+Gobbler+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:32:58.626036+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "P4 attention \u2014 2 Power 4 offers"
+        ],
+        "weaknesses": [
+          "Unrated \u2014 limited exposure so far"
+        ]
+      }
+    },
+    {
       "id": "7c9284b9d89a",
       "name": "Football Awarded Spot",
       "position": "ATH",
@@ -1357,6 +1520,39 @@
         "strengths": "Evaluation pending",
         "weaknesses": "Height not confirmed; Weight not confirmed; Currently G6-only offers; No confirmed offers tracked yet",
         "recommendation": "Monitor"
+      }
+    },
+    {
+      "id": "ea5f0b163cc7",
+      "name": "Football Makes",
+      "position": "S",
+      "state": "GA",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Georgia",
+        "LSU"
+      ],
+      "category": "sec",
+      "source": "Google News (Sports Illustrated)",
+      "source_url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOOURpRmVMTzd4OFhfbUs5cVhPcXQ0MkpJN3U0c2p0YllOT1JESXRWZTFpUTBrWEJZRFAxdWtRNDJuTVdnVUpBQ1Q0eW5fQl9kQVNMYWxneUd2NUlqYmZzTGZHcm5kNFBGZ1p1UFE5TUNuLXhleFByTVBRMkNISHk3Q0VQV0hFSi0zY1RBRGZSTF8xSlhXTlNGd08wN2ZfSl85cm1wZW5FSTBVVU9udXQ2aURkZXJaTmUydm9yZmd5N0ZsTktCZ0NUeWdEMmhBMnl4RzJLVg?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Football+Makes&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Football+Makes+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Football+Makes+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:00.072392+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "SEC-caliber talent \u2014 offers from Georgia, LSU"
+        ],
+        "weaknesses": [
+          "Unrated \u2014 limited exposure so far"
+        ]
       }
     },
     {
@@ -2083,7 +2279,7 @@
         "Florida"
       ],
       "category": "sec",
-      "source": "news",
+      "source": "news + Google News (Hail Florida Hail)",
       "source_url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNSDdWOE9oX0h1eEFBOUZTME4tZjJlTVhpQjFpN0pLZl9LdjFXT204aHpnVU9MMEl3a0JOWmhfcmZnS19xMXpBMDNRdk5Rd0k5TWpIaU9TWW1BeFVkaDBPd0tGa2J5UWZSRW1LM3pXQmxhemE5M2RCTl9CUWQ0cUxPaExxWVhzek1ubHd2aHVrZmlxQTYyYThTR1dMNlFHb1BaWVd5LTBlMTlCbzZPbEJmbmRYR2VjaUVIR3pqS3YtTXdpTlVxZFZLclI1dWo4RTVOazV5Wm9EWlJ6Ymo5bGpCc2VCTjhUOXlUNEQydTZ4dw?oc=5",
       "source_label": "Google News",
       "scraped_at": "2026-06-01T18:12:24.036706+00:00",
@@ -2093,9 +2289,12 @@
       "uc_url": "https://www.ultimaterecruiting.com/search?q=Jon+Sumrall",
       "gem_score": 50,
       "evaluation": {
-        "strengths": "SEC-level interest (1 offer(s)) \u2014 UT should act now",
-        "weaknesses": "Height not confirmed; Weight not confirmed",
-        "recommendation": "Target"
+        "strengths": [
+          "SEC-caliber talent \u2014 offers from Florida"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
       }
     },
     {
@@ -3079,6 +3278,38 @@
         "strengths": "SEC-level interest (2 offer(s)) \u2014 UT should act now",
         "weaknesses": "Height not confirmed; Weight not confirmed",
         "recommendation": "Target"
+      }
+    },
+    {
+      "id": "1c8f23703734",
+      "name": "SEC Rival",
+      "position": "ATH",
+      "state": "IN",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "LSU"
+      ],
+      "category": "sec",
+      "source": "Google News (Sports Illustrated)",
+      "source_url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxORmNGcW1yWnFvYVI5UlRSQXdwMmlKYW93emhCVWE4cnJUd1VyZS1XcmpYT2xyZFR0TFZYQ0NaMmFkcjJtcWJCbWZyeHN3b1A1R293SFpJRjhSRnRXNk5qWVJiZTVzdGZJSlFnSW1YMmY0d2VoY09RaS1wQWluWVBZU0FoMkVEWlRpNnJrUHpJcTNNUzJSNkFuWFJiZ2xWckttdTVFTVFDTkxtNnZ6d01tbGpOY0pxMVBKdUt3LU5MN2pNRlRmV0EyMDlIdFkyT0dnM2dFQ3ZPSUpJNTB5UXBCQU96ZnpXS1lNcTU4?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=SEC+Rival&type=athlete",
+        "uc_report": "https://www.google.com/search?q=SEC+Rival+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=SEC+Rival+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:00.070892+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "SEC-caliber talent \u2014 offers from LSU"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
       }
     },
     {
@@ -4108,6 +4339,38 @@
       }
     },
     {
+      "id": "20431c0cf7ed",
+      "name": "to No",
+      "position": "ATH",
+      "state": "IN",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "LSU"
+      ],
+      "category": "sec",
+      "source": "Google News (Sports Illustrated)",
+      "source_url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxORmNGcW1yWnFvYVI5UlRSQXdwMmlKYW93emhCVWE4cnJUd1VyZS1XcmpYT2xyZFR0TFZYQ0NaMmFkcjJtcWJCbWZyeHN3b1A1R293SFpJRjhSRnRXNk5qWVJiZTVzdGZJSlFnSW1YMmY0d2VoY09RaS1wQWluWVBZU0FoMkVEWlRpNnJrUHpJcTNNUzJSNkFuWFJiZ2xWckttdTVFTVFDTkxtNnZ6d01tbGpOY0pxMVBKdUt3LU5MN2pNRlRmV0EyMDlIdFkyT0dnM2dFQ3ZPSUpJNTB5UXBCQU96ZnpXS1lNcTU4?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=to+No&type=athlete",
+        "uc_report": "https://www.google.com/search?q=to+No+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=to+No+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:00.070837+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "SEC-caliber talent \u2014 offers from LSU"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "0de77561eaac",
       "name": "to Vols",
       "position": "S",
@@ -4206,12 +4469,12 @@
       }
     }
   ],
-  "last_updated": "2026-06-01T18:31:17.324109+00:00",
+  "last_updated": "2026-06-01T18:33:07.973273+00:00",
   "sources": {
     "x": 0,
-    "news": 86,
+    "news": 88,
     "on3": 0,
     "247sports": 0
   },
-  "total": 136
+  "total": 144
 }
