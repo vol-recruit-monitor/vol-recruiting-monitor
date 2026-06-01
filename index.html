@@ -265,19 +265,19 @@
   /* ─── HERO BANNER (optional bg image) ───────────────────────────────────── */
   .hero-banner {
     position: relative;
-    background: linear-gradient(135deg, var(--smokey-base) 0%, var(--smokey-deep) 100%);
+    background: linear-gradient(135deg, var(--smokey-base) 0%, var(--smokey-deep) 20%);
     min-height: 0;
     overflow: hidden;
   }
   .hero-banner.has-image {
-    min-height: 200px;
+    min-height: 400px;
   }
   .hero-banner .hero-img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    opacity: .22;
-    filter: grayscale(60%) contrast(1.15);
+    opacity: 1.0;
+    filter: grayscale(0%) contrast(1.15);
   }
   .hero-overlay {
     position: relative; z-index: 1;
