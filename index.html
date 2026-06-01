@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Volcruit 2026 Offer Monitor</title>
+    <link rel="icon" href="public/assets/volcruit-mark.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="auth-screen" id="authScreen">
+      <div class="auth-panel">
+        <img src="public/assets/volcruit-mark.svg" alt="" class="auth-mark">
+        <p class="eyebrow">Volcruit 2026</p>
+        <h1>Offer Monitor</h1>
+        <form id="authForm" class="auth-form">
+          <label for="passwordInput">Password</label>
+          <div class="password-row">
+            <input id="passwordInput" name="password" type="password" autocomplete="current-password" spellcheck="false" required>
+            <button type="submit">Enter</button>
+          </div>
+          <p class="auth-error" id="authError" role="alert"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="app-shell is-locked" id="appShell">
+      <aside class="brand-rail" aria-label="Dashboard identity">
+        <div class="brand-lockup">
+          <img src="public/assets/volcruit-mark.svg" alt="" class="brand-mark">
+          <div>
+            <p class="eyebrow">Tennessee Footprint</p>
+            <h1>Volcruit</h1>
+          </div>
+        </div>
+        <div class="rail-visual" aria-hidden="true"></div>
+        <div class="rail-stats">
+          <div>
+            <span id="totalCount">0</span>
+            <small>Total offers</small>
+          </div>
+          <div>
+            <span id="newCount">0</span>
+            <small>New watch</small>
+          </div>
+        </div>
+        <button class="lock-button" id="lockButton" type="button">Lock Board</button>
+      </aside>
+
+      <main class="dashboard">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">2026 War Room</p>
+            <h2>Offer intelligence</h2>
+          </div>
+          <div class="sync-card">
+            <span class="pulse"></span>
+            <div>
+              <strong id="syncLabel">Encrypted feed</strong>
+              <small id="syncTime">Waiting for unlock</small>
+            </div>
+          </div>
+        </header>
+
+        <section class="controls" aria-label="Board filters">
+          <div class="segment-group" id="categoryButtons" role="tablist" aria-label="Offer category">
+            <button class="segment is-active" type="button" data-category="all">All</button>
+            <button class="segment" type="button" data-category="sec">SEC</button>
+            <button class="segment" type="button" data-category="p4">P4</button>
+            <button class="segment" type="button" data-category="g6-footprint">G6 Footprint</button>
+            <button class="segment" type="button" data-category="hidden">Hidden Gems</button>
+          </div>
+          <div class="field-row">
+            <label>
+              <span>Grad Year</span>
+              <select id="yearFilter">
+                <option value="all">All</option>
+              </select>
+            </label>
+            <label>
+              <span>Position</span>
+              <select id="positionFilter">
+                <option value="all">All</option>
+              </select>
+            </label>
+            <label>
+              <span>State</span>
+              <select id="stateFilter">
+                <option value="all">All</option>
+              </select>
+            </label>
+            <label class="search-field">
+              <span>Search</span>
+              <input id="searchInput" type="search" placeholder="Name, school, offer">
+            </label>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="Board summary">
+          <article>
+            <small>SEC</small>
+            <strong id="secMetric">0</strong>
+          </article>
+          <article>
+            <small>P4</small>
+            <strong id="p4Metric">0</strong>
+          </article>
+          <article>
+            <small>G6 Footprint</small>
+            <strong id="g6Metric">0</strong>
+          </article>
+          <article>
+            <small>Hidden Gems</small>
+            <strong id="hiddenMetric">0</strong>
+          </article>
+        </section>
+
+        <section class="board-layout">
+          <div class="offer-list" id="offerList" aria-live="polite"></div>
+          <aside class="detail-panel" id="detailPanel">
+            <p class="eyebrow">Selected Recruit</p>
+            <h3>Unlock the board</h3>
+            <p class="muted">Enter the password to decrypt the latest offer data.</p>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <template id="offerCardTemplate">
+      <article class="offer-card">
+        <button class="card-button" type="button">
+          <div class="card-topline">
+            <span class="tag category-tag"></span>
+            <span class="tag year-tag"></span>
+          </div>
+          <div class="card-title-row">
+            <h3></h3>
+            <span class="score-pill"></span>
+          </div>
+          <p class="meta-line"></p>
+          <p class="offer-line"></p>
+          <div class="link-row"></div>
+        </button>
+      </article>
+    </template>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
+
