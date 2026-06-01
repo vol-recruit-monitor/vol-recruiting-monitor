@@ -13,6 +13,9 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   scrape-and-deploy:
     runs-on: ubuntu-latest
@@ -40,22 +43,27 @@ jobs:
       - name: 📦 Install dependencies
         run: pip install -r requirements.txt
 
-      # 5. Run the scraper
+      # 5. Ensure data folder exists
+      - name: 📁 Ensure data folder exists
+        run: mkdir -p data
+
+      # 6. Run the scraper (continue even if scraper hits errors)
       - name: 🏈 Run Recruiting Scraper
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
         run: python scraper.py
+        continue-on-error: true
 
-      # 6. Commit updated data
+      # 7. Commit updated data (only if offers.json changed)
       - name: 💾 Commit updated offer data
         run: |
           git config user.name "Vol Recruiting Bot"
           git config user.email "bot@vols.utk.edu"
-          git add data/offers.json
+          git add data/ || true
           git diff --staged --quiet || git commit -m "🏈 Update offers — $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push
+          git push || true
 
-      # 7. Deploy to GitHub Pages
+      # 8. Deploy to GitHub Pages
       - name: 🌐 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
