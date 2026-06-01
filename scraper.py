@@ -183,904 +183,1004 @@ def is_valid_player_name(name: str) -> bool:
 def make_id(name: str, year: str) -> str:
     return hashlib.md5(f"{name.lower().strip()}{year}".encode()).hexdigest()[:12]
 
-def in_footprint(text: str) -> bool:
-    tu = text.upper()
-    for abbr in FOOTPRINT_STATES:
-        if re.search(r'\b' + abbr + r'\b', tu):
-            return True
-    tl = text.lower()
-    for full_name in STATE_FULL:
-        if full_name.lower() in tl:
+def in_footprint(state: str) -> bool:
+    if not state:
+        return False
+    s = state.strip().upper()
+    if s in FOOTPRINT_STATES:
+        return True
+    for full, abbr in STATE_FULL.items():
+        if s == full.upper():
             return True
     return False
 
-def get_state(text: str) -> str:
-    tu = text.upper()
-    for abbr in FOOTPRINT_STATES:
-        if re.search(r'\b' + abbr + r'\b', tu):
+def normalize_state(state: str) -> str:
+    if not state:
+        return ""
+    s = state.strip()
+    if s.upper() in FOOTPRINT_STATES:
+        return s.upper()
+    for full, abbr in STATE_FULL.items():
+        if s.lower() == full.lower():
             return abbr
-    tl = text.lower()
-    for full_name, abbr in STATE_FULL.items():
-        if full_name.lower() in tl:
-            return abbr
-    return ""
+    return s.upper()[:2] if len(s) >= 2 else s.upper()
 
-HEIGHT_RE = re.compile(r"(\d)['\u2019-](\d{1,2})(?:\"|″)?")
-WEIGHT_RE = re.compile(r"\b(\d{2,3})\s*(?:lbs?|pounds?)\b", re.I)
-CLASS_RE  = re.compile(r"\b(202[5-9]|203[0-2])\b")
-STARS_RE  = re.compile(r"\b([2-5])\s*[-–]?\s*star", re.I)
+def classify_offers(offers: list) -> str:
+    for o in offers:
+        if o in SEC_SCHOOLS:
+            return "SEC"
+    for o in offers:
+        if o in P4_SCHOOLS:
+            return "P4"
+    return "G6"
 
-POSITIONS = ["EDGE","ILB","OLB","QB","RB","WR","TE","OT","OG","OL",
-             "DT","DE","DL","LB","CB","ATH","DB","S","K","P","LS"]
+def gem_score(pos: str, ht: int, wt: int) -> int:
+    ideal = POSITION_IDEALS.get(pos, (73, 200))
+    ht_diff = abs(ht - ideal[0])
+    wt_diff = abs(wt - ideal[1])
+    score = max(0, 100 - ht_diff * 8 - wt_diff * 0.4)
+    return int(score)
 
-def get_height(text: str):
-    m = HEIGHT_RE.search(text)
-    if m:
-        ft, inch = int(m.group(1)), int(m.group(2))
-        if 5 <= ft <= 7 and 0 <= inch <= 11:
-            return ft * 12 + inch, f"{ft}'{inch}\""
-    return 0, ""
-
-def get_weight(text: str) -> int:
-    m = WEIGHT_RE.search(text)
-    if m:
-        w = int(m.group(1))
-        if 140 <= w <= 380:
-            return w
-    return 0
-
-def get_year(text: str) -> str:
-    m = CLASS_RE.search(text)
-    return m.group(1) if m else ""
-
-def get_stars(text: str) -> int:
-    m = STARS_RE.search(text)
-    return int(m.group(1)) if m else 0
-
-def get_position(text: str) -> str:
-    tu = text.upper()
-    for pos in POSITIONS:
-        if re.search(r'\b' + pos + r'\b', tu):
-            return pos
-    return ""
-
-def get_offers(text: str) -> list:
-    found = set()
-    tl = text.lower()
-    for school in ALL_SCHOOLS:
-        if school.lower() in tl:
-            found.add(school)
-    return sorted(found)
-
-def categorize(offers: list) -> str:
-    for s in offers:
-        if s in SEC_SCHOOLS:
-            return "sec"
-    for s in offers:
-        if s in P4_SCHOOLS:
-            return "p4"
-    return "g6"
-
-def calc_gem(player: dict) -> int:
-    pos = player.get("position", "ATH").upper()
-    matched = next((k for k in POSITION_IDEALS if k in pos), "ATH")
-    ideal_h, ideal_w = POSITION_IDEALS[matched]
-    h = player.get("height_inches", 0)
-    w = player.get("weight", 0)
-    if not h and not w:
-        return 50
-    h_score = max(0, 100 - abs(h - ideal_h) * 12) if h else 50
-    w_score = max(0, 100 - abs(w - ideal_w) / max(ideal_w, 1) * 100) if w else 50
-    return round((h_score + w_score) / 2)
-
-def build_eval(player: dict) -> dict:
-    pos = player.get("position", "ATH")
-    h_in = player.get("height_inches", 0)
-    w = player.get("weight", 0)
-    h_str = player.get("height", "")
-    stars = player.get("stars", 0)
-    offers = player.get("offers", [])
-    gem = player.get("gem_score", 50)
-    cat = player.get("category", "g6")
-
+def ai_evaluation(name, pos, ht, wt, offers):
+    """Generate evaluation from measurables and offer profile."""
     strengths, weaknesses = [], []
+    ideal = POSITION_IDEALS.get(pos, (73, 200))
 
-    if h_in and w:
-        ideal_h, ideal_w = POSITION_IDEALS.get(pos, (73, 200))
-        if h_in >= ideal_h:
-            strengths.append(f"Ideal or above-average height for {pos} ({h_str})")
-        else:
-            weaknesses.append(f"Below ideal height for {pos} ({h_str} vs {ideal_h // 12}'{ideal_h % 12}\" ideal)")
-        if w >= ideal_w * 0.95:
-            strengths.append(f"Good weight for {pos} ({w} lbs)")
-        else:
-            weaknesses.append(f"Could add weight for {pos} ({w} lbs vs {ideal_w} ideal)")
+    if ht >= ideal[0] + 1:
+        strengths.append("Elite length for position")
+    elif ht >= ideal[0]:
+        strengths.append("Good size for position")
+    else:
+        weaknesses.append("Undersized for position")
 
-    sec_offers = [o for o in offers if o in SEC_SCHOOLS]
-    p4_offers = [o for o in offers if o in P4_SCHOOLS]
-    if len(sec_offers) >= 3:
-        strengths.append(f"Elite offer sheet — {len(sec_offers)} SEC offers")
-    elif len(sec_offers) >= 1:
-        strengths.append(f"SEC-caliber talent — offers from {', '.join(sec_offers[:3])}")
-    elif len(p4_offers) >= 2:
-        strengths.append(f"P4 attention — {len(p4_offers)} Power 4 offers")
+    if wt >= ideal[1] + 10:
+        strengths.append("Physical, strong frame")
+    elif wt >= ideal[1] - 10:
+        strengths.append("Solid build")
+    else:
+        weaknesses.append("Needs to add weight")
 
-    if stars >= 4:
-        strengths.append(f"Highly rated {stars}-star prospect")
-    elif stars == 3:
-        strengths.append("Solid 3-star rating — proven talent")
-    elif stars == 0 and len(offers) >= 2:
-        weaknesses.append("Unrated — limited exposure so far")
+    n_sec = sum(1 for o in offers if o in SEC_SCHOOLS)
+    n_p4  = sum(1 for o in offers if o in P4_SCHOOLS)
+    if n_sec >= 3:
+        strengths.append(f"High SEC demand ({n_sec} offers)")
+    elif n_p4 >= 3:
+        strengths.append(f"Strong P4 interest ({n_p4} offers)")
+    elif len(offers) >= 5:
+        strengths.append(f"Wide offer sheet ({len(offers)} offers)")
+    else:
+        weaknesses.append("Limited offer sheet so far")
 
-    if gem >= 80 and cat == "g6":
-        strengths.append(f"💎 Hidden gem — P4 measurables (Gem Score: {gem}) with G6 offers only")
-    if gem >= 85:
-        strengths.append(f"Elite physical profile for position (Gem: {gem}/100)")
-
-    if len(offers) == 1:
-        weaknesses.append("Limited offer sheet — may still be early in recruitment")
-    if len(offers) >= 8:
-        strengths.append(f"Highly recruited — {len(offers)} total offers")
-
-    # position-specific
-    if pos == "QB":
-        if h_in and h_in >= 74:
-            strengths.append("Prototypical QB height — can see over the line")
-        if h_in and h_in < 72:
-            weaknesses.append("Undersized for QB — must compensate with mobility")
-    elif pos in ("WR", "CB", "S", "DB"):
-        if h_in and h_in >= 73:
-            strengths.append(f"Length advantage at {pos} — good for contested catches/press coverage")
-    elif pos in ("OL", "OT", "OG", "C"):
-        if w and w >= 285:
-            strengths.append("College-ready size on the offensive line")
-        elif w and w < 260:
-            weaknesses.append("Needs to add mass for college OL play")
-    elif pos in ("DL", "DT", "DE", "EDGE"):
-        if h_in and h_in >= 75 and w and w >= 240:
-            strengths.append("Good frame and weight combo for pass rushing")
+    if pos in ("QB", "WR", "CB", "S") and ht >= ideal[0] + 2:
+        strengths.append("Rare height at skill position")
+    if pos in ("OL", "DL", "DT") and wt >= ideal[1] + 20:
+        strengths.append("Dominant mass for trenches")
 
     if not strengths:
-        strengths.append("Prospect in Tennessee footprint — worth monitoring")
+        strengths.append("Developing prospect")
     if not weaknesses:
-        weaknesses.append("Limited data — need more film and camp results")
+        weaknesses.append("No measurable red flags")
 
-    return {"strengths": strengths[:4], "weaknesses": weaknesses[:3]}
+    return {"strengths": strengths[:3], "weaknesses": weaknesses[:3]}
 
-def build_links(name: str) -> dict:
-    """Generate search links for Hudl, UC Report, and X/Twitter."""
+def build_links(name: str, on3_url: str = "", two47_url: str = "", x_handle: str = ""):
+    """Build verified links where possible, search links as fallback."""
     q = quote_plus(name)
-    return {
-        "hudl": f"https://www.hudl.com/search?query={q}&type=athlete",
-        "uc_report": f"https://www.google.com/search?q={q}+site%3Aucreport.com",
-        "x_profile": f"https://x.com/search?q={q}+football&src=typed_query",
-    }
+    links = {}
+
+    # On3 — real URL if we have it
+    if on3_url:
+        links["on3"] = on3_url
+    else:
+        links["on3"] = f"https://www.on3.com/db/search/?query={q}"
+
+    # 247Sports — real URL if we have it
+    if two47_url:
+        links["247"] = two47_url
+    else:
+        links["247"] = f"https://247sports.com/Search/Player/?query={q}"
+
+    # Hudl — search link (no public API exists)
+    links["hudl"] = f"https://www.hudl.com/search?query={q}&organizationTypes=highSchool"
+
+    # X/Twitter — real handle if we have it, otherwise search
+    if x_handle:
+        links["x"] = f"https://x.com/{x_handle.lstrip('@')}"
+    else:
+        links["x"] = f"https://x.com/search?q={q}%20football&src=typed_query"
+
+    # UC Report
+    links["ucreport"] = f"https://www.google.com/search?q=site:ucreport.com+{q}"
+
+    return links
+
+def load_existing() -> dict:
+    """Load existing players from previous runs."""
+    if DATA_PATH.exists():
+        try:
+            with open(DATA_PATH) as f:
+                data = json.load(f)
+            log.info(f"📂 Loaded {len(data.get('players',[]))} existing players")
+            return {p["id"]: p for p in data.get("players", [])}
+        except Exception as e:
+            log.warning(f"⚠️ Could not load existing data: {e}")
+    return {}
 
 # ══════════════════════════════════════════════════════════════════════════════
-# OFFER ANNOUNCEMENT PATTERNS — what real offer tweets look like
-# ══════════════════════════════════════════════════════════════════════════════
-OFFER_PATTERNS = [
-    re.compile(r"(?:blessed|excited|honored|humbled|grateful)\s+(?:to\s+)?(?:receive|announce|say|have)\s+(?:an?\s+)?offer", re.I),
-    re.compile(r"(?:received|got|earned)\s+(?:an?\s+)?(?:offer|scholarship)", re.I),
-    re.compile(r"offer(?:ed)?\s+(?:from|by)\s+", re.I),
-    re.compile(r"(?:new|latest)\s+offer", re.I),
-    re.compile(r"(?:offer\s+list|offer\s+update)", re.I),
-    re.compile(r"(?:committed|commits|pledges|flips)\s+to\s+", re.I),
-    re.compile(r"#(?:AGTG|Blessed|Offered|GoVols|Committed)", re.I),
-]
-
-def is_offer_tweet(text: str) -> bool:
-    return any(p.search(text) for p in OFFER_PATTERNS)
-
-# ══════════════════════════════════════════════════════════════════════════════
-# NAME EXTRACTION — much smarter, context-aware
-# ══════════════════════════════════════════════════════════════════════════════
-# Pattern: "Player Name (School)" or "Player Name, a 4-star" etc
-NAME_PATTERNS = [
-    # "FirstName LastName, a X-star POS from City, State"
-    re.compile(r'\b([A-Z][a-z]{1,15})\s+([A-Z][a-z]{1,15}(?:-[A-Z][a-z]{1,15})?)\s*,\s*(?:a\s+)?\d-star', re.M),
-    # "X-star POS FirstName LastName"
-    re.compile(r'\d-star\s+\w+\s+([A-Z][a-z]{1,15})\s+([A-Z][a-z]{1,15}(?:-[A-Z][a-z]{1,15})?)\b', re.M),
-    # "offered/commits FirstName LastName"
-    re.compile(r'(?:offered|offer(?:ed)?(?:\s+to)?|commit(?:ted|s)?(?:\s+to)?)\s+([A-Z][a-z]{1,15})\s+([A-Z][a-z]{1,15}(?:-[A-Z][a-z]{1,15})?)\b', re.I | re.M),
-    # "FirstName LastName receives/earned offer"
-    re.compile(r'\b([A-Z][a-z]{1,15})\s+([A-Z][a-z]{1,15}(?:-[A-Z][a-z]{1,15})?)\s+(?:receives?|earned?|gets?|lands?|picks?\s+up)\s+(?:an?\s+)?offer', re.M),
-    # "@handle FirstName LastName" (X/Twitter style)
-    re.compile(r'@\w+\s+([A-Z][a-z]{1,15})\s+([A-Z][a-z]{1,15}(?:-[A-Z][a-z]{1,15})?)\b', re.M),
-    # Generic "FirstName LastName" after offer context (looser, used last)
-    re.compile(r'\b([A-Z][a-z]{2,15})\s+([A-Z][a-z]{2,15}(?:-[A-Z][a-z]{1,15})?)\b'),
-]
-
-def extract_player_names(text: str) -> list:
-    """Extract real player names from text using context-aware patterns."""
-    found = []
-    for pattern in NAME_PATTERNS:
-        for m in pattern.finditer(text):
-            first, last = m.group(1), m.group(2)
-            full = f"{first} {last}"
-            if is_valid_player_name(full):
-                found.append(full)
-    # Deduplicate preserving order
-    seen = set()
-    unique = []
-    for n in found:
-        nl = n.lower()
-        if nl not in seen:
-            seen.add(nl)
-            unique.append(n)
-    return unique
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 1: X / TWITTER API v2
+# SOURCE 1: X / TWITTER (Priority #1)
 # ══════════════════════════════════════════════════════════════════════════════
 def scrape_x() -> list:
-    """Pull real offer announcements from X/Twitter."""
-    players = []
+    """Search X for recruiting offer announcements."""
     if not X_BEARER:
-        log.warning("❌ X/Twitter: No bearer token — skipping")
-        return players
+        log.warning("⚠️ X_BEARER_TOKEN not set — skipping X/Twitter")
+        log.warning("   ℹ️  X API free tier does NOT include search.")
+        log.warning("   ℹ️  You need Basic tier ($100/mo) at developer.x.com")
+        return []
 
-    log.info("🐦 X/Twitter: Starting search...")
+    log.info("🐦 Searching X/Twitter...")
     headers = {"Authorization": f"Bearer {X_BEARER}"}
+    players = []
 
-    # Search queries targeting real offer announcements in footprint states
+    # Targeted queries for offer announcements
     queries = [
-        '"offer" (football OR recruit) (Tennessee OR Kentucky OR Georgia OR Alabama OR Florida OR "North Carolina" OR Virginia OR Mississippi OR Arkansas OR Missouri OR "South Carolina" OR Ohio OR Indiana OR Louisiana OR "West Virginia") -is:retweet',
-        '"blessed to receive" offer football -is:retweet',
-        '"committed to" (Tennessee OR Vols) football 2027 OR 2028 OR 2026 -is:retweet',
-        '#AGTG offer football -is:retweet',
-        '"offer from" (#SEC OR #P4 OR Tennessee OR Alabama OR Georgia OR Florida OR Auburn OR Kentucky OR LSU) -is:retweet',
+        '"blessed to receive" offer football',
+        '"offered" football (Tennessee OR Kentucky OR Georgia OR Alabama OR Florida OR Carolina)',
+        '#AGTG offer football 2027',
+        '#AGTG offer football 2026',
+        '"committed to" football (Tennessee OR Kentucky OR Georgia OR Alabama)',
+        '"all glory to god" offer football',
     ]
 
-    for i, query in enumerate(queries):
+    for query in queries:
         try:
-            log.info(f"  🔍 X query {i+1}/{len(queries)}")
-            url = "https://api.x.com/2/tweets/search/recent"
+            url = "https://api.twitter.com/2/tweets/search/recent"
             params = {
-                "query": query,
+                "query": query + " -is:retweet lang:en",
                 "max_results": 50,
-                "tweet.fields": "created_at,author_id,text",
+                "tweet.fields": "author_id,created_at,text,entities",
                 "expansions": "author_id",
                 "user.fields": "name,username",
             }
             resp = requests.get(url, headers=headers, params=params, timeout=15)
-            log.info(f"    HTTP {resp.status_code}")
+            log.info(f"   X query: {query[:60]}... → HTTP {resp.status_code}")
+
+            if resp.status_code == 403:
+                log.error("   ❌ X API returned 403 — your token lacks search access")
+                log.error("   ℹ️  Free tier = NO search. You need Basic tier ($100/mo)")
+                return players  # Don't try more queries
 
             if resp.status_code == 429:
-                log.warning("    ⚠️ Rate limited — skipping remaining X queries")
-                break
+                log.warning("   ⏳ Rate limited — waiting 15s")
+                time.sleep(15)
+                continue
+
             if resp.status_code != 200:
-                log.warning(f"    ⚠️ Non-200: {resp.text[:200]}")
+                log.warning(f"   ⚠️ HTTP {resp.status_code}: {resp.text[:200]}")
                 continue
 
             data = resp.json()
             tweets = data.get("data", [])
             users = {u["id"]: u for u in data.get("includes", {}).get("users", [])}
-            log.info(f"    📊 Got {len(tweets)} tweets")
+            log.info(f"   📨 Got {len(tweets)} tweets")
 
             for tweet in tweets:
                 text = tweet.get("text", "")
+                author = users.get(tweet.get("author_id"), {})
 
-                # Must look like an offer announcement
-                if not is_offer_tweet(text):
+                # Extract player name (tweet author for "blessed to receive" tweets)
+                player_name = None
+                x_handle = author.get("username", "")
+
+                # Pattern 1: Author IS the recruit
+                if re.search(r"(blessed|honored|excited).{0,20}(receive|announce|offer)", text, re.I):
+                    candidate = author.get("name", "")
+                    # Clean Twitter display name (remove emojis, numbers, etc.)
+                    candidate = re.sub(r"[^\w\s'-]", "", candidate).strip()
+                    candidate = re.sub(r"\s+", " ", candidate)
+                    if is_valid_player_name(candidate):
+                        player_name = candidate
+
+                # Pattern 2: Coach/team announcing offer TO someone
+                if not player_name:
+                    m = re.search(r"(?:offered|offer to|extended.{0,10}offer to)\s+(?:@\w+\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})", text)
+                    if m and is_valid_player_name(m.group(1)):
+                        player_name = m.group(1)
+
+                if not player_name:
                     continue
 
-                # Must be in footprint
-                if not in_footprint(text):
-                    continue
+                # Extract offers from tweet text
+                offers = []
+                for school in ALL_SCHOOLS:
+                    if school.lower() in text.lower():
+                        offers.append(school)
 
-                names = extract_player_names(text)
-                if not names:
-                    # Try the author's display name if it's an athlete posting
-                    author_id = tweet.get("author_id", "")
-                    if author_id in users:
-                        display = users[author_id].get("name", "")
-                        username = users[author_id].get("username", "")
-                        if is_valid_player_name(display):
-                            names = [display]
+                # Detect class year
+                year = "2027"  # default
+                for y in ["2025","2026","2027","2028","2029"]:
+                    if y in text:
+                        year = y
+                        break
 
-                state = get_state(text)
-                offers = get_offers(text)
-                year = get_year(text)
-                pos = get_position(text)
-                stars = get_stars(text)
-                h_in, h_str = get_height(text)
-                w = get_weight(text)
+                # Detect position
+                pos = "ATH"
+                for p in POSITION_IDEALS.keys():
+                    if re.search(rf'\b{p}\b', text, re.I):
+                        pos = p
+                        break
 
-                for name in names[:2]:  # max 2 players per tweet
-                    if not year:
-                        year = "2027"  # default class
-                    if not state:
-                        continue  # must have a state
+                # Detect state
+                state = ""
+                for full, abbr in STATE_FULL.items():
+                    if full.lower() in text.lower() or abbr in text:
+                        state = abbr
+                        break
 
-                    player_id = make_id(name, year)
-                    links = build_links(name)
+                pid = make_id(player_name, year)
+                links = build_links(player_name, x_handle=x_handle)
 
-                    # Get author username for tweet link
-                    author_id = tweet.get("author_id", "")
-                    tweet_url = ""
-                    if author_id in users:
-                        uname = users[author_id].get("username", "")
-                        tweet_url = f"https://x.com/{uname}/status/{tweet['id']}"
-                        links["x_profile"] = f"https://x.com/{uname}"
+                player = {
+                    "id": pid,
+                    "name": player_name,
+                    "position": pos,
+                    "state": state,
+                    "year": year,
+                    "stars": 0,
+                    "height": 0,
+                    "weight": 0,
+                    "offers": offers,
+                    "category": classify_offers(offers),
+                    "gem_score": 0,
+                    "evaluation": ai_evaluation(player_name, pos, 0, 0, offers),
+                    "links": links,
+                    "source": "x",
+                    "source_detail": f"@{x_handle}" if x_handle else "X/Twitter",
+                    "source_url": f"https://x.com/{x_handle}" if x_handle else "",
+                    "found_date": datetime.now(timezone.utc).isoformat(),
+                }
+                players.append(player)
+                log.info(f"   👤 {player_name} | {pos} | {state} | via X (@{x_handle})")
 
-                    p = {
-                        "id": player_id,
-                        "name": name,
-                        "position": pos or "ATH",
-                        "state": state,
-                        "year": year,
-                        "stars": stars,
-                        "height": h_str,
-                        "height_inches": h_in,
-                        "weight": w,
-                        "offers": offers if offers else ["Unknown"],
-                        "category": categorize(offers),
-                        "source": "X/Twitter",
-                        "source_url": tweet_url or f"https://x.com/search?q={quote_plus(name)}+offer",
-                        "links": links,
-                        "found_at": datetime.now(timezone.utc).isoformat(),
-                    }
-                    p["gem_score"] = calc_gem(p)
-                    p["evaluation"] = build_eval(p)
-                    players.append(p)
-                    log.info(f"    👤 {name} | {pos or 'ATH'} | {state} | {year} | via X/Twitter")
-
-            time.sleep(1.5)  # rate limit courtesy
+            time.sleep(2)  # Rate limit courtesy
 
         except Exception as e:
-            log.error(f"    ❌ X query {i+1} error: {e}")
+            log.error(f"   ❌ X query failed: {e}")
             continue
 
-    log.info(f"🐦 X/Twitter: Found {len(players)} valid players")
+    log.info(f"🐦 X total: {len(players)} players found")
     return players
 
 # ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 2: GOOGLE NEWS RSS (Free, always works)
-# ══════════════════════════════════════════════════════════════════════════════
-def scrape_google_news() -> list:
-    """Pull recruiting offers from Google News RSS with STRICT filtering."""
-    players = []
-    log.info("📰 Google News: Starting RSS scrape...")
-
-    # Very specific queries — reduces noise dramatically
-    queries = [
-        "high school football recruit offer Tennessee 2027",
-        "high school football recruit offer Tennessee 2028",
-        "high school football recruit offer Tennessee 2026",
-        "football recruit offer Kentucky Georgia Alabama 2027",
-        "football recruiting offer SEC commit 2027",
-        "football recruiting offer SEC commit 2028",
-        "4-star football recruit offer Southeast 2027",
-        "football recruit offer Virginia North Carolina 2027",
-        "football recruit offer Florida Mississippi 2027",
-        "football recruit offer Ohio Indiana 2027",
-    ]
-
-    for i, query in enumerate(queries):
-        try:
-            url = f"https://news.google.com/rss/search?q={quote(query)}&hl=en-US&gl=US&ceid=US:en"
-            log.info(f"  🔍 News query {i+1}/{len(queries)}: {query[:50]}...")
-            resp = requests.get(url, headers=HEADERS, timeout=12)
-            log.info(f"    HTTP {resp.status_code}")
-
-            if resp.status_code != 200:
-                continue
-
-            soup = BeautifulSoup(resp.text, "lxml-xml")
-            items = soup.find_all("item")
-            log.info(f"    📊 Got {len(items)} articles")
-
-            for item in items[:15]:  # limit per query
-                title = item.find("title")
-                title_text = title.get_text(strip=True) if title else ""
-                desc = item.find("description")
-                desc_text = desc.get_text(strip=True) if desc else ""
-                link = item.find("link")
-                link_text = link.get_text(strip=True) if link else ""
-                source_el = item.find("source")
-                source_name = source_el.get_text(strip=True) if source_el else "Google News"
-
-                combined = f"{title_text} {desc_text}"
-
-                # MUST contain offer-related keywords
-                offer_words = ["offer", "commit", "recruit", "prospect", "pledge", "flip", "decommit"]
-                if not any(w in combined.lower() for w in offer_words):
-                    continue
-
-                # Must be in footprint
-                if not in_footprint(combined):
-                    continue
-
-                names = extract_player_names(combined)
-
-                state = get_state(combined)
-                offers = get_offers(combined)
-                year = get_year(combined)
-                pos = get_position(combined)
-                stars = get_stars(combined)
-                h_in, h_str = get_height(combined)
-                w = get_weight(combined)
-
-                for name in names[:2]:
-                    if not state:
-                        continue
-                    if not year:
-                        year = "2027"
-
-                    player_id = make_id(name, year)
-                    links = build_links(name)
-
-                    p = {
-                        "id": player_id,
-                        "name": name,
-                        "position": pos or "ATH",
-                        "state": state,
-                        "year": year,
-                        "stars": stars,
-                        "height": h_str,
-                        "height_inches": h_in,
-                        "weight": w,
-                        "offers": offers if offers else ["Unknown"],
-                        "category": categorize(offers),
-                        "source": f"Google News ({source_name})",
-                        "source_url": link_text,
-                        "links": links,
-                        "found_at": datetime.now(timezone.utc).isoformat(),
-                    }
-                    p["gem_score"] = calc_gem(p)
-                    p["evaluation"] = build_eval(p)
-                    players.append(p)
-                    log.info(f"    👤 {name} | {pos or 'ATH'} | {state} | {year} | via {source_name}")
-
-            time.sleep(0.8)
-
-        except Exception as e:
-            log.error(f"    ❌ News query {i+1} error: {e}")
-            continue
-
-    log.info(f"📰 Google News: Found {len(players)} valid players")
-    return players
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 3: ON3 RECRUITING
+# SOURCE 2: ON3 (HTML + Embedded JSON Scraping)
 # ══════════════════════════════════════════════════════════════════════════════
 def scrape_on3() -> list:
-    """Scrape On3 recruiting pages for Tennessee footprint offers."""
+    """Scrape On3 recruit database pages."""
+    log.info("🟢 Scraping On3...")
     players = []
-    log.info("🏈 On3: Starting scrape...")
+    session = requests.Session()
+    session.headers.update(HEADERS)
 
-    urls = [
-        "https://www.on3.com/db/rankings/player/industry/football/2027/",
-        "https://www.on3.com/db/rankings/player/industry/football/2028/",
-        "https://www.on3.com/db/rankings/player/industry/football/2026/",
-        "https://www.on3.com/college/tennessee-volunteers/recruiting/commits/",
-    ]
+    # Strategy: Hit state ranking pages for each footprint state
+    for year in ["2026", "2027", "2028"]:
+        for state in FOOTPRINT_STATES:
+            urls = [
+                f"https://www.on3.com/db/rankings/player/prospects/football/{year}/?state_abbreviation={state}",
+                f"https://www.on3.com/db/rankings/player/prospects/football/{year}/?state={state}",
+            ]
+            for url in urls:
+                try:
+                    resp = session.get(url, timeout=15)
+                    log.info(f"   On3 {year}/{state} → HTTP {resp.status_code} ({len(resp.text)} bytes)")
 
-    for url in urls:
-        try:
-            log.info(f"  🔍 Fetching: {url}")
-            resp = requests.get(url, headers=HEADERS, timeout=15)
-            log.info(f"    HTTP {resp.status_code}")
+                    if resp.status_code != 200:
+                        continue
 
-            if resp.status_code != 200:
+                    # Strategy 1: Look for __NEXT_DATA__ embedded JSON
+                    soup = BeautifulSoup(resp.text, "lxml")
+                    script = soup.find("script", id="__NEXT_DATA__")
+                    if script and script.string:
+                        try:
+                            jdata = json.loads(script.string)
+                            found = _parse_on3_json(jdata, year, state)
+                            if found:
+                                players.extend(found)
+                                log.info(f"   ✅ On3 JSON: {len(found)} players from {state} {year}")
+                                break  # Got data, skip alternate URL
+                        except json.JSONDecodeError:
+                            pass
+
+                    # Strategy 2: Parse HTML directly
+                    found = _parse_on3_html(soup, year, state)
+                    if found:
+                        players.extend(found)
+                        log.info(f"   ✅ On3 HTML: {len(found)} players from {state} {year}")
+                        break
+
+                    time.sleep(1)
+
+                except Exception as e:
+                    log.warning(f"   ⚠️ On3 {year}/{state} failed: {e}")
+                    continue
+
+    log.info(f"🟢 On3 total: {len(players)} players found")
+    return players
+
+
+def _parse_on3_json(jdata: dict, year: str, state: str) -> list:
+    """Extract player data from On3's __NEXT_DATA__ JSON."""
+    players = []
+    try:
+        # Navigate the JSON tree — On3 uses Next.js
+        # The structure varies, so we search recursively
+        found_players = []
+        _find_players_recursive(jdata, found_players)
+
+        for p in found_players:
+            name = p.get("fullName") or p.get("name") or p.get("firstName","") + " " + p.get("lastName","")
+            name = name.strip()
+            if not is_valid_player_name(name):
                 continue
 
-            soup = BeautifulSoup(resp.text, "html.parser")
+            pos = p.get("position", {}).get("abbreviation") or p.get("position","") or "ATH"
+            if isinstance(pos, dict):
+                pos = pos.get("abbreviation", "ATH")
+            pos = pos.upper() if isinstance(pos, str) else "ATH"
 
-            # Try __NEXT_DATA__ JSON blob (On3 uses Next.js)
-            script = soup.find("script", id="__NEXT_DATA__")
-            if script:
-                try:
-                    data = json.loads(script.string)
-                    # Navigate the JSON tree to find player data
-                    props = data.get("props", {}).get("pageProps", {})
+            ht = p.get("height") or 0
+            wt = p.get("weight") or 0
+            stars = p.get("stars") or p.get("rating",{}).get("stars",0) or 0
 
-                    # Try multiple paths
-                    player_list = (
-                        props.get("players", []) or
-                        props.get("rankings", []) or
-                        props.get("commits", []) or
-                        props.get("data", {}).get("players", []) or
-                        []
-                    )
+            slug = p.get("slug") or p.get("key") or ""
+            on3_url = f"https://www.on3.com/db/{slug}/" if slug else ""
 
-                    log.info(f"    📊 Found {len(player_list)} entries in __NEXT_DATA__")
+            # Extract offers if available
+            offers = []
+            for o in p.get("recruitInterests", p.get("offers", [])):
+                if isinstance(o, dict):
+                    school = o.get("organization",{}).get("name") or o.get("school","")
+                    if school and school in ALL_SCHOOLS:
+                        offers.append(school)
 
-                    for entry in player_list:
-                        # On3 data can be nested differently
-                        player_data = entry.get("player", entry)
-                        name = player_data.get("fullName") or player_data.get("name") or ""
-                        if not name or not is_valid_player_name(name):
-                            continue
+            # Social media handles
+            x_handle = ""
+            socials = p.get("socialMedia", p.get("socials", []))
+            if isinstance(socials, list):
+                for s in socials:
+                    if isinstance(s, dict) and "twitter" in s.get("type","").lower():
+                        x_handle = s.get("handle", s.get("username", ""))
 
-                        hometown = player_data.get("hometown", {})
-                        state_raw = ""
-                        if isinstance(hometown, dict):
-                            state_raw = hometown.get("stateAbbreviation") or hometown.get("state", "")
-                        elif isinstance(hometown, str):
-                            state_raw = hometown
+            pid = make_id(name, year)
+            gs = gem_score(pos, ht, wt) if ht > 0 and wt > 0 else 0
+            links = build_links(name, on3_url=on3_url, x_handle=x_handle)
 
-                        # Check footprint
-                        if state_raw.upper() not in FOOTPRINT_STATES:
-                            state_raw = get_state(str(player_data))
-                            if not state_raw:
-                                continue
+            player = {
+                "id": pid,
+                "name": name,
+                "position": pos,
+                "state": normalize_state(state),
+                "year": year,
+                "stars": int(stars) if stars else 0,
+                "height": int(ht) if ht else 0,
+                "weight": int(wt) if wt else 0,
+                "offers": offers,
+                "category": classify_offers(offers),
+                "gem_score": gs,
+                "evaluation": ai_evaluation(name, pos, int(ht or 0), int(wt or 0), offers),
+                "links": links,
+                "source": "on3",
+                "source_detail": "On3 Database",
+                "source_url": on3_url,
+                "found_date": datetime.now(timezone.utc).isoformat(),
+            }
+            players.append(player)
 
-                        state = state_raw.upper() if state_raw.upper() in FOOTPRINT_STATES else get_state(state_raw)
-                        if not state:
-                            continue
+    except Exception as e:
+        log.warning(f"   ⚠️ On3 JSON parse error: {e}")
 
-                        pos = player_data.get("position", {})
-                        if isinstance(pos, dict):
-                            pos = pos.get("abbreviation", "ATH")
-                        elif not pos:
-                            pos = "ATH"
+    return players
 
-                        year = str(player_data.get("year", "")) or get_year(str(player_data))
-                        stars = player_data.get("rating", 0) or player_data.get("stars", 0)
-                        if isinstance(stars, float):
-                            stars = round(stars)
 
-                        h_str = player_data.get("height", "")
-                        w = player_data.get("weight", 0)
-                        h_in = 0
-                        if h_str:
-                            h_in, h_str = get_height(str(h_str))
-                        if isinstance(w, str):
-                            w = get_weight(w)
+def _find_players_recursive(obj, results, depth=0):
+    """Recursively search JSON for player-like objects."""
+    if depth > 15:
+        return
+    if isinstance(obj, dict):
+        # Check if this dict looks like a player
+        has_name = "fullName" in obj or "firstName" in obj or ("name" in obj and "position" in obj)
+        has_player_fields = "height" in obj or "weight" in obj or "stars" in obj or "rating" in obj
+        if has_name and has_player_fields:
+            results.append(obj)
+        else:
+            for v in obj.values():
+                _find_players_recursive(v, results, depth + 1)
+    elif isinstance(obj, list):
+        for item in obj:
+            _find_players_recursive(item, results, depth + 1)
 
-                        player_id = make_id(name, year or "2027")
-                        links = build_links(name)
 
-                        # Try to get On3 profile link
-                        slug = player_data.get("slug", "")
-                        if slug:
-                            links["on3_profile"] = f"https://www.on3.com/db/{slug}/"
+def _parse_on3_html(soup: BeautifulSoup, year: str, state: str) -> list:
+    """Parse On3 HTML for player data."""
+    players = []
 
-                        p = {
-                            "id": player_id,
-                            "name": name,
-                            "position": str(pos),
-                            "state": state,
-                            "year": year or "2027",
-                            "stars": int(stars) if stars else 0,
-                            "height": h_str,
-                            "height_inches": h_in,
-                            "weight": int(w) if w else 0,
-                            "offers": get_offers(str(player_data)),
-                            "category": categorize(get_offers(str(player_data))),
-                            "source": "On3",
-                            "source_url": url,
-                            "links": links,
-                            "found_at": datetime.now(timezone.utc).isoformat(),
-                        }
-                        p["gem_score"] = calc_gem(p)
-                        p["evaluation"] = build_eval(p)
-                        players.append(p)
-                        log.info(f"    👤 {name} | {pos} | {state} | {year} | via On3")
+    # Look for player rows/cards by common CSS patterns
+    selectors = [
+        "a[href*='/db/']",
+        "[class*='PlayerRow']",
+        "[class*='player-row']",
+        "[class*='recruit']",
+        "tr[class*='player']",
+        ".rankings-list li",
+    ]
 
-                except json.JSONDecodeError:
-                    log.warning("    ⚠️ Failed to parse __NEXT_DATA__")
+    for selector in selectors:
+        try:
+            elements = soup.select(selector)
+            if not elements:
+                continue
 
-            # Fallback: parse HTML tables/lists
-            rows = soup.select(".PlayerRow, .MuiTableRow-root, .rankings-player, tr[data-player]")
-            log.info(f"    📊 Found {len(rows)} HTML player rows")
-            for row in rows[:50]:
-                text = row.get_text(" ", strip=True)
-                names_found = extract_player_names(text)
-                state = get_state(text)
-                if not state:
+            for el in elements:
+                # Try to extract player name
+                name = ""
+                name_el = el.select_one("[class*='name'], [class*='Name'], h3, h4, .player-name")
+                if name_el:
+                    name = name_el.get_text(strip=True)
+                elif el.name == "a":
+                    name = el.get_text(strip=True)
+
+                name = re.sub(r"[^\w\s'-]", "", name).strip()
+                name = re.sub(r"\s+", " ", name)
+
+                if not is_valid_player_name(name):
                     continue
-                for name in names_found[:1]:
-                    year = get_year(text) or "2027"
-                    player_id = make_id(name, year)
-                    links = build_links(name)
-                    offers = get_offers(text)
-                    p = {
-                        "id": player_id,
-                        "name": name,
-                        "position": get_position(text) or "ATH",
-                        "state": state,
-                        "year": year,
-                        "stars": get_stars(text),
-                        "height": get_height(text)[1],
-                        "height_inches": get_height(text)[0],
-                        "weight": get_weight(text),
-                        "offers": offers if offers else ["Unknown"],
-                        "category": categorize(offers),
-                        "source": "On3",
-                        "source_url": url,
-                        "links": links,
-                        "found_at": datetime.now(timezone.utc).isoformat(),
-                    }
-                    p["gem_score"] = calc_gem(p)
-                    p["evaluation"] = build_eval(p)
-                    players.append(p)
-                    log.info(f"    👤 {name} | {p['position']} | {state} | {year} | via On3 HTML")
+
+                # Get profile URL
+                on3_url = ""
+                if el.name == "a" and el.get("href","").startswith("/db/"):
+                    on3_url = "https://www.on3.com" + el["href"]
+                else:
+                    link = el.find("a", href=re.compile(r"/db/"))
+                    if link:
+                        on3_url = "https://www.on3.com" + link["href"]
+
+                # Extract position
+                pos = "ATH"
+                pos_el = el.select_one("[class*='position'], [class*='Position'], .pos")
+                if pos_el:
+                    pos_text = pos_el.get_text(strip=True).upper()
+                    if pos_text in POSITION_IDEALS:
+                        pos = pos_text
+
+                # Extract measurables from surrounding text
+                text = el.get_text(" ", strip=True)
+                ht, wt = 0, 0
+                ht_m = re.search(r"(\d)['\u2019-](\d{1,2})", text)
+                if ht_m:
+                    ht = int(ht_m.group(1)) * 12 + int(ht_m.group(2))
+                wt_m = re.search(r"(\d{2,3})\s*(?:lbs?|pounds)", text, re.I)
+                if wt_m:
+                    wt = int(wt_m.group(1))
+
+                # Stars
+                stars = 0
+                star_el = el.select_one("[class*='star'], [class*='Star'], .rating")
+                if star_el:
+                    s_m = re.search(r"(\d)", star_el.get_text())
+                    if s_m:
+                        stars = int(s_m.group(1))
+
+                pid = make_id(name, year)
+                gs = gem_score(pos, ht, wt) if ht > 0 and wt > 0 else 0
+                links = build_links(name, on3_url=on3_url)
+
+                player = {
+                    "id": pid,
+                    "name": name,
+                    "position": pos,
+                    "state": normalize_state(state),
+                    "year": year,
+                    "stars": stars,
+                    "height": ht,
+                    "weight": wt,
+                    "offers": [],
+                    "category": "G6",
+                    "gem_score": gs,
+                    "evaluation": ai_evaluation(name, pos, ht, wt, []),
+                    "links": links,
+                    "source": "on3",
+                    "source_detail": "On3 Rankings",
+                    "source_url": on3_url,
+                    "found_date": datetime.now(timezone.utc).isoformat(),
+                }
+                players.append(player)
+
+            if players:
+                break  # Found data with this selector
 
         except Exception as e:
-            log.error(f"    ❌ On3 error: {e}")
+            log.warning(f"   ⚠️ On3 selector '{selector}' failed: {e}")
             continue
 
-    log.info(f"🏈 On3: Found {len(players)} valid players")
     return players
 
 # ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 4: 247SPORTS
+# SOURCE 3: 247SPORTS (HTML + Embedded JSON Scraping)
 # ══════════════════════════════════════════════════════════════════════════════
 def scrape_247() -> list:
-    """Scrape 247Sports for Tennessee footprint recruiting data."""
+    """Scrape 247Sports recruit rankings and Tennessee target pages."""
+    log.info("📊 Scraping 247Sports...")
     players = []
-    log.info("⭐ 247Sports: Starting scrape...")
+    session = requests.Session()
+    session.headers.update(HEADERS)
+    session.headers["Referer"] = "https://www.google.com/"
 
-    urls = [
-        "https://247sports.com/Season/2027-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=TN",
-        "https://247sports.com/Season/2027-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=KY",
-        "https://247sports.com/Season/2027-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=GA",
-        "https://247sports.com/Season/2027-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=AL",
-        "https://247sports.com/Season/2027-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=FL",
-        "https://247sports.com/Season/2028-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=TN",
-        "https://247sports.com/Season/2028-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=GA",
-        "https://247sports.com/Season/2026-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State=TN",
-        "https://247sports.com/college/tennessee/Season/2027-Football/Targets/",
-        "https://247sports.com/college/tennessee/Season/2028-Football/Targets/",
+    # Strategy: State ranking pages + Tennessee-specific pages
+    urls = []
+    for year in ["2026", "2027", "2028"]:
+        for state in FOOTPRINT_STATES:
+            urls.append((
+                f"https://247sports.com/Season/{year}-Football/CompositeRecruitRankings/?InstitutionGroup=HighSchool&State={state}",
+                year, state
+            ))
+        # Tennessee-specific pages
+        urls.append((
+            f"https://247sports.com/college/tennessee/Season/{year}-Football/Targets/",
+            year, "TN"
+        ))
+        urls.append((
+            f"https://247sports.com/college/tennessee/Season/{year}-Football/Commits/",
+            year, "TN"
+        ))
+
+    for url, year, state in urls:
+        try:
+            resp = session.get(url, timeout=15)
+            log.info(f"   247 {year}/{state} → HTTP {resp.status_code} ({len(resp.text)} bytes)")
+
+            if resp.status_code != 200:
+                time.sleep(1)
+                continue
+
+            soup = BeautifulSoup(resp.text, "lxml")
+
+            # Strategy 1: Look for embedded JSON
+            for script in soup.find_all("script"):
+                if script.string and ("playerData" in script.string or "recruitRankings" in script.string):
+                    try:
+                        # Try to extract JSON from script content
+                        json_match = re.search(r'(\[{.*?}\])', script.string, re.DOTALL)
+                        if json_match:
+                            jdata = json.loads(json_match.group(1))
+                            for p in jdata:
+                                name = p.get("name","") or (p.get("firstName","") + " " + p.get("lastName",""))
+                                name = name.strip()
+                                if not is_valid_player_name(name):
+                                    continue
+                                # Extract what we can
+                                pos = p.get("position","ATH")
+                                ht = p.get("height", 0)
+                                wt = p.get("weight", 0)
+                                profile_url = p.get("url","")
+                                if profile_url and not profile_url.startswith("http"):
+                                    profile_url = f"https://247sports.com{profile_url}"
+
+                                pid = make_id(name, year)
+                                gs = gem_score(pos, ht, wt) if ht and wt else 0
+                                links = build_links(name, two47_url=profile_url)
+
+                                player = {
+                                    "id": pid, "name": name, "position": pos,
+                                    "state": normalize_state(state), "year": year,
+                                    "stars": p.get("stars",0), "height": ht, "weight": wt,
+                                    "offers": [], "category": "G6",
+                                    "gem_score": gs,
+                                    "evaluation": ai_evaluation(name, pos, ht, wt, []),
+                                    "links": links, "source": "247sports",
+                                    "source_detail": "247Sports Composite",
+                                    "source_url": profile_url,
+                                    "found_date": datetime.now(timezone.utc).isoformat(),
+                                }
+                                players.append(player)
+                    except (json.JSONDecodeError, Exception):
+                        pass
+
+            # Strategy 2: HTML parsing
+            found = _parse_247_html(soup, year, state)
+            if found:
+                players.extend(found)
+                log.info(f"   ✅ 247 HTML: {len(found)} players from {state} {year}")
+
+            time.sleep(1.5)  # Be respectful
+
+        except Exception as e:
+            log.warning(f"   ⚠️ 247 {year}/{state} failed: {e}")
+            continue
+
+    log.info(f"📊 247Sports total: {len(players)} players found")
+    return players
+
+
+def _parse_247_html(soup: BeautifulSoup, year: str, state: str) -> list:
+    """Parse 247Sports HTML for recruit data."""
+    players = []
+
+    # 247 uses various list formats
+    selectors = [
+        "li.rankings-page__list-item",
+        ".recruit",
+        "li[class*='ranking']",
+        ".player",
+        "tr.recruit-row",
+        ".target-content",
     ]
 
-    for url in urls:
-        try:
-            # Extract state from URL
-            state_match = re.search(r'State=(\w+)', url)
-            url_state = state_match.group(1) if state_match else ""
+    for selector in selectors:
+        elements = soup.select(selector)
+        if not elements:
+            continue
 
-            log.info(f"  🔍 Fetching: {url}")
-            resp = requests.get(url, headers=HEADERS, timeout=15)
-            log.info(f"    HTTP {resp.status_code}")
+        for el in elements:
+            try:
+                # Extract name
+                name = ""
+                name_el = el.select_one("a.rankings-page__name-link, .recruit-name a, .player-name a, a[href*='/Player/'], a[href*='/player/']")
+                if name_el:
+                    name = name_el.get_text(strip=True)
+                else:
+                    name_el = el.select_one(".name, h3, h4")
+                    if name_el:
+                        name = name_el.get_text(strip=True)
+
+                name = re.sub(r"[^\w\s'-]", "", name).strip()
+                name = re.sub(r"\s+", " ", name)
+                if not is_valid_player_name(name):
+                    continue
+
+                # Profile URL
+                two47_url = ""
+                profile_link = el.select_one("a[href*='/Player/'], a[href*='/player/']")
+                if profile_link:
+                    href = profile_link.get("href", "")
+                    if href.startswith("/"):
+                        two47_url = f"https://247sports.com{href}"
+                    elif href.startswith("http"):
+                        two47_url = href
+
+                # Position
+                pos = "ATH"
+                pos_el = el.select_one(".position, .pos, [class*='position']")
+                if pos_el:
+                    pos_text = pos_el.get_text(strip=True).upper()
+                    if pos_text in POSITION_IDEALS:
+                        pos = pos_text
+
+                # Measurables
+                text = el.get_text(" ", strip=True)
+                ht, wt = 0, 0
+                ht_m = re.search(r"(\d)['\u2019-](\d{1,2})", text)
+                if ht_m:
+                    ht = int(ht_m.group(1)) * 12 + int(ht_m.group(2))
+                wt_m = re.search(r"(\d{2,3})\s*(?:lbs?|pounds)", text, re.I)
+                if wt_m:
+                    wt = int(wt_m.group(1))
+
+                # Stars
+                stars = 0
+                star_el = el.select_one("[class*='star'], .rating, .score")
+                if star_el:
+                    s_m = re.search(r"(\d)", star_el.get_text())
+                    if s_m:
+                        stars = int(s_m.group(1))
+
+                pid = make_id(name, year)
+                gs = gem_score(pos, ht, wt) if ht > 0 and wt > 0 else 0
+                links = build_links(name, two47_url=two47_url)
+
+                player = {
+                    "id": pid, "name": name, "position": pos,
+                    "state": normalize_state(state), "year": year,
+                    "stars": stars, "height": ht, "weight": wt,
+                    "offers": [], "category": "G6",
+                    "gem_score": gs,
+                    "evaluation": ai_evaluation(name, pos, ht, wt, []),
+                    "links": links, "source": "247sports",
+                    "source_detail": "247Sports Rankings",
+                    "source_url": two47_url,
+                    "found_date": datetime.now(timezone.utc).isoformat(),
+                }
+                players.append(player)
+                log.info(f"   👤 {name} | {pos} | {state} | via 247Sports")
+
+            except Exception:
+                continue
+
+        if players:
+            break
+
+    return players
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SOURCE 4: GOOGLE NEWS RSS (Backup — STRICT filtering)
+# ══════════════════════════════════════════════════════════════════════════════
+def scrape_google_news() -> list:
+    """Google News RSS — backup source with extremely strict name filtering."""
+    log.info("📰 Scraping Google News RSS (strict mode)...")
+    players = []
+
+    # Very specific queries — must include offer language
+    queries = [
+        '"receives offer" football recruit Tennessee',
+        '"offered by" football Tennessee 2027',
+        '"blessed to receive" offer football Tennessee',
+        '"picks up offer" football SEC',
+        '"receives offer" football recruit Kentucky',
+        '"receives offer" football recruit Georgia',
+        '"receives offer" football recruit Alabama',
+        '"receives offer" football recruit Florida',
+        '"receives offer" football recruit North Carolina',
+        '"receives offer" football recruit Virginia',
+    ]
+
+    for query in queries:
+        try:
+            url = f"https://news.google.com/rss/search?q={quote(query)}&hl=en-US&gl=US&ceid=US:en"
+            resp = requests.get(url, headers=HEADERS, timeout=10)
+            log.info(f"   News query: {query[:55]}... → HTTP {resp.status_code}")
 
             if resp.status_code != 200:
                 continue
 
-            soup = BeautifulSoup(resp.text, "html.parser")
+            soup = BeautifulSoup(resp.text, "xml")
+            items = soup.find_all("item")
+            log.info(f"   📰 Got {len(items)} articles")
 
-            # Try __NEXT_DATA__ first
-            script = soup.find("script", id="__NEXT_DATA__")
-            if script:
-                try:
-                    data = json.loads(script.string)
-                    props = data.get("props", {}).get("pageProps", {})
-                    recruits = (
-                        props.get("recruits", []) or
-                        props.get("players", []) or
-                        props.get("rankings", {}).get("items", []) or
-                        props.get("data", {}).get("recruits", []) or
-                        []
-                    )
-                    log.info(f"    📊 Found {len(recruits)} in __NEXT_DATA__")
+            for item in items:
+                title = item.find("title")
+                link = item.find("link")
+                source = item.find("source")
 
-                    for r in recruits:
-                        rec = r.get("recruit", r) if isinstance(r, dict) else {}
-                        name = rec.get("name") or rec.get("fullName", "")
-                        if not name or not is_valid_player_name(name):
-                            continue
-
-                        state = rec.get("state", "") or rec.get("stateAbbr", "") or url_state
-                        if state.upper() not in FOOTPRINT_STATES:
-                            continue
-                        state = state.upper()
-
-                        pos = rec.get("position", "ATH")
-                        year = str(rec.get("year", "")) or get_year(str(rec))
-                        stars = rec.get("stars", 0) or rec.get("rating", 0)
-                        h_str = rec.get("height", "")
-                        w = rec.get("weight", 0)
-                        h_in = 0
-                        if h_str:
-                            h_in, h_str = get_height(str(h_str))
-
-                        player_id = make_id(name, year or "2027")
-                        links = build_links(name)
-                        offers = get_offers(str(rec))
-
-                        p = {
-                            "id": player_id,
-                            "name": name,
-                            "position": str(pos),
-                            "state": state,
-                            "year": year or "2027",
-                            "stars": int(stars) if stars else 0,
-                            "height": h_str,
-                            "height_inches": h_in,
-                            "weight": int(w) if w else 0,
-                            "offers": offers if offers else ["Unknown"],
-                            "category": categorize(offers),
-                            "source": "247Sports",
-                            "source_url": url,
-                            "links": links,
-                            "found_at": datetime.now(timezone.utc).isoformat(),
-                        }
-                        p["gem_score"] = calc_gem(p)
-                        p["evaluation"] = build_eval(p)
-                        players.append(p)
-                        log.info(f"    👤 {name} | {pos} | {state} | {year} | via 247Sports")
-
-                except json.JSONDecodeError:
-                    log.warning("    ⚠️ Failed to parse 247 __NEXT_DATA__")
-
-            # Fallback: HTML parsing
-            rows = soup.select(".recruit, .rankings-page__list-item, li.rankings-page__list-item, .player")
-            log.info(f"    📊 Found {len(rows)} HTML player rows")
-            for row in rows[:50]:
-                text = row.get_text(" ", strip=True)
-                names_found = extract_player_names(text)
-                state = get_state(text) or url_state.upper()
-                if state not in FOOTPRINT_STATES:
+                if not title:
                     continue
-                for name in names_found[:1]:
-                    year = get_year(text) or "2027"
-                    player_id = make_id(name, year)
+
+                title_text = title.get_text(strip=True)
+                article_url = link.get_text(strip=True) if link else ""
+                source_name = source.get_text(strip=True) if source else "Google News"
+
+                # STRICT: Title must contain offer language
+                if not re.search(r"(offer|commit|pledge|flip|decommit|receiv)", title_text, re.I):
+                    continue
+
+                # Extract candidate names from title
+                names = extract_player_names(title_text)
+
+                for name in names:
+                    if not is_valid_player_name(name):
+                        log.info(f"   🚫 Filtered: '{name}' (failed validation)")
+                        continue
+
+                    # Detect year
+                    year = "2027"
+                    for y in ["2025","2026","2027","2028","2029"]:
+                        if y in title_text:
+                            year = y
+                            break
+
+                    # Detect state
+                    state = ""
+                    for full, abbr in STATE_FULL.items():
+                        if full.lower() in title_text.lower():
+                            state = abbr
+                            break
+                    if not state:
+                        for abbr in FOOTPRINT_STATES:
+                            if f" {abbr} " in title_text or title_text.endswith(f" {abbr}"):
+                                state = abbr
+                                break
+
+                    if not in_footprint(state):
+                        continue
+
+                    # Detect position
+                    pos = "ATH"
+                    for p in POSITION_IDEALS.keys():
+                        if re.search(rf'\b{p}\b', title_text, re.I):
+                            pos = p
+                            break
+
+                    # Extract offers mentioned
+                    offers = []
+                    for school in ALL_SCHOOLS:
+                        if school.lower() in title_text.lower():
+                            offers.append(school)
+
+                    pid = make_id(name, year)
                     links = build_links(name)
-                    offers = get_offers(text)
-                    p = {
-                        "id": player_id,
-                        "name": name,
-                        "position": get_position(text) or "ATH",
-                        "state": state,
-                        "year": year,
-                        "stars": get_stars(text),
-                        "height": get_height(text)[1],
-                        "height_inches": get_height(text)[0],
-                        "weight": get_weight(text),
-                        "offers": offers if offers else ["Unknown"],
-                        "category": categorize(offers),
-                        "source": "247Sports",
-                        "source_url": url,
-                        "links": links,
-                        "found_at": datetime.now(timezone.utc).isoformat(),
+
+                    player = {
+                        "id": pid, "name": name, "position": pos,
+                        "state": state, "year": year,
+                        "stars": 0, "height": 0, "weight": 0,
+                        "offers": offers, "category": classify_offers(offers),
+                        "gem_score": 0,
+                        "evaluation": ai_evaluation(name, pos, 0, 0, offers),
+                        "links": links, "source": "news",
+                        "source_detail": source_name,
+                        "source_url": article_url,
+                        "found_date": datetime.now(timezone.utc).isoformat(),
                     }
-                    p["gem_score"] = calc_gem(p)
-                    p["evaluation"] = build_eval(p)
-                    players.append(p)
-                    log.info(f"    👤 {name} | {p['position']} | {state} | {year} | via 247 HTML")
+                    players.append(player)
+                    log.info(f"   👤 {name} | {pos} | {state} | via {source_name}")
+
+            time.sleep(1)
 
         except Exception as e:
-            log.error(f"    ❌ 247 error: {e}")
+            log.error(f"   ❌ News query failed: {e}")
             continue
 
-    log.info(f"⭐ 247Sports: Found {len(players)} valid players")
+    log.info(f"📰 Google News total: {len(players)} players found")
     return players
+
+
+def extract_player_names(text: str) -> list:
+    """Extract potential player names from a headline. Very strict."""
+    names = []
+
+    # Pattern 1: "Firstname Lastname receives/picks up/gets offer"
+    for m in re.finditer(r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})\s+(?:receives?|picks?\s+up|gets?|lands?|earns?|adds?)", text):
+        names.append(m.group(1))
+
+    # Pattern 2: "offer to Firstname Lastname"
+    for m in re.finditer(r"offer(?:ed)?\s+(?:to\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})", text):
+        names.append(m.group(1))
+
+    # Pattern 3: "Firstname Lastname commits/pledges/flips"
+    for m in re.finditer(r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})\s+(?:commits?|pledges?|flips?|decommits?)", text):
+        names.append(m.group(1))
+
+    # Pattern 4: "Star/rated Firstname Lastname" (e.g. "4-star John Smith")
+    for m in re.finditer(r"\d-star\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})", text):
+        names.append(m.group(1))
+
+    # Pattern 5: Position + Name (e.g. "QB John Smith")
+    pos_list = "|".join(POSITION_IDEALS.keys())
+    for m in re.finditer(rf"(?:{pos_list})\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){{1,2}})", text):
+        names.append(m.group(1))
+
+    # Deduplicate
+    seen = set()
+    unique = []
+    for n in names:
+        nl = n.lower()
+        if nl not in seen:
+            seen.add(nl)
+            unique.append(n)
+
+    return unique
 
 # ══════════════════════════════════════════════════════════════════════════════
 # MERGE + DEDUPLICATE
 # ══════════════════════════════════════════════════════════════════════════════
-def merge_players(existing: list, new_players: list) -> list:
-    """Merge new players with existing, deduplicating by ID. New data enriches old."""
-    by_id = {}
-
-    # Load existing first
-    for p in existing:
-        pid = p.get("id", make_id(p.get("name", ""), p.get("year", "2027")))
-        by_id[pid] = p
-
-    # Merge new — enrich with better data
+def merge_players(existing: dict, new_players: list) -> dict:
+    """Merge new players with existing, enriching data where possible."""
     for p in new_players:
-        pid = p.get("id")
-        if pid in by_id:
-            old = by_id[pid]
-            # Keep the richer data
-            if not old.get("height") and p.get("height"):
+        pid = p["id"]
+        if pid in existing:
+            old = existing[pid]
+            # Merge offers (union)
+            old_offers = set(old.get("offers", []))
+            new_offers = set(p.get("offers", []))
+            merged_offers = list(old_offers | new_offers)
+            old["offers"] = merged_offers
+            old["category"] = classify_offers(merged_offers)
+
+            # Update measurables if new data is better
+            if p.get("height", 0) > 0 and old.get("height", 0) == 0:
                 old["height"] = p["height"]
-                old["height_inches"] = p["height_inches"]
-            if not old.get("weight") and p.get("weight"):
+            if p.get("weight", 0) > 0 and old.get("weight", 0) == 0:
                 old["weight"] = p["weight"]
             if p.get("stars", 0) > old.get("stars", 0):
                 old["stars"] = p["stars"]
-            if not old.get("position") or old["position"] == "ATH":
-                if p.get("position") and p["position"] != "ATH":
-                    old["position"] = p["position"]
-            # Merge offers
-            old_offers = set(old.get("offers", []))
-            new_offers = set(p.get("offers", []))
-            combined = sorted(old_offers | new_offers)
-            if "Unknown" in combined and len(combined) > 1:
-                combined.remove("Unknown")
-            old["offers"] = combined
-            old["category"] = categorize(combined)
-            old["gem_score"] = calc_gem(old)
-            old["evaluation"] = build_eval(old)
-            # Add source if different
-            if p.get("source") and p["source"] not in old.get("source", ""):
-                old["source"] = f"{old.get('source', '')} + {p['source']}"
-            by_id[pid] = old
-        else:
-            by_id[pid] = p
 
-    return list(by_id.values())
+            # Update links if new source has real URLs
+            for key in ["on3", "247", "x", "hudl"]:
+                new_link = p.get("links", {}).get(key, "")
+                old_link = old.get("links", {}).get(key, "")
+                if new_link and ("search" not in new_link) and ("search" in old_link or not old_link):
+                    old["links"][key] = new_link
+
+            # Recalculate scores
+            if old["height"] > 0 and old["weight"] > 0:
+                old["gem_score"] = gem_score(old["position"], old["height"], old["weight"])
+                old["evaluation"] = ai_evaluation(
+                    old["name"], old["position"], old["height"], old["weight"], merged_offers
+                )
+
+        else:
+            existing[pid] = p
+
+    return existing
 
 # ══════════════════════════════════════════════════════════════════════════════
 # MAIN
 # ══════════════════════════════════════════════════════════════════════════════
 def main():
-    log.info("=" * 60)
-    log.info("🏈 Vol Recruiting Monitor — Scraper v5")
+    log.info("=" * 70)
+    log.info("🏈 VOL RECRUITING MONITOR — SCRAPER v5")
     log.info(f"   Time: {datetime.now(timezone.utc).isoformat()}")
-    log.info(f"   X/Twitter token: {'✅ Present' if X_BEARER else '❌ Missing'}")
-    log.info("=" * 60)
+    log.info(f"   Footprint: {', '.join(sorted(FOOTPRINT_STATES))}")
+    log.info(f"   X API: {'✅ Token set' if X_BEARER else '❌ No token'}")
+    log.info("=" * 70)
 
     # Load existing data
-    existing = []
-    if DATA_PATH.exists():
-        try:
-            with open(DATA_PATH) as f:
-                old_data = json.load(f)
-            existing = old_data.get("players", [])
-            log.info(f"📂 Loaded {len(existing)} existing players")
-        except Exception as e:
-            log.warning(f"⚠️ Could not load existing data: {e}")
+    existing = load_existing()
 
     # Run all sources
-    source_counts = {"x": 0, "news": 0, "on3": 0, "247sports": 0}
+    sources = {"x": 0, "on3": 0, "247sports": 0, "news": 0}
 
-    # Priority 1: X/Twitter
-    x_players = scrape_x()
-    source_counts["x"] = len(x_players)
+    # Source 1: X/Twitter (PRIORITY)
+    try:
+        x_players = scrape_x()
+        sources["x"] = len(x_players)
+        existing = merge_players(existing, x_players)
+    except Exception as e:
+        log.error(f"❌ X scraper crashed: {e}")
 
-    # Priority 2: Google News
-    news_players = scrape_google_news()
-    source_counts["news"] = len(news_players)
+    # Source 2: On3
+    try:
+        on3_players = scrape_on3()
+        sources["on3"] = len(on3_players)
+        existing = merge_players(existing, on3_players)
+    except Exception as e:
+        log.error(f"❌ On3 scraper crashed: {e}")
 
-    # Priority 3: On3
-    on3_players = scrape_on3()
-    source_counts["on3"] = len(on3_players)
+    # Source 3: 247Sports
+    try:
+        two47_players = scrape_247()
+        sources["247sports"] = len(two47_players)
+        existing = merge_players(existing, two47_players)
+    except Exception as e:
+        log.error(f"❌ 247 scraper crashed: {e}")
 
-    # Priority 4: 247Sports
-    s247_players = scrape_247()
-    source_counts["247sports"] = len(s247_players)
+    # Source 4: Google News (backup)
+    try:
+        news_players = scrape_google_news()
+        sources["news"] = len(news_players)
+        existing = merge_players(existing, news_players)
+    except Exception as e:
+        log.error(f"❌ News scraper crashed: {e}")
 
-    # Combine all new finds
-    all_new = x_players + news_players + on3_players + s247_players
-    log.info(f"\n📊 Raw totals: X={len(x_players)}, News={len(news_players)}, On3={len(on3_players)}, 247={len(s247_players)}")
+    # Build output
+    all_players = list(existing.values())
 
-    # Merge with existing
-    merged = merge_players(existing, all_new)
-
-    # Final validation pass — remove any remaining invalid entries
-    validated = []
-    for p in merged:
-        name = p.get("name", "")
-        if is_valid_player_name(name) and p.get("state"):
-            validated.append(p)
+    # Final validation — remove anything that slipped through
+    valid_players = []
+    for p in all_players:
+        if is_valid_player_name(p.get("name", "")):
+            valid_players.append(p)
         else:
-            log.info(f"  🚫 Filtered out invalid: {name}")
+            log.warning(f"🚫 Final filter removed: '{p.get('name','?')}'")
 
-    log.info(f"✅ Final validated player count: {len(validated)}")
-
-    # Sort: X source first, then by stars (desc), then by name
-    def sort_key(p):
-        source_priority = 0 if "X/Twitter" in p.get("source", "") else 1
-        return (source_priority, -p.get("stars", 0), p.get("name", ""))
-    validated.sort(key=sort_key)
+    output = {
+        "players": valid_players,
+        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "sources": sources,
+        "total": len(valid_players),
+    }
 
     # Write output
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
-    output = {
-        "players": validated,
-        "last_updated": datetime.now(timezone.utc).isoformat(),
-        "sources": source_counts,
-        "total": len(validated),
-    }
-
     with open(DATA_PATH, "w") as f:
         json.dump(output, f, indent=2)
 
-    log.info(f"💾 Saved {len(validated)} players to {DATA_PATH}")
-    log.info(f"📡 Sources: {source_counts}")
+    log.info("=" * 70)
+    log.info(f"✅ DONE — {len(valid_players)} total players in database")
+    log.info(f"   Sources: X={sources['x']}  On3={sources['on3']}  247={sources['247sports']}  News={sources['news']}")
+    log.info(f"   Written to: {DATA_PATH}")
+    log.info("=" * 70)
 
     # Print first 10 for verification
-    log.info("\n🔝 Top 10 players:")
-    for p in validated[:10]:
-        log.info(f"   {p['name']} | {p['position']} | {p['state']} | ⭐{p['stars']} | {p['source'][:30]}")
+    for p in valid_players[:10]:
+        log.info(f"   📋 {p['name']} | {p['position']} | {p['state']} | {p['year']} | {p['source']} | offers: {p['offers'][:3]}")
 
-    log.info("\n🏁 Scraper complete!")
 
 if __name__ == "__main__":
     main()
