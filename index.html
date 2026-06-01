@@ -73,7 +73,6 @@
     position: relative;
     overflow: hidden;
   }
-  /* Gate checkerboard accent — orange & white, 3 rows (42px) */
   .gate-box::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 42px;
@@ -92,13 +91,13 @@
     background: var(--orange);
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    margin: 1.5rem auto 1.2rem; /* push below checkerboard */
+    margin: 1.5rem auto 1.2rem;
     font-size: 2rem; font-weight: 900; color: #fff; font-style: italic;
     box-shadow: 0 4px 20px rgba(255,130,0,.38);
     overflow: hidden;
     position: relative; z-index: 1;
   }
-  .gate-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .gate-logo img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
 
   .gate-title { font-size: 1.15rem; font-weight: 700; color: var(--white); position: relative; z-index: 1; }
   .gate-sub   { font-size: .78rem; color: var(--text-dim); margin: .3rem 0 1.75rem; position: relative; z-index: 1; }
@@ -174,7 +173,7 @@
     box-shadow: 0 2px 14px rgba(255,130,0,.32);
     overflow: hidden;
   }
-  #logo-container img { width: 100%; height: 100%; object-fit: contain; }
+  #logo-container img { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
 
   .header-title h1 {
     font-size: 1.2rem; font-weight: 700; color: var(--white);
@@ -231,855 +230,718 @@
   .filters {
     background: var(--bg-mid);
     border-bottom: 1px solid var(--border);
-    padding: .8rem 2rem;
-    display: flex; gap: .7rem; align-items: center; flex-wrap: wrap;
-  }
-
-  .filter-group {
-    display: flex; align-items: center; gap: .4rem;
+    padding: .85rem 2rem;
+    display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+    flex-shrink: 0;
   }
   .filter-label {
     font-size: .68rem; color: var(--text-faint);
-    font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
-    display: flex; align-items: center; gap: .28rem;
+    font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+    display: flex; align-items: center; gap: .3rem;
   }
+  .filter-group { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
 
-  .filter-select, .filter-input {
-    background: var(--bg-card);
-    border: 1px solid var(--border-mid);
+  .yr-btn, .pos-btn, .state-sel {
+    padding: .32rem .72rem;
     border-radius: 6px;
-    color: var(--text);
-    font-size: .78rem;
-    padding: .38rem .65rem;
-    outline: none;
+    border: 1px solid var(--border-mid);
+    background: var(--bg-card);
+    color: var(--text-dim);
+    font-size: .73rem; font-weight: 600;
+    cursor: pointer; transition: all .18s;
     font-family: inherit;
-    cursor: pointer;
-    transition: border-color .2s;
   }
-  .filter-select:focus, .filter-input:focus { border-color: var(--orange); }
-  .filter-input { min-width: 160px; }
-  .filter-input::placeholder { color: var(--text-faint); }
+  .yr-btn:hover, .pos-btn:hover  { border-color: var(--orange); color: var(--white); }
+  .yr-btn.active  { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+  .pos-btn.active { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
 
-  .filter-divider {
-    width: 1px; height: 22px;
-    background: var(--border-mid);
-    margin: 0 .2rem;
+  .state-sel {
+    padding: .3rem .6rem;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 24px;
+    cursor: pointer;
   }
+  .state-sel option { background: var(--bg-card); }
 
   .export-btn {
     margin-left: auto;
-    display: flex; align-items: center; gap: .38rem;
-    background: var(--orange-dim);
-    border: 1px solid var(--orange-border);
+    padding: .34rem .9rem;
     border-radius: 6px;
+    border: 1px solid var(--orange-border);
+    background: var(--orange-dim);
     color: var(--orange);
-    font-size: .75rem; font-weight: 700;
-    padding: .38rem .85rem;
-    cursor: pointer; font-family: inherit;
-    transition: background .2s, color .2s;
-    text-transform: uppercase; letter-spacing: .04em;
+    font-size: .73rem; font-weight: 700;
+    cursor: pointer; transition: all .18s;
+    font-family: inherit;
+    display: flex; align-items: center; gap: .4rem;
   }
   .export-btn:hover { background: var(--orange); color: #fff; }
 
   /* ─── TABS ───────────────────────────────────────────────────────────────── */
   .tabs {
-    display: flex; gap: 0;
-    background: #0D0D0D;
+    background: var(--bg-mid);
     border-bottom: 1px solid var(--border);
     padding: 0 2rem;
-    flex-shrink: 0;
+    display: flex; gap: 0;
     overflow-x: auto;
+    flex-shrink: 0;
   }
-  .tab {
-    display: flex; align-items: center; gap: .42rem;
-    padding: .78rem 1.3rem;
-    font-size: .8rem; font-weight: 700;
-    color: var(--text-dim);
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    transition: color .2s, border-color .2s;
+  .tab-btn {
+    padding: .85rem 1.35rem;
+    border: none; background: none;
+    color: var(--text-dim); font-size: .82rem; font-weight: 600;
+    cursor: pointer; transition: all .2s;
+    border-bottom: 2.5px solid transparent;
     white-space: nowrap;
-    background: none; border-top: none; border-left: none; border-right: none;
-    font-family: inherit;
-    letter-spacing: .01em;
-    text-transform: uppercase;
+    display: flex; align-items: center; gap: .45rem;
+    font-family: inherit; position: relative;
   }
-  .tab i { font-size: .78rem; }
-  .tab .tab-count {
-    background: rgba(255,255,255,.07);
-    border-radius: 10px;
-    padding: .1rem .42rem;
-    font-size: .65rem;
-    font-weight: 700;
-  }
+  .tab-btn:hover { color: var(--white); }
 
-  .tab[data-tab="sec"]:hover,
-  .tab[data-tab="sec"].active {
-    color: var(--orange);
-    border-bottom-color: var(--orange);
-  }
-  .tab[data-tab="sec"].active .tab-count { background: var(--orange-dim); color: var(--orange); }
+  /* SEC tab */
+  .tab-btn[data-tab="sec"].active        { color: var(--orange); border-bottom-color: var(--orange); }
+  .tab-btn[data-tab="sec"]:hover         { color: var(--orange); }
+  /* P4 tab */
+  .tab-btn[data-tab="p4"].active         { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab-btn[data-tab="p4"]:hover          { color: var(--gold); }
+  /* G6 tab */
+  .tab-btn[data-tab="g6"].active         { color: var(--silver); border-bottom-color: var(--silver); }
+  .tab-btn[data-tab="g6"]:hover          { color: var(--silver); }
+  /* Gems tab */
+  .tab-btn[data-tab="gems"].active       { color: var(--gem); border-bottom-color: var(--gem); }
+  .tab-btn[data-tab="gems"]:hover        { color: var(--gem); }
 
-  .tab[data-tab="p4"]:hover,
-  .tab[data-tab="p4"].active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
+  .tab-count {
+    font-size: .65rem; font-weight: 700;
+    padding: .12rem .42rem; border-radius: 10px;
+    background: var(--bg-card2);
   }
-  .tab[data-tab="p4"].active .tab-count { background: var(--gold-dim); color: var(--gold); }
+  .tab-btn[data-tab="sec"].active  .tab-count { background: var(--orange-dim);  color: var(--orange); }
+  .tab-btn[data-tab="p4"].active   .tab-count { background: var(--gold-dim);    color: var(--gold); }
+  .tab-btn[data-tab="g6"].active   .tab-count { background: var(--silver-dim);  color: var(--silver); }
+  .tab-btn[data-tab="gems"].active .tab-count { background: var(--gem-dim);     color: var(--gem); }
 
-  .tab[data-tab="g6"]:hover,
-  .tab[data-tab="g6"].active {
-    color: var(--silver);
-    border-bottom-color: var(--silver);
+  /* ─── CONF LOGO in tab ───────────────────────────────────────────────────── */
+  .tab-conf-logo {
+    width: 22px; height: 22px;
+    object-fit: contain;
+    filter: brightness(0) invert(.55);
+    transition: filter .2s;
+    flex-shrink: 0;
   }
-  .tab[data-tab="g6"].active .tab-count { background: var(--silver-dim); color: var(--silver); }
+  .tab-btn[data-tab="sec"]:hover  .tab-conf-logo,
+  .tab-btn[data-tab="sec"].active .tab-conf-logo { filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(5deg) brightness(1.1); }
+  .tab-btn[data-tab="p4"]:hover   .tab-conf-logo,
+  .tab-btn[data-tab="p4"].active  .tab-conf-logo { filter: brightness(0) sepia(1) saturate(3) hue-rotate(10deg) brightness(.85); }
 
-  .tab[data-tab="gem"]:hover,
-  .tab[data-tab="gem"].active {
-    color: var(--gem);
-    border-bottom-color: var(--gem);
-  }
-  .tab[data-tab="gem"].active .tab-count { background: var(--gem-dim); color: var(--gem); }
+  /* ─── MAIN CONTENT ───────────────────────────────────────────────────────── */
+  .main { flex: 1; padding: 1.75rem 2rem; }
 
-  /* ─── MAIN ───────────────────────────────────────────────────────────────── */
-  .main {
-    flex: 1;
-    padding: 1.5rem 2rem 3rem;
-    max-width: 1400px; width: 100%; margin: 0 auto;
+  /* ─── EMPTY STATE ────────────────────────────────────────────────────────── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 520px; margin: 0 auto;
   }
-
-  /* ─── SECTION HEADER ─────────────────────────────────────────────────────── */
-  .section-hdr {
-    display: flex; align-items: center; gap: .65rem;
-    margin-bottom: 1.2rem;
+  .empty-checker {
+    height: 42px; border-radius: 6px; margin-bottom: 2rem;
+    background-image: repeating-conic-gradient(var(--orange) 0% 25%, #FFFFFF 0% 50%);
+    background-size: 14px 14px;
+    opacity: .22;
   }
-  .section-hdr-icon {
-    width: 32px; height: 32px; border-radius: 7px;
+  .empty-icon {
+    width: 60px; height: 60px;
+    background: var(--orange-dim); border: 1px solid var(--orange-border);
+    border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: .85rem; flex-shrink: 0;
+    margin: 0 auto 1.25rem;
+    font-size: 1.5rem; color: var(--orange);
   }
-  .section-hdr-icon.sec  { background: var(--orange-dim);  color: var(--orange); border: 1px solid var(--orange-border); }
-  .section-hdr-icon.p4   { background: var(--gold-dim);    color: var(--gold);   border: 1px solid var(--gold-border); }
-  .section-hdr-icon.g6   { background: var(--silver-dim);  color: var(--silver); border: 1px solid var(--silver-border); }
-  .section-hdr-icon.gem  { background: var(--gem-dim);     color: var(--gem);    border: 1px solid var(--gem-border); }
-
-  .section-hdr h2 { font-size: 1rem; font-weight: 700; color: var(--white); }
-  .section-hdr p  { font-size: .72rem; color: var(--text-dim); margin-top: 1px; }
+  .empty-state h2 { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+  .empty-state p  { font-size: .82rem; color: var(--text-dim); line-height: 1.6; }
 
   /* ─── GRID ───────────────────────────────────────────────────────────────── */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1rem;
+    gap: 1.1rem;
   }
 
   /* ─── PLAYER CARD ────────────────────────────────────────────────────────── */
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 11px;
     overflow: hidden;
     transition: border-color .2s, transform .15s;
-    display: flex; flex-direction: column;
   }
-  .card:hover { transform: translateY(-2px); }
+  .card:hover { border-color: var(--border-mid); transform: translateY(-2px); }
 
-  .card.sec  { border-top: 3px solid var(--orange); }
-  .card.sec:hover  { border-color: var(--orange); }
+  /* Top color bar by category */
+  .card-bar { height: 3px; }
+  .card-bar.sec  { background: var(--orange); }
+  .card-bar.p4   { background: var(--gold); }
+  .card-bar.g6   { background: var(--silver); }
+  .card-bar.gems { background: var(--gem); }
 
-  .card.p4   { border-top: 3px solid var(--gold); }
-  .card.p4:hover   { border-color: var(--gold); }
+  .card-body { padding: 1rem 1.1rem; }
 
-  .card.g6   { border-top: 3px solid var(--silver); }
-  .card.g6:hover   { border-color: var(--silver); }
-
-  .card.gem  { border-top: 3px solid var(--gem); }
-  .card.gem:hover  { border-color: var(--gem); }
-
-  .card-body { padding: 1rem 1rem .75rem; flex: 1; }
-
-  /* card top row */
   .card-top {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: .65rem;
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: .5rem; margin-bottom: .7rem;
   }
-  .card-name {
-    font-size: 1rem; font-weight: 700; color: var(--white);
-    line-height: 1.2;
-  }
+  .card-name { font-size: 1rem; font-weight: 700; color: var(--white); }
   .card-pos-badge {
-    font-size: .65rem; font-weight: 800;
-    padding: .22rem .55rem; border-radius: 5px;
-    letter-spacing: .04em; text-transform: uppercase;
-    flex-shrink: 0; margin-left: .5rem;
+    font-size: .68rem; font-weight: 700;
+    padding: .18rem .55rem; border-radius: 5px;
+    flex-shrink: 0;
   }
   .card-pos-badge.sec  { background: var(--orange-dim);  color: var(--orange);  border: 1px solid var(--orange-border); }
   .card-pos-badge.p4   { background: var(--gold-dim);    color: var(--gold);    border: 1px solid var(--gold-border); }
   .card-pos-badge.g6   { background: var(--silver-dim);  color: var(--silver);  border: 1px solid var(--silver-border); }
-  .card-pos-badge.gem  { background: var(--gem-dim);     color: var(--gem);     border: 1px solid var(--gem-border); }
+  .card-pos-badge.gems { background: var(--gem-dim);     color: var(--gem);     border: 1px solid var(--gem-border); }
 
-  /* card meta row */
   .card-meta {
-    display: flex; flex-wrap: wrap; gap: .38rem .85rem;
-    margin-bottom: .7rem;
+    display: flex; flex-wrap: wrap; gap: .55rem;
+    margin-bottom: .75rem;
   }
-  .card-meta-item {
+  .meta-pill {
+    font-size: .7rem; color: var(--text-dim);
     display: flex; align-items: center; gap: .28rem;
-    font-size: .72rem; color: var(--text-dim);
   }
-  .card-meta-item i { font-size: .65rem; color: var(--text-faint); width: 10px; text-align: center; }
+  .meta-pill i { font-size: .65rem; color: var(--text-faint); }
 
-  /* stars */
-  .stars { display: flex; gap: 1px; margin-bottom: .7rem; }
-  .star-filled { color: var(--gold); font-size: .72rem; }
-  .star-empty  { color: var(--border-mid); font-size: .72rem; }
-
-  /* gem score bar */
-  .gem-score-row {
-    display: flex; align-items: center; gap: .55rem;
-    margin-bottom: .7rem;
+  /* Gem score */
+  .gem-score {
+    display: flex; align-items: center; gap: .35rem;
+    font-size: .7rem; font-weight: 700;
+    padding: .2rem .6rem; border-radius: 5px;
+    background: var(--gem-dim); border: 1px solid var(--gem-border);
+    color: var(--gem); margin-bottom: .75rem;
+    width: fit-content;
   }
-  .gem-label { font-size: .65rem; color: var(--text-faint); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; width: 60px; flex-shrink: 0; }
-  .gem-bar-wrap { flex: 1; background: var(--border); border-radius: 4px; height: 5px; overflow: hidden; }
-  .gem-bar-fill { height: 100%; border-radius: 4px; background: var(--gem); transition: width .6s ease; }
-  .gem-score-val { font-size: .7rem; font-weight: 700; color: var(--gem); width: 28px; text-align: right; flex-shrink: 0; }
 
-  /* offers */
-  .offers-wrap { margin-bottom: .7rem; }
-  .offers-label { font-size: .63rem; color: var(--text-faint); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .3rem; display: flex; align-items: center; gap: .25rem; }
-  .offers-list { display: flex; flex-wrap: wrap; gap: .28rem; }
+  /* Stars */
+  .stars { display: flex; gap: 2px; margin-bottom: .75rem; }
+  .star-fill   { color: var(--gold); font-size: .72rem; }
+  .star-empty  { color: var(--text-faint); font-size: .72rem; }
+
+  /* Offers */
+  .offers-label {
+    font-size: .65rem; color: var(--text-faint);
+    font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    margin-bottom: .38rem;
+  }
+  .offers-list { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .8rem; }
   .offer-tag {
-    font-size: .65rem; padding: .18rem .48rem; border-radius: 4px;
-    font-weight: 600;
+    font-size: .67rem; padding: .15rem .48rem;
+    border-radius: 4px; font-weight: 600;
   }
-  .offer-tag.sec-tag  { background: var(--orange-dim);  color: var(--orange);  border: 1px solid var(--orange-border); }
-  .offer-tag.p4-tag   { background: var(--gold-dim);    color: var(--gold);    border: 1px solid var(--gold-border); }
-  .offer-tag.g6-tag   { background: var(--silver-dim);  color: var(--silver);  border: 1px solid var(--silver-border); }
+  .offer-tag.sec-tag  { background: var(--orange-dim); color: var(--orange);  border: 1px solid var(--orange-border); }
+  .offer-tag.p4-tag   { background: var(--gold-dim);   color: var(--gold);    border: 1px solid var(--gold-border); }
+  .offer-tag.g6-tag   { background: var(--silver-dim); color: var(--silver);  border: 1px solid var(--silver-border); }
+  .offer-tag.tn-tag   { background: rgba(255,130,0,.22); color: #fff; border: 1px solid var(--orange); font-weight: 800; }
 
-  /* source citation */
-  .source-cite {
-    display: inline-flex; align-items: center; gap: .28rem;
-    font-size: .63rem; color: var(--text-faint);
-    background: rgba(255,255,255,.03);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: .18rem .48rem;
-    margin-bottom: .7rem;
-    text-decoration: none;
-    transition: color .2s, border-color .2s;
-    cursor: pointer;
-  }
-  .source-cite:hover { color: var(--orange); border-color: var(--orange-border); }
-  .source-cite i { font-size: .6rem; }
-
-  /* AI evaluation */
-  .eval-wrap {
-    background: rgba(255,255,255,.025);
-    border: 1px solid var(--border);
+  /* AI Eval */
+  .ai-eval {
+    background: rgba(255,130,0,.05);
+    border: 1px solid rgba(255,130,0,.14);
     border-radius: 7px;
     padding: .65rem .75rem;
-    margin-bottom: .7rem;
+    margin-bottom: .8rem;
   }
-  .eval-label {
-    font-size: .63rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .05em; color: var(--text-faint);
+  .ai-eval-header {
+    font-size: .65rem; font-weight: 700; color: var(--orange);
+    text-transform: uppercase; letter-spacing: .06em;
+    display: flex; align-items: center; gap: .3rem; margin-bottom: .4rem;
+  }
+  .ai-eval-row { display: flex; gap: .5rem; margin-bottom: .25rem; }
+  .ai-eval-row:last-child { margin-bottom: 0; }
+  .ai-eval-label {
+    font-size: .67rem; font-weight: 700; min-width: 68px;
     display: flex; align-items: center; gap: .28rem;
-    margin-bottom: .45rem;
   }
-  .eval-row { display: flex; gap: .5rem; margin-bottom: .25rem; align-items: flex-start; }
-  .eval-icon { font-size: .62rem; margin-top: .15rem; flex-shrink: 0; }
-  .eval-icon.str { color: var(--gem); }
-  .eval-icon.wk  { color: var(--gold); }
-  .eval-text { font-size: .72rem; color: var(--text-dim); line-height: 1.4; }
+  .ai-eval-label.str { color: var(--gem); }
+  .ai-eval-label.wk  { color: #FF6B6B; }
+  .ai-eval-text { font-size: .67rem; color: var(--text-dim); line-height: 1.45; }
 
-  /* links */
-  .card-links {
-    display: flex; gap: .45rem;
-    padding: .75rem 1rem;
-    border-top: 1px solid var(--border);
-    background: var(--bg-card2);
-    flex-wrap: wrap;
+  /* Source citation */
+  .source-cite {
+    font-size: .65rem; color: var(--text-faint);
+    display: flex; align-items: center; gap: .28rem;
+    margin-bottom: .75rem;
   }
+  .source-cite a { color: var(--text-dim); text-decoration: none; transition: color .15s; }
+  .source-cite a:hover { color: var(--orange); }
+
+  /* Links */
+  .card-links { display: flex; gap: .45rem; flex-wrap: wrap; }
   .card-link {
-    display: flex; align-items: center; gap: .3rem;
-    font-size: .7rem; font-weight: 600;
-    padding: .32rem .7rem; border-radius: 5px;
-    text-decoration: none; transition: background .2s, color .2s;
-    border: 1px solid transparent;
+    display: flex; align-items: center; gap: .32rem;
+    padding: .32rem .72rem;
+    border-radius: 6px; border: 1px solid var(--border-mid);
+    font-size: .7rem; font-weight: 600; color: var(--text-dim);
+    text-decoration: none; transition: all .18s;
+    background: var(--bg-card2);
   }
-  .card-link i { font-size: .65rem; }
-  .card-link.x-link    { color: var(--text-dim); border-color: var(--border-mid); }
-  .card-link.x-link:hover    { color: var(--white); background: #222; border-color: #444; }
-  .card-link.hudl-link { color: var(--orange); border-color: var(--orange-border); }
-  .card-link.hudl-link:hover { background: var(--orange); color: #fff; }
-  .card-link.uc-link   { color: var(--gold); border-color: var(--gold-border); }
-  .card-link.uc-link:hover   { background: var(--gold); color: #fff; }
-
-  /* ─── EMPTY STATE ────────────────────────────────────────────────────────── */
-  .empty {
-    text-align: center; padding: 4rem 2rem;
-    display: flex; flex-direction: column; align-items: center; gap: 1rem;
-  }
-  /* Empty state checkerboard accent — orange & white, 3 rows */
-  .empty-checker {
-    width: 120px; height: 42px; border-radius: 6px; overflow: hidden;
-    background-image: repeating-conic-gradient(var(--orange) 0% 25%, #FFFFFF 0% 50%);
-    background-size: 14px 14px;
-    opacity: .55;
-    margin-bottom: .5rem;
-  }
-  .empty-icon {
-    width: 56px; height: 56px; border-radius: 50%;
-    background: var(--orange-dim); border: 1px solid var(--orange-border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem; color: var(--orange);
-  }
-  .empty h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); }
-  .empty p  { font-size: .82rem; color: var(--text-dim); max-width: 360px; line-height: 1.6; }
-  .empty-sub { font-size: .72rem; color: var(--text-faint); }
-
-  /* ─── FOOTER ─────────────────────────────────────────────────────────────── */
-  .footer {
-    background: #0D0D0D;
-    border-top: 1px solid var(--border);
-    padding: .85rem 2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: .5rem;
-    flex-shrink: 0;
-  }
-  .footer-left  { font-size: .68rem; color: var(--text-faint); display: flex; align-items: center; gap: .4rem; }
-  .footer-right { font-size: .68rem; color: var(--text-faint); }
+  .card-link:hover { border-color: var(--orange); color: var(--white); }
+  .card-link i { font-size: .68rem; }
 
   /* ─── RESPONSIVE ─────────────────────────────────────────────────────────── */
-  @media (max-width: 700px) {
+  @media (max-width: 640px) {
     .header  { padding: .85rem 1rem; }
-    .filters { padding: .7rem 1rem; }
+    .filters { padding: .75rem 1rem; }
     .tabs    { padding: 0 1rem; }
-    .main    { padding: 1.2rem 1rem 3rem; }
-    .footer  { padding: .7rem 1rem; }
+    .main    { padding: 1.25rem 1rem; }
     .source-bar { padding: .4rem 1rem; }
-    .grid    { grid-template-columns: 1fr; }
+    .export-btn { margin-left: 0; }
   }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════════════
      PASSWORD GATE
-════════════════════════════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════════════ -->
 <div class="gate" id="gate">
   <div class="gate-box">
-    <!-- checkerboard accent fills top 42px (::before) -->
-    <div class="gate-logo" id="gate-logo">T</div>
+    <div class="gate-logo">
+      <img src="logo.png" alt="Tennessee" onerror="this.style.display='none';this.parentElement.textContent='T'">
+    </div>
     <div class="gate-title">Vol Recruiting Monitor</div>
-    <div class="gate-sub">Tennessee Football | Restricted Access</div>
+    <div class="gate-sub">Tennessee Football · Restricted Access</div>
     <div class="gate-wrap">
-      <input class="gate-input" id="gate-pw" type="password"
-             placeholder="Enter access password"
-             autocomplete="off" autocorrect="off"
-             autocapitalize="off" spellcheck="false"
+      <input class="gate-input" type="password" id="pwInput"
+             placeholder="Enter password" autocomplete="off"
              onkeydown="if(event.key==='Enter')tryUnlock()">
-      <button class="gate-toggle" onclick="togglePw()" id="pw-eye" title="Show/hide password">
-        <i class="fa-solid fa-eye" id="eye-icon"></i>
+      <button class="gate-toggle" onclick="togglePw()" id="eyeBtn" type="button">
+        <i class="fa-solid fa-eye" id="eyeIcon"></i>
       </button>
     </div>
     <button class="gate-btn" onclick="tryUnlock()">
-      <i class="fa-solid fa-unlock-keyhole"></i> Enter Dashboard
+      <i class="fa-solid fa-lock-open"></i> Enter
     </button>
-    <div class="gate-err" id="gate-err"></div>
+    <div class="gate-err" id="gateErr"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════════════
      DASHBOARD
-════════════════════════════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════════════ -->
 <div class="dash" id="dash">
 
-  <!-- Checkerboard strip — orange & white, 3 rows -->
-  <div class="checker-strip"></div>
-
-  <!-- Header -->
+  <!-- HEADER -->
   <header class="header">
     <div class="header-left">
-      <div id="logo-container">   <img src="logo.png" alt="Tennessee Power T" /> </div>
+      <div id="logo-container">
+        <img src="logo.png" alt="Tennessee" onerror="this.style.display='none';this.parentElement.textContent='T'">
+      </div>
       <div class="header-title">
         <h1>Vol Recruiting Monitor</h1>
-        <p>Tennessee Football — Live Offer Tracker</p>
+        <p>Tennessee Football · 15-State Footprint · D1 Offer Tracker</p>
       </div>
     </div>
     <div class="header-right">
-      <div class="live-badge">
-        <div class="live-dot"></div>
-        Live — Updates Every 20 Min
-      </div>
-      <div class="last-upd">
+      <div class="live-badge"><span class="live-dot"></span> Live</div>
+      <div class="last-upd" id="lastUpd">
         <i class="fa-regular fa-clock"></i>
-        <span id="last-upd-txt">Loading…</span>
+        <span>Loading…</span>
       </div>
     </div>
   </header>
 
-  <!-- Source bar -->
+  <!-- CHECKER STRIP -->
+  <div class="checker-strip"></div>
+
+  <!-- SOURCE STATUS BAR -->
   <div class="source-bar">
-    <span class="src-label"><i class="fa-solid fa-database"></i> Sources</span>
-    <div class="src-pill" id="src-x">
-      <div class="src-dot off"></div>
-      <span>X / Twitter (<span class="src-n">0</span>)</span>
-    </div>
-    <div class="src-pill" id="src-news">
-      <div class="src-dot off"></div>
-      <span>Google News (<span class="src-n">0</span>)</span>
-    </div>
-    <div class="src-pill" id="src-on3">
-      <div class="src-dot off"></div>
-      <span>On3 (<span class="src-n">0</span>)</span>
-    </div>
-    <div class="src-pill" id="src-247">
-      <div class="src-dot off"></div>
-      <span>247Sports (<span class="src-n">0</span>)</span>
-    </div>
+    <span class="src-label"><i class="fa-solid fa-satellite-dish"></i> Sources</span>
+    <span class="src-pill" id="src-x">
+      <span class="src-dot off"></span>
+      <i class="fa-brands fa-x-twitter"></i> X/Twitter — waiting
+    </span>
+    <span class="src-pill" id="src-news">
+      <span class="src-dot off"></span>
+      <i class="fa-solid fa-newspaper"></i> Google News — waiting
+    </span>
+    <span class="src-pill" id="src-on3">
+      <span class="src-dot off"></span>
+      <i class="fa-solid fa-ranking-star"></i> On3 — waiting
+    </span>
+    <span class="src-pill" id="src-247">
+      <span class="src-dot off"></span>
+      <i class="fa-solid fa-chart-bar"></i> 247Sports — waiting
+    </span>
   </div>
 
-  <!-- Filters -->
+  <!-- FILTERS -->
   <div class="filters">
-    <div class="filter-group">
-      <span class="filter-label"><i class="fa-solid fa-calendar-days"></i> Year</span>
-      <select class="filter-select" id="f-year" onchange="applyFilters()">
-        <option value="all">All Classes</option>
-        <option value="2025">2025</option>
-        <option value="2026">2026</option>
-        <option value="2027">2027</option>
-        <option value="2028">2028</option>
-        <option value="2029">2029</option>
-      </select>
+    <span class="filter-label"><i class="fa-solid fa-calendar"></i> Class</span>
+    <div class="filter-group" id="yearBtns">
+      <button class="yr-btn active" data-yr="all">All</button>
+      <button class="yr-btn" data-yr="2025">2025</button>
+      <button class="yr-btn" data-yr="2026">2026</button>
+      <button class="yr-btn" data-yr="2027">2027</button>
+      <button class="yr-btn" data-yr="2028">2028</button>
+      <button class="yr-btn" data-yr="2029">2029</button>
     </div>
-    <div class="filter-divider"></div>
-    <div class="filter-group">
-      <span class="filter-label"><i class="fa-solid fa-running"></i> Position</span>
-      <select class="filter-select" id="f-pos" onchange="applyFilters()">
-        <option value="all">All Positions</option>
-        <option value="QB">QB</option>
-        <option value="RB">RB</option>
-        <option value="WR">WR</option>
-        <option value="TE">TE</option>
-        <option value="OL">OL</option>
-        <option value="DL">DL</option>
-        <option value="EDGE">EDGE</option>
-        <option value="LB">LB</option>
-        <option value="CB">CB</option>
-        <option value="S">S</option>
-        <option value="ATH">ATH</option>
-        <option value="K">K</option>
-        <option value="P">P</option>
-      </select>
+
+    <span class="filter-label" style="margin-left:.5rem"><i class="fa-solid fa-person-running"></i> Position</span>
+    <div class="filter-group" id="posBtns">
+      <button class="pos-btn active" data-pos="all">All</button>
+      <button class="pos-btn" data-pos="QB">QB</button>
+      <button class="pos-btn" data-pos="RB">RB</button>
+      <button class="pos-btn" data-pos="WR">WR</button>
+      <button class="pos-btn" data-pos="TE">TE</button>
+      <button class="pos-btn" data-pos="OL">OL</button>
+      <button class="pos-btn" data-pos="DL">DL</button>
+      <button class="pos-btn" data-pos="EDGE">EDGE</button>
+      <button class="pos-btn" data-pos="LB">LB</button>
+      <button class="pos-btn" data-pos="CB">CB</button>
+      <button class="pos-btn" data-pos="S">S</button>
+      <button class="pos-btn" data-pos="ATH">ATH</button>
+      <button class="pos-btn" data-pos="K">K/P</button>
     </div>
-    <div class="filter-divider"></div>
-    <div class="filter-group">
-      <span class="filter-label"><i class="fa-solid fa-location-dot"></i> State</span>
-      <select class="filter-select" id="f-state" onchange="applyFilters()">
-        <option value="all">All States</option>
-        <option value="TN">TN</option>
-        <option value="KY">KY</option>
-        <option value="VA">VA</option>
-        <option value="NC">NC</option>
-        <option value="GA">GA</option>
-        <option value="AL">AL</option>
-        <option value="MS">MS</option>
-        <option value="AR">AR</option>
-        <option value="MO">MO</option>
-        <option value="SC">SC</option>
-        <option value="FL">FL</option>
-        <option value="OH">OH</option>
-        <option value="IN">IN</option>
-        <option value="WV">WV</option>
-        <option value="LA">LA</option>
-      </select>
-    </div>
-    <div class="filter-divider"></div>
-    <div class="filter-group">
-      <span class="filter-label"><i class="fa-solid fa-magnifying-glass"></i></span>
-      <input class="filter-input" id="f-search" type="text"
-             placeholder="Search player or school…"
-             oninput="applyFilters()">
-    </div>
+
+    <span class="filter-label" style="margin-left:.5rem"><i class="fa-solid fa-location-dot"></i> State</span>
+    <select class="state-sel" id="stateSel">
+      <option value="all">All States</option>
+      <option value="TN">TN</option><option value="KY">KY</option>
+      <option value="VA">VA</option><option value="NC">NC</option>
+      <option value="GA">GA</option><option value="AL">AL</option>
+      <option value="MS">MS</option><option value="AR">AR</option>
+      <option value="MO">MO</option><option value="SC">SC</option>
+      <option value="FL">FL</option><option value="OH">OH</option>
+      <option value="IN">IN</option><option value="WV">WV</option>
+      <option value="LA">LA</option>
+    </select>
+
     <button class="export-btn" onclick="exportCSV()">
       <i class="fa-solid fa-file-csv"></i> Export CSV
     </button>
   </div>
 
-  <!-- Tabs -->
-  <nav class="tabs">
-    <button class="tab active" data-tab="sec" onclick="switchTab('sec')">
-      <i class="fa-solid fa-shield-halved"></i> SEC
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="sec" onclick="switchTab('sec')">
+      <img src="sec-logo.png" alt="SEC" class="tab-conf-logo"
+           onerror="this.style.display='none'">
+      SEC
       <span class="tab-count" id="cnt-sec">0</span>
     </button>
-    <button class="tab" data-tab="p4" onclick="switchTab('p4')">
-      <i class="fa-solid fa-trophy"></i> Other P4
+    <button class="tab-btn" data-tab="p4" onclick="switchTab('p4')">
+      <img src="big10-logo.png" alt="Big Ten" class="tab-conf-logo"
+           onerror="this.style.display='none'">
+      Other P4
       <span class="tab-count" id="cnt-p4">0</span>
     </button>
-    <button class="tab" data-tab="g6" onclick="switchTab('g6')">
-      <i class="fa-solid fa-star-half-stroke"></i> G6 Footprint
+    <button class="tab-btn" data-tab="g6" onclick="switchTab('g6')">
+      <i class="fa-solid fa-football"></i>
+      G6 Footprint
       <span class="tab-count" id="cnt-g6">0</span>
     </button>
-    <button class="tab" data-tab="gem" onclick="switchTab('gem')">
-      <i class="fa-solid fa-gem"></i> Hidden Gems
-      <span class="tab-count" id="cnt-gem">0</span>
+    <button class="tab-btn" data-tab="gems" onclick="switchTab('gems')">
+      <i class="fa-solid fa-gem"></i>
+      Hidden Gems
+      <span class="tab-count" id="cnt-gems">0</span>
     </button>
-  </nav>
+  </div>
 
-  <!-- Main content -->
-  <main class="main">
-    <div class="section-hdr" id="section-hdr">
-      <div class="section-hdr-icon sec" id="hdr-icon">
-        <i class="fa-solid fa-shield-halved"></i>
-      </div>
-      <div>
-        <h2 id="hdr-title">SEC Offers</h2>
-        <p id="hdr-sub">Players within the Tennessee footprint holding SEC offers</p>
-      </div>
+  <!-- MAIN -->
+  <main class="main" id="mainContent">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-checker"></div>
+      <div class="empty-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+      <h2>Waiting for First Scrape</h2>
+      <p>The scraper runs every 20 minutes via GitHub Actions.<br>
+         Once it completes its first run, real recruits will appear here.<br>
+         Check the <strong style="color:var(--orange)">Actions</strong> tab on GitHub to watch progress.</p>
     </div>
-    <div class="grid" id="grid"></div>
+    <div class="grid" id="playerGrid" style="display:none"></div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-left">
-      <i class="fa-solid fa-shield-halved" style="color:var(--orange)"></i>
-      Vol Recruiting Monitor &mdash; Tennessee Football
-    </div>
-    <div class="footer-right">Data sourced from X/Twitter, Google News, On3, 247Sports</div>
-  </footer>
-
-</div><!-- end .dash -->
+</div><!-- /dash -->
 
 <script>
-// ─── PASSWORD ──────────────────────────────────────────────────────────────
-const CORRECT_PASSWORD = "BelieveTheHeup26@UT";
+/* ═══ PASSWORD ══════════════════════════════════════════════════════════════ */
+const CORRECT = "BelieveTheHeup26@UT";
 
 function tryUnlock() {
-  const input = document.getElementById('gate-pw').value;
-  const errEl = document.getElementById('gate-err');
-  if (input === CORRECT_PASSWORD) {
+  const val = document.getElementById('pwInput').value;
+  const err = document.getElementById('gateErr');
+  if (val === CORRECT) {
     document.getElementById('gate').classList.add('hidden');
     document.getElementById('dash').classList.add('unlocked');
     loadData();
   } else {
-    errEl.textContent = 'Incorrect password. Check caps lock and try again.';
-    errEl.classList.remove('shake');
-    void errEl.offsetWidth;
-    errEl.classList.add('shake');
-    document.getElementById('gate-pw').value = '';
-    document.getElementById('gate-pw').focus();
+    err.textContent = "Incorrect password. Try again.";
+    err.classList.remove('shake');
+    void err.offsetWidth;
+    err.classList.add('shake');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
   }
 }
 
 function togglePw() {
-  const inp = document.getElementById('gate-pw');
-  const ico = document.getElementById('eye-icon');
+  const inp  = document.getElementById('pwInput');
+  const icon = document.getElementById('eyeIcon');
   if (inp.type === 'password') {
     inp.type = 'text';
-    ico.className = 'fa-solid fa-eye-slash';
+    icon.className = 'fa-solid fa-eye-slash';
   } else {
     inp.type = 'password';
-    ico.className = 'fa-solid fa-eye';
+    icon.className = 'fa-solid fa-eye';
   }
 }
 
-// ─── DATA ──────────────────────────────────────────────────────────────────
-let ALL_PLAYERS = [];
-let ACTIVE_TAB  = 'sec';
+/* ═══ STATE ═════════════════════════════════════════════════════════════════ */
+let allPlayers  = [];
+let activeTab   = 'sec';
+let activeYear  = 'all';
+let activePos   = 'all';
+let activeState = 'all';
 
-const SEC_SCHOOLS = new Set([
-  "Tennessee","Alabama","Auburn","Florida","Georgia","Kentucky","LSU",
-  "Mississippi State","Missouri","Ole Miss","South Carolina","Vanderbilt",
-  "Arkansas","Texas","Texas A&M","Oklahoma"
-]);
-const P4_SCHOOLS = new Set([
-  ...SEC_SCHOOLS,
-  "Ohio State","Michigan","Penn State","Oregon","USC","Wisconsin","Iowa",
-  "Minnesota","Illinois","Indiana","Purdue","Nebraska","Northwestern",
-  "Maryland","Rutgers","Michigan State","UCLA","Washington",
-  "Clemson","Florida State","Miami","NC State","Duke","Wake Forest",
-  "Louisville","Virginia Tech","Virginia","Boston College","Pitt",
-  "Syracuse","Georgia Tech","North Carolina","Notre Dame","SMU","Stanford","Cal",
-  "Oklahoma State","Texas Tech","TCU","Baylor","Kansas","Kansas State",
-  "Iowa State","West Virginia","Cincinnati","UCF","Houston","BYU",
-  "Colorado","Arizona","Arizona State","Utah"
-]);
-
-function hasSEC(offers)  { return offers.some(o => SEC_SCHOOLS.has(o)); }
-function hasP4(offers)   { return offers.some(o => P4_SCHOOLS.has(o)); }
-function isGem(p)        { return !hasP4(p.offers || []) && (p.gem_score || 0) >= 80; }
-function category(p) {
-  const o = p.offers || [];
-  if (hasSEC(o))  return 'sec';
-  if (hasP4(o))   return 'p4';
-  if (isGem(p))   return 'gem';
-  return 'g6';
-}
-
+/* ═══ DATA LOAD ═════════════════════════════════════════════════════════════ */
 async function loadData() {
   try {
-    const r = await fetch('data/offers.json?t=' + Date.now());
+    const r = await fetch(`data/offers.json?t=${Date.now()}`);
     if (!r.ok) throw new Error('not found');
     const d = await r.json();
-    ALL_PLAYERS = (d.players || []).map(p => ({ ...p, _cat: category(p) }));
-
-    // last updated
-    document.getElementById('last-upd-txt').textContent =
-      d.last_updated && d.last_updated !== 'never'
-        ? 'Updated ' + new Date(d.last_updated).toLocaleString()
-        : 'Waiting for first run…';
-
-    // source bar
-    const src = d.sources || {};
-    updateSrc('src-x',    src.x    || 0);
-    updateSrc('src-news', src.news || 0);
-    updateSrc('src-on3',  src.on3  || 0);
-    updateSrc('src-247',  src['247sports'] || 0);
-
+    allPlayers = d.players || [];
+    updateSourceBar(d.sources || {});
+    document.getElementById('lastUpd').innerHTML =
+      `<i class="fa-regular fa-clock"></i> ${d.last_updated || 'Unknown'}`;
+    render();
   } catch(e) {
-    ALL_PLAYERS = [];
-    document.getElementById('last-upd-txt').textContent = 'Waiting for first run…';
+    showEmpty("Waiting for First Scrape",
+      "The scraper runs every 20 minutes via GitHub Actions. Real recruits will appear here after the first run.");
   }
-  applyFilters();
+  setTimeout(loadData, 20 * 60 * 1000);
 }
 
-function updateSrc(id, n) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.querySelector('.src-dot').className = 'src-dot ' + (n > 0 ? 'on' : 'off');
-  el.querySelector('.src-n').textContent = n;
+function updateSourceBar(s) {
+  const map = { x:'src-x', news:'src-news', on3:'src-on3', '247sports':'src-247' };
+  const labels = { x:'X/Twitter', news:'Google News', on3:'On3', '247sports':'247Sports' };
+  const icons  = { x:'fa-brands fa-x-twitter', news:'fa-solid fa-newspaper',
+                   on3:'fa-solid fa-ranking-star', '247sports':'fa-solid fa-chart-bar' };
+  Object.keys(map).forEach(k => {
+    const el = document.getElementById(map[k]);
+    if (!el) return;
+    const n = s[k] || 0;
+    el.innerHTML = `
+      <span class="src-dot ${n > 0 ? 'on' : 'off'}"></span>
+      <i class="${icons[k]}"></i> ${labels[k]} — ${n > 0 ? n + ' found' : 'no results'}
+    `;
+  });
 }
 
-// ─── FILTERS ───────────────────────────────────────────────────────────────
-function applyFilters() {
-  const year   = document.getElementById('f-year').value;
-  const pos    = document.getElementById('f-pos').value;
-  const state  = document.getElementById('f-state').value;
-  const search = document.getElementById('f-search').value.toLowerCase().trim();
-
-  const filtered = ALL_PLAYERS.filter(p => {
-    if (year   !== 'all' && String(p.class_year) !== year) return false;
-    if (state  !== 'all' && (p.state || '').toUpperCase() !== state) return false;
-    if (pos    !== 'all') {
-      const pp = (p.position || '').toUpperCase();
-      if (pos === 'OL') { if (!['OL','OT','OG','C'].includes(pp)) return false; }
-      else if (pos === 'DL') { if (!['DL','DT','DE'].includes(pp)) return false; }
-      else if (pos === 'LB') { if (!['LB','ILB','OLB'].includes(pp)) return false; }
-      else if (pos === 'K')  { if (!['K','PK'].includes(pp)) return false; }
-      else if (pp !== pos)   return false;
-    }
-    if (search) {
-      const hay = [p.name, p.position, p.state, ...(p.offers||[])].join(' ').toLowerCase();
-      if (!hay.includes(search)) return false;
+/* ═══ FILTER ════════════════════════════════════════════════════════════════ */
+function getFiltered(tab) {
+  return allPlayers.filter(p => {
+    if (tab === 'sec'  && p.category !== 'sec')  return false;
+    if (tab === 'p4'   && p.category !== 'p4')   return false;
+    if (tab === 'g6'   && p.category !== 'g6')   return false;
+    if (tab === 'gems' && (p.category !== 'g6' || (p.gem_score||0) < 80)) return false;
+    if (activeYear  !== 'all' && String(p.grad_year) !== activeYear)  return false;
+    if (activeState !== 'all' && p.state !== activeState)             return false;
+    if (activePos   !== 'all') {
+      const pos = (p.position||'').toUpperCase();
+      if (activePos === 'OL'   && !['OL','OT','OG','C'].includes(pos))             return false;
+      if (activePos === 'DL'   && !['DL','DT','DE'].includes(pos))                 return false;
+      if (activePos === 'LB'   && !['LB','ILB','OLB'].includes(pos))               return false;
+      if (activePos === 'K'    && !['K','P','LS'].includes(pos))                    return false;
+      if (!['OL','DL','LB','K'].includes(activePos) && pos !== activePos)          return false;
     }
     return true;
   });
+}
 
-  // counts per tab
-  const counts = { sec:0, p4:0, g6:0, gem:0 };
-  filtered.forEach(p => { if (counts[p._cat] !== undefined) counts[p._cat]++; });
-  Object.keys(counts).forEach(k => {
-    document.getElementById('cnt-' + k).textContent = counts[k];
+/* ═══ RENDER ════════════════════════════════════════════════════════════════ */
+function render() {
+  ['sec','p4','g6','gems'].forEach(t => {
+    document.getElementById('cnt-'+t).textContent = getFiltered(t).length;
   });
+  const players = getFiltered(activeTab);
+  const grid    = document.getElementById('playerGrid');
+  const empty   = document.getElementById('emptyState');
 
-  renderTab(filtered.filter(p => p._cat === ACTIVE_TAB));
-}
-
-// ─── TABS ──────────────────────────────────────────────────────────────────
-const TAB_META = {
-  sec: {
-    icon: 'fa-shield-halved', cls: 'sec',
-    title: 'SEC Offers',
-    sub: 'Players within the Tennessee footprint holding SEC offers'
-  },
-  p4: {
-    icon: 'fa-trophy', cls: 'p4',
-    title: 'Other P4 Offers',
-    sub: 'Big Ten / ACC / Big 12 offers — no SEC offer yet'
-  },
-  g6: {
-    icon: 'fa-star-half-stroke', cls: 'g6',
-    title: 'G6 Footprint',
-    sub: 'Group of 5 offers within the Tennessee footprint'
-  },
-  gem: {
-    icon: 'fa-gem', cls: 'gem',
-    title: 'Hidden Gems',
-    sub: 'G6-only offers with Gem Score ≥ 80 — P4 measurables, underrecruited'
-  }
-};
-
-function switchTab(tab) {
-  ACTIVE_TAB = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  const m = TAB_META[tab];
-  const hdrIcon = document.getElementById('hdr-icon');
-  hdrIcon.className = 'section-hdr-icon ' + m.cls;
-  hdrIcon.innerHTML = `<i class="fa-solid ${m.icon}"></i>`;
-  document.getElementById('hdr-title').textContent = m.title;
-  document.getElementById('hdr-sub').textContent   = m.sub;
-  applyFilters();
-}
-
-// ─── RENDER ────────────────────────────────────────────────────────────────
-function renderTab(players) {
-  const grid = document.getElementById('grid');
   if (!players.length) {
-    grid.innerHTML = emptyState();
+    grid.style.display  = 'none';
+    empty.style.display = '';
+    if (allPlayers.length === 0) {
+      showEmpty("Waiting for First Scrape",
+        "The scraper runs every 20 minutes. Check the Actions tab on GitHub to watch progress.");
+    } else {
+      showEmpty("No Players Match These Filters",
+        "Try adjusting your grad year, position, or state filter.");
+    }
     return;
   }
-  players.sort((a,b) => (b.gem_score||0) - (a.gem_score||0));
-  grid.innerHTML = players.map(cardHTML).join('');
+
+  empty.style.display = 'none';
+  grid.style.display  = '';
+  grid.innerHTML = players.map(p => buildCard(p)).join('');
 }
 
-function emptyState() {
-  const hasAny = ALL_PLAYERS.length > 0;
-  return `
-  <div class="empty" style="grid-column:1/-1">
+function showEmpty(title, msg) {
+  const e = document.getElementById('emptyState');
+  e.style.display = '';
+  e.innerHTML = `
     <div class="empty-checker"></div>
-    <div class="empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-    <h3>${hasAny ? 'No Players Match Your Filters' : 'Waiting for First Scraper Run'}</h3>
-    <p>${hasAny
-      ? 'Try adjusting your grad year, position, state, or search term.'
-      : 'The scraper runs every 20 minutes via GitHub Actions. Check the Actions tab to confirm the workflow is running, then refresh this page.'
-    }</p>
-    <div class="empty-sub">${hasAny ? '' : 'Data sources: X/Twitter · Google News · On3 · 247Sports'}</div>
-  </div>`;
+    <div class="empty-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+    <h2>${title}</h2>
+    <p>${msg}</p>
+  `;
 }
 
-function cardHTML(p) {
-  const cat      = p._cat || 'g6';
-  const offers   = p.offers || [];
-  const stars    = p.stars || 0;
-  const gemScore = p.gem_score || 0;
-  const eval_    = p.evaluation || {};
-  const strengths= eval_.strengths || [];
-  const weaknesses=eval_.weaknesses|| [];
-  const name     = p.name || 'Unknown Athlete';
-  const pos      = p.position || 'ATH';
-  const ht       = p.height || '';
-  const wt       = p.weight ? p.weight + ' lbs' : '';
-  const st       = p.state || '';
-  const yr       = p.class_year || '';
-  const src      = p.source || '';
-  const srcUrl   = p.source_url || '#';
-  const srcIcon  = src === 'x' ? 'fa-brands fa-x-twitter'
-                 : src === 'news' ? 'fa-solid fa-newspaper'
-                 : src === 'on3'  ? 'fa-solid fa-rss'
-                 : 'fa-solid fa-link';
-  const srcLabel = src === 'x' ? 'Found via X/Twitter'
-                 : src === 'news' ? 'Found via Google News'
-                 : src === 'on3'  ? 'Found via On3'
-                 : src === '247sports' ? 'Found via 247Sports'
-                 : 'Source unknown';
+/* ═══ BUILD CARD ════════════════════════════════════════════════════════════ */
+function buildCard(p) {
+  const cat    = p.category || 'g6';
+  const offers = p.offers || [];
+  const stars  = p.stars  || 0;
+  const gem    = p.gem_score || 0;
 
-  const xUrl    = p.x_url    || `https://x.com/search?q=${encodeURIComponent(name + ' football')}`;
-  const hudlUrl = p.hudl_url || `https://www.hudl.com/search#${encodeURIComponent(name)}`;
-  const ucUrl   = p.uc_url   || `https://www.on3.com/search/?query=${encodeURIComponent(name)}`;
+  // Stars
+  let starsHtml = '<div class="stars">';
+  for (let i = 1; i <= 5; i++)
+    starsHtml += `<i class="fa-${i <= stars ? 'solid' : 'regular'} fa-star ${i <= stars ? 'star-fill' : 'star-empty'}"></i>`;
+  starsHtml += '</div>';
 
-  const starsHTML = [1,2,3,4,5].map(i =>
-    `<i class="${i <= stars ? 'fa-solid star-filled' : 'fa-regular star-empty'} fa-star"></i>`
-  ).join('');
+  // Offers
+  const SEC_SET = new Set(["Tennessee","Alabama","Auburn","Florida","Georgia","Kentucky","LSU",
+    "Mississippi State","Missouri","Ole Miss","South Carolina","Vanderbilt",
+    "Arkansas","Texas","Texas A&M","Oklahoma"]);
+  const P4_SET  = new Set(["Ohio State","Michigan","Penn State","Oregon","USC","Clemson",
+    "Florida State","Miami","Notre Dame","Oklahoma State","Texas Tech","TCU","Baylor"]);
 
-  const offersHTML = offers.slice(0,8).map(o => {
-    const cls = SEC_SCHOOLS.has(o) ? 'sec-tag' : P4_SCHOOLS.has(o) ? 'p4-tag' : 'g6-tag';
+  const offerTags = offers.slice(0, 10).map(o => {
+    let cls = 'g6-tag';
+    if (o === 'Tennessee') cls = 'tn-tag';
+    else if (SEC_SET.has(o)) cls = 'sec-tag';
+    else if (P4_SET.has(o))  cls = 'p4-tag';
     return `<span class="offer-tag ${cls}">${o}</span>`;
-  }).join('') + (offers.length > 8 ? `<span class="offer-tag g6-tag">+${offers.length-8} more</span>` : '');
+  }).join('');
+  const moreOffers = offers.length > 10
+    ? `<span class="offer-tag g6-tag">+${offers.length - 10} more</span>` : '';
 
-  const strHTML = strengths.slice(0,2).map(s =>
-    `<div class="eval-row"><i class="fa-solid fa-circle-check eval-icon str"></i><span class="eval-text">${s}</span></div>`
-  ).join('');
-  const wkHTML  = weaknesses.slice(0,1).map(w =>
-    `<div class="eval-row"><i class="fa-solid fa-triangle-exclamation eval-icon wk"></i><span class="eval-text">${w}</span></div>`
-  ).join('');
+  // Gem score
+  const gemHtml = gem >= 80
+    ? `<div class="gem-score"><i class="fa-solid fa-gem"></i> Gem Score: ${gem}/100</div>` : '';
+
+  // AI eval
+  const aiHtml = (p.strengths || p.weaknesses) ? `
+    <div class="ai-eval">
+      <div class="ai-eval-header"><i class="fa-solid fa-microchip"></i> AI Evaluation</div>
+      ${p.strengths ? `<div class="ai-eval-row">
+        <span class="ai-eval-label str"><i class="fa-solid fa-arrow-trend-up"></i> Strengths</span>
+        <span class="ai-eval-text">${p.strengths}</span>
+      </div>` : ''}
+      ${p.weaknesses ? `<div class="ai-eval-row">
+        <span class="ai-eval-label wk"><i class="fa-solid fa-triangle-exclamation"></i> Concerns</span>
+        <span class="ai-eval-text">${p.weaknesses}</span>
+      </div>` : ''}
+    </div>` : '';
+
+  // Source citation
+  const srcIcon = { x:'fa-brands fa-x-twitter', news:'fa-solid fa-newspaper',
+                    on3:'fa-solid fa-ranking-star', '247sports':'fa-solid fa-chart-bar' };
+  const srcLabel = { x:'X/Twitter', news:'Google News', on3:'On3', '247sports':'247Sports' };
+  const src = p.source || 'unknown';
+  const srcUrl = p.source_url || '#';
+  const citeHtml = `
+    <div class="source-cite">
+      <i class="${srcIcon[src] || 'fa-solid fa-link'}"></i>
+      Found via <a href="${srcUrl}" target="_blank" rel="noopener">${srcLabel[src] || src}</a>
+      ${p.source_date ? `· ${p.source_date}` : ''}
+    </div>`;
+
+  // Links
+  const xLink    = p.x_url    ? `<a class="card-link" href="${p.x_url}"    target="_blank"><i class="fa-brands fa-x-twitter"></i> Profile</a>` : '';
+  const hudlLink = p.hudl_url ? `<a class="card-link" href="${p.hudl_url}" target="_blank"><i class="fa-solid fa-film"></i> Hudl</a>` : '';
+  const ucLink   = p.uc_url   ? `<a class="card-link" href="${p.uc_url}"   target="_blank"><i class="fa-solid fa-file-lines"></i> UC Report</a>` : '';
 
   return `
-  <div class="card ${cat}">
+  <div class="card">
+    <div class="card-bar ${cat}"></div>
     <div class="card-body">
       <div class="card-top">
-        <div class="card-name">${name}</div>
-        <span class="card-pos-badge ${cat}">${pos}</span>
+        <div class="card-name">${p.name || 'Unknown'}</div>
+        <span class="card-pos-badge ${cat}">${p.position || 'ATH'}</span>
       </div>
       <div class="card-meta">
-        ${yr ? `<div class="card-meta-item"><i class="fa-solid fa-calendar-days"></i> Class of ${yr}</div>` : ''}
-        ${st ? `<div class="card-meta-item"><i class="fa-solid fa-location-dot"></i> ${st}</div>` : ''}
-        ${ht ? `<div class="card-meta-item"><i class="fa-solid fa-ruler-vertical"></i> ${ht}</div>` : ''}
-        ${wt ? `<div class="card-meta-item"><i class="fa-solid fa-weight-scale"></i> ${wt}</div>` : ''}
+        <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> ${p.state || '—'}</span>
+        <span class="meta-pill"><i class="fa-solid fa-calendar"></i> Class of ${p.grad_year || '—'}</span>
+        ${p.height ? `<span class="meta-pill"><i class="fa-solid fa-ruler-vertical"></i> ${p.height}</span>` : ''}
+        ${p.weight ? `<span class="meta-pill"><i class="fa-solid fa-weight-scale"></i> ${p.weight} lbs</span>` : ''}
+        ${p.school ? `<span class="meta-pill"><i class="fa-solid fa-school"></i> ${p.school}</span>` : ''}
       </div>
-      ${stars > 0 ? `<div class="stars">${starsHTML}</div>` : ''}
-      <div class="gem-score-row">
-        <span class="gem-label"><i class="fa-solid fa-gem" style="color:var(--gem);font-size:.6rem"></i> Gem Score</span>
-        <div class="gem-bar-wrap"><div class="gem-bar-fill" style="width:${gemScore}%"></div></div>
-        <span class="gem-score-val">${gemScore}</span>
-      </div>
-      ${offers.length ? `
-      <div class="offers-wrap">
-        <div class="offers-label"><i class="fa-solid fa-envelope-open-text"></i> Offers</div>
-        <div class="offers-list">${offersHTML}</div>
-      </div>` : ''}
-      <a class="source-cite" href="${srcUrl}" target="_blank" rel="noopener">
-        <i class="${srcIcon}"></i> ${srcLabel}
-      </a>
-      ${(strHTML || wkHTML) ? `
-      <div class="eval-wrap">
-        <div class="eval-label"><i class="fa-solid fa-robot"></i> AI Scouting Brief</div>
-        ${strHTML}${wkHTML}
-      </div>` : ''}
-    </div>
-    <div class="card-links">
-      <a class="card-link x-link"    href="${xUrl}"    target="_blank" rel="noopener">
-        <i class="fa-brands fa-x-twitter"></i> X Profile
-      </a>
-      <a class="card-link hudl-link" href="${hudlUrl}" target="_blank" rel="noopener">
-        <i class="fa-solid fa-film"></i> Hudl Film
-      </a>
-      <a class="card-link uc-link"   href="${ucUrl}"   target="_blank" rel="noopener">
-        <i class="fa-solid fa-file-lines"></i> UC Report
-      </a>
+      ${starsHtml}
+      ${gemHtml}
+      ${offers.length ? `<div class="offers-label">Offers (${offers.length})</div>
+      <div class="offers-list">${offerTags}${moreOffers}</div>` : ''}
+      ${aiHtml}
+      ${citeHtml}
+      <div class="card-links">${xLink}${hudlLink}${ucLink}</div>
     </div>
   </div>`;
 }
 
-// ─── CSV EXPORT ────────────────────────────────────────────────────────────
-function exportCSV() {
-  const year   = document.getElementById('f-year').value;
-  const pos    = document.getElementById('f-pos').value;
-  const state  = document.getElementById('f-state').value;
-  const search = document.getElementById('f-search').value.toLowerCase().trim();
-
-  const rows = ALL_PLAYERS.filter(p => {
-    if (p._cat !== ACTIVE_TAB) return false;
-    if (year  !== 'all' && String(p.class_year) !== year) return false;
-    if (state !== 'all' && (p.state||'').toUpperCase() !== state) return false;
-    if (pos   !== 'all' && (p.position||'').toUpperCase() !== pos) return false;
-    if (search) {
-      const hay = [p.name,p.position,p.state,...(p.offers||[])].join(' ').toLowerCase();
-      if (!hay.includes(search)) return false;
-    }
-    return true;
-  });
-
-  if (!rows.length) { alert('No players to export with current filters.'); return; }
-
-  const headers = ['Name','Position','Class Year','State','Height','Weight','Stars',
-                   'Gem Score','Offers','Category','Source','X URL','Hudl URL','UC URL'];
-  const csv = [headers, ...rows.map(p => [
-    p.name, p.position, p.class_year, p.state,
-    p.height, p.weight, p.stars, p.gem_score,
-    (p.offers||[]).join('; '), p._cat, p.source,
-    p.x_url||'', p.hudl_url||'', p.uc_url||''
-  ])].map(r => r.map(v => `"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
-
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = `vol-recruiting-${ACTIVE_TAB}-${Date.now()}.csv`;
-  a.click();
+/* ═══ TABS / FILTERS ════════════════════════════════════════════════════════ */
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === tab));
+  render();
 }
 
-// ─── AUTO REFRESH every 20 min ─────────────────────────────────────────────
-setInterval(loadData, 20 * 60 * 1000);
+document.getElementById('yearBtns').addEventListener('click', e => {
+  if (!e.target.classList.contains('yr-btn')) return;
+  activeYear = e.target.dataset.yr;
+  document.querySelectorAll('.yr-btn').forEach(b =>
+    b.classList.toggle('active', b === e.target));
+  render();
+});
+
+document.getElementById('posBtns').addEventListener('click', e => {
+  if (!e.target.classList.contains('pos-btn')) return;
+  activePos = e.target.dataset.pos;
+  document.querySelectorAll('.pos-btn').forEach(b =>
+    b.classList.toggle('active', b === e.target));
+  render();
+});
+
+document.getElementById('stateSel').addEventListener('change', e => {
+  activeState = e.target.value;
+  render();
+});
+
+/* ═══ CSV EXPORT ════════════════════════════════════════════════════════════ */
+function exportCSV() {
+  const players = getFiltered(activeTab);
+  if (!players.length) { alert('No players to export with current filters.'); return; }
+  const headers = ['Name','Position','State','Grad Year','Height','Weight','Stars',
+                   'Gem Score','Offers','Category','Source','Source URL',
+                   'X URL','Hudl URL','UC URL','Strengths','Weaknesses'];
+  const rows = players.map(p => [
+    p.name, p.position, p.state, p.grad_year, p.height, p.weight,
+    p.stars, p.gem_score, (p.offers||[]).join(' | '), p.category,
+    p.source, p.source_url, p.x_url, p.hudl_url, p.uc_url,
+    p.strengths, p.weaknesses
+  ].map(v => `"${(v||'').toString().replace(/"/g,'""')}"`));
+
+  const csv  = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `vol-recruiting-${activeTab}-${activeYear}-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 </script>
 </body>
 </html>
