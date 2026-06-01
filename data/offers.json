@@ -4738,8 +4738,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Tennessee",
-        "Auburn"
+        "Auburn",
+        "Tennessee"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -4775,8 +4775,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Virginia",
-        "Virginia Tech"
+        "Virginia Tech",
+        "Virginia"
       ],
       "category": "P4",
       "gem_score": 0,
@@ -4812,8 +4812,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Virginia",
-        "Virginia Tech"
+        "Virginia Tech",
+        "Virginia"
       ],
       "category": "P4",
       "gem_score": 0,
@@ -5065,8 +5065,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Kentucky",
         "Ohio State",
+        "Kentucky",
         "Ohio"
       ],
       "category": "SEC",
@@ -5103,9 +5103,9 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Kansas State",
+        "Kansas",
         "Alabama",
-        "Kansas"
+        "Kansas State"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5176,8 +5176,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Florida",
-        "Pitt"
+        "Pitt",
+        "Florida"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5249,8 +5249,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Virginia",
-        "Virginia Tech"
+        "Virginia Tech",
+        "Virginia"
       ],
       "category": "P4",
       "gem_score": 0,
@@ -5385,12 +5385,12 @@
       "found_date": "2026-06-01T19:23:37.137756+00:00"
     }
   ],
-  "last_updated": "2026-06-01T19:38:06.185446+00:00",
+  "last_updated": "2026-06-01T19:43:11.667431+00:00",
   "sources": {
     "x": 0,
     "on3": 0,
     "247sports": 0,
-    "news": 17
+    "news": 16
   },
   "total": 170
 }
