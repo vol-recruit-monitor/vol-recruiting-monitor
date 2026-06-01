@@ -4738,8 +4738,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Auburn",
-        "Tennessee"
+        "Tennessee",
+        "Auburn"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5065,9 +5065,9 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Ohio State",
+        "Kentucky",
         "Ohio",
-        "Kentucky"
+        "Ohio State"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5103,9 +5103,9 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Kansas State",
+        "Kansas",
         "Alabama",
-        "Kansas"
+        "Kansas State"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5176,8 +5176,8 @@
       "height": 0,
       "weight": 0,
       "offers": [
-        "Pitt",
-        "Florida"
+        "Florida",
+        "Pitt"
       ],
       "category": "SEC",
       "gem_score": 0,
@@ -5346,14 +5346,51 @@
       "source_detail": "Burnt Orange Nation",
       "source_url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQSHBxNjRZU24zSkQ3WHhCNjdXSEpDRUxMQTdROFpwaFNzQjBHeGxYdlpaQTN2aW9KZllIYkxGYm9RWnlrRDJ2NzQyODZMUUoxRHpyd1ZsbndjckRaQmJ2cFBmei11Rk5XcGMwTXZfS2JtbWN3Y2JNV2hTbDZDNUUxSHVzS21hSkdoN3pPaE8tTEV4OVNyZlBwdUFPSGRvM3hnYWE0RGdEVV9JMzd4UUJyWnV4amMwRnhVRXo0OFpfdWJIX284R1Z5R0lB?oc=5",
       "found_date": "2026-06-01T19:15:22.919204+00:00"
+    },
+    {
+      "id": "1bded2c128d8",
+      "name": "Andy Tatsch",
+      "position": "S",
+      "state": "VA",
+      "year": "2027",
+      "stars": 0,
+      "height": 0,
+      "weight": 0,
+      "offers": [
+        "West Virginia",
+        "Virginia"
+      ],
+      "category": "P4",
+      "gem_score": 0,
+      "evaluation": {
+        "strengths": [
+          "Developing prospect"
+        ],
+        "weaknesses": [
+          "Undersized for position",
+          "Needs to add weight",
+          "Limited offer sheet so far"
+        ]
+      },
+      "links": {
+        "on3": "https://www.on3.com/db/search/?query=Andy+Tatsch",
+        "247": "https://247sports.com/Search/Player/?query=Andy+Tatsch",
+        "hudl": "https://www.hudl.com/search?query=Andy+Tatsch&organizationTypes=highSchool",
+        "x": "https://x.com/search?q=Andy+Tatsch%20football&src=typed_query",
+        "ucreport": "https://www.google.com/search?q=site:ucreport.com+Andy+Tatsch"
+      },
+      "source": "news",
+      "source_detail": "TribLIVE.com",
+      "source_url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQS0lSOUlHU09XSVBRd3gwVjVMYUIyZ1ZNSDJRV0t5TERKVmpNMWFkOWxTWndTT3A1LXBXamlzbmNlNTVublFQbWU2bUZ4QmxxSllsbmNzdU1Ic3RTX2JWVnBsREpjZ3hmdXpBdzhmR1lyblkwcm1RZ3NXVDM5Mm9VUGc0QVBkdE01M0E?oc=5",
+      "found_date": "2026-06-01T19:23:37.137756+00:00"
     }
   ],
-  "last_updated": "2026-06-01T19:23:15.238405+00:00",
+  "last_updated": "2026-06-01T19:23:38.142611+00:00",
   "sources": {
     "x": 0,
     "on3": 0,
     "247sports": 0,
-    "news": 15
+    "news": 16
   },
-  "total": 169
+  "total": 170
 }
