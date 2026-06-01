@@ -381,6 +381,40 @@
       }
     },
     {
+      "id": "1c8f23703734",
+      "name": "SEC Rival",
+      "position": "ATH",
+      "state": "IN",
+      "year": "2027",
+      "stars": 4,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "LSU",
+        "South Carolina"
+      ],
+      "category": "sec",
+      "source": "Google News (Sports Illustrated) + Google News (Garnet and Cocky)",
+      "source_url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxORmNGcW1yWnFvYVI5UlRSQXdwMmlKYW93emhCVWE4cnJUd1VyZS1XcmpYT2xyZFR0TFZYQ0NaMmFkcjJtcWJCbWZyeHN3b1A1R293SFpJRjhSRnRXNk5qWVJiZTVzdGZJSlFnSW1YMmY0d2VoY09RaS1wQWluWVBZU0FoMkVEWlRpNnJrUHpJcTNNUzJSNkFuWFJiZ2xWckttdTVFTVFDTkxtNnZ6d01tbGpOY0pxMVBKdUt3LU5MN2pNRlRmV0EyMDlIdFkyT0dnM2dFQ3ZPSUpJNTB5UXBCQU96ZnpXS1lNcTU4?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=SEC+Rival&type=athlete",
+        "uc_report": "https://www.google.com/search?q=SEC+Rival+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=SEC+Rival+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:33:00.070892+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "SEC-caliber talent \u2014 offers from LSU, South Carolina",
+          "Highly rated 4-star prospect"
+        ],
+        "weaknesses": [
+          "Limited data \u2014 need more film and camp results"
+        ]
+      }
+    },
+    {
       "id": "c0df1b11445e",
       "name": "Sevier County",
       "position": "TE",
@@ -504,6 +538,38 @@
         ],
         "weaknesses": [
           "Unrated \u2014 limited exposure so far"
+        ]
+      }
+    },
+    {
+      "id": "84c74489caca",
+      "name": "Adds Two",
+      "position": "TE",
+      "state": "NC",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Wake Forest"
+      ],
+      "category": "p4",
+      "source": "Google News (NC Football News)",
+      "source_url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQLXVGRXpjMmVGdTQ0WnktZUcwSkVkQ013bnU5WWxxbmE4ek5BcGZRSm9nYU1JSG1aZUZZZFhHS3E4dXdoTVFkWEM2YURudnBNQjdDRHBORTZDZXplUTdqa1ZBSmd6djdPYWhOWEstTlR2TWFCWlRYU2VadTFYM3JaWDMxV2QyLUM2RVQ2ZmVuMUJfUHc?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Adds+Two&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Adds+Two+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Adds+Two+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:00.815307+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
         ]
       }
     },
@@ -1496,6 +1562,38 @@
       }
     },
     {
+      "id": "2c871db458dd",
+      "name": "Football Commits",
+      "position": "ATH",
+      "state": "NC",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "North Carolina"
+      ],
+      "category": "p4",
+      "source": "Google News (247Sports)",
+      "source_url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5sNTFraXZURjN2bDhnNXpHam1wX3JSaEpEZmZqZ1BwWGNWLUFHYm5Nb3pCV2h0SUNyTmRpbkNLVzBuUXh5NHFzM3dXbFRuNzMxMFh6OEltLW41emN2OFA4RHdFd21xdHhBSzBSUFFFOXU4djk5bmZoY1RabTJ3TEk?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Football+Commits&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Football+Commits+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Football+Commits+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:04.682788+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "94fe31cb0f8b",
       "name": "Football Joins Similar",
       "position": "WR",
@@ -1588,6 +1686,38 @@
       }
     },
     {
+      "id": "fb5d42dc007b",
+      "name": "Football Prospects",
+      "position": "ATH",
+      "state": "NC",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "North Carolina"
+      ],
+      "category": "p4",
+      "source": "Google News (247Sports)",
+      "source_url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE40WTZIdHJ3OFV6LWlTV1k1WUJCazd5S1g3c2x3UGctdXZTTVhyMnp0WTIxd2hjV01WY3U3dTd6Q0U1Zmplb3d1amJwMEhVVS1jVnhpYmxJbEwxY2I5bFFMc2JURC1NLUkxRFFib1JlNXJ2SDl5Y1J3Q3d6UXlPTlE?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Football+Prospects&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Football+Prospects+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Football+Prospects+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:04.681277+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "f831a40ee580",
       "name": "Football Recruiting",
       "position": "LB",
@@ -1599,6 +1729,7 @@
       "weight": 0,
       "offers": [
         "LSU",
+        "North Carolina",
         "SMU",
         "Tennessee",
         "Tulane"
@@ -1816,6 +1947,38 @@
       }
     },
     {
+      "id": "bb0d60642cb2",
+      "name": "From North",
+      "position": "ATH",
+      "state": "NC",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "North Carolina"
+      ],
+      "category": "p4",
+      "source": "Google News (Stacker)",
+      "source_url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNckIxRTNEeFdxSGpkR3RsaDZiRWg0Vl92eVJQcnpReDhWdVpLamJsQm1XTmtuc0U3WGk1emdUUXhDbGFwS0trdDc2bXpCWV9GV040TmNyekhud2VFbm9ra2ZILUhuZVFoaHVsYURNbTJyMExBM2lZWGlBU0NKUl9OdGdsbzlWMUhpVHV6X1hydmx0bTh0MnU1bFpjams3YlJFaXc?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=From+North&type=athlete",
+        "uc_report": "https://www.google.com/search?q=From+North+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=From+North+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:04.677119+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "b28ccf901696",
       "name": "From South",
       "position": "ATH",
@@ -1936,6 +2099,38 @@
       }
     },
     {
+      "id": "d07cd665be95",
+      "name": "Gives Deacs",
+      "position": "ATH",
+      "state": "NC",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Wake Forest"
+      ],
+      "category": "p4",
+      "source": "Google News (NC Football News)",
+      "source_url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPZm8zSE5sMTBja1ZxZm9ZU1lONGtqeW15MFlROWR4ZzFSUERJWDFockc1ZDVFNUxuS2tGYmRjU0tZTGprbG84eDExZmNPQ1RPUlRGbVdTajViVlQ5V0N0UEYyNl9QQ1FaNW9YSEtYVWVzc0RXSkdLejFxYkpkUnZ6ejZR?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Gives+Deacs&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Gives+Deacs+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Gives+Deacs+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:04.675134+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "2c77b5be694d",
       "name": "Graham Simpson",
       "position": "QB",
@@ -2039,10 +2234,11 @@
       "height_inches": 0,
       "weight": 0,
       "offers": [
+        "North Carolina",
         "Tennessee"
       ],
       "category": "sec",
-      "source": "Google News (Tennessee Titans)",
+      "source": "Google News (Tennessee Titans) + Google News (NC Football News)",
       "source_url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOdHpSOHdKQVpmdWVPM1dKLXM1bG1DUXA3WF9RVDduOFh4X0pfR1A1MFc4eUFodVEyS015V3BISXVnVmlOUldKcFNSSHB4LTk0YllNUTYxWkJSTkwzYmZ5TXNwRnFWWUduanVFZFVEWnNwNUV4TUhzM00talMxY0xwZUo2WTIxRkRTd0FuQUJ1SXpKWkMxQ3dv?oc=5",
       "links": {
         "hudl": "https://www.hudl.com/search?query=High+School&type=athlete",
@@ -2056,7 +2252,7 @@
           "SEC-caliber talent \u2014 offers from Tennessee"
         ],
         "weaknesses": [
-          "Limited offer sheet \u2014 may still be early in recruitment"
+          "Unrated \u2014 limited exposure so far"
         ]
       }
     },
@@ -2328,6 +2524,38 @@
       }
     },
     {
+      "id": "e93849e7fd11",
+      "name": "Keland Shelton",
+      "position": "ATH",
+      "state": "NC",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Wake Forest"
+      ],
+      "category": "p4",
+      "source": "Google News (NC Football News)",
+      "source_url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPZm8zSE5sMTBja1ZxZm9ZU1lONGtqeW15MFlROWR4ZzFSUERJWDFockc1ZDVFNUxuS2tGYmRjU0tZTGprbG84eDExZmNPQ1RPUlRGbVdTajViVlQ5V0N0UEYyNl9QQ1FaNW9YSEtYVWVzc0RXSkdLejFxYkpkUnZ6ejZR?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Keland+Shelton&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Keland+Shelton+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Keland+Shelton+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:04.675048+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "1841c007daad",
       "name": "Kevin Brown",
       "position": "ATH",
@@ -2527,7 +2755,7 @@
         "Florida"
       ],
       "category": "sec",
-      "source": "news + Google News (Treasure Coast News) + Google News (The News-Press) + Google News (Sarasota Herald-Tribune)",
+      "source": "news + Google News (Treasure Coast News) + Google News (The News-Press) + Google News (Sarasota Herald-Tribune) + Google News (Florida Today)",
       "source_url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxONkkyUVd3OUw0VTZGVHM4YWJlejVTdnhTMzNzNXRCNDRkcFhTSTc4clZvSDJ3OHh3NnptYXQzTktKblJoYm02cFdFOWlsRDZfdTl2TDJHMno3TDB2UHpHS3lCU1RELXh6RXhKY2ZiT0xNSFJ3XzNPOG5XcUFva0dWTlZQWW1vVkpNTTZjY0ZybDFJVTRNN3ljUncybDhoc0t1OUR2cXJaT2NjNF9xLURadWRLeTIzTWc?oc=5",
       "source_label": "Google News",
       "scraped_at": "2026-06-01T18:12:34.915356+00:00",
@@ -3099,6 +3327,38 @@
       }
     },
     {
+      "id": "d0b0e0b96c35",
+      "name": "Recruiting Buzz",
+      "position": "TE",
+      "state": "NC",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Wake Forest"
+      ],
+      "category": "p4",
+      "source": "Google News (NC Football News)",
+      "source_url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQLXVGRXpjMmVGdTQ0WnktZUcwSkVkQ013bnU5WWxxbmE4ek5BcGZRSm9nYU1JSG1aZUZZZFhHS3E4dXdoTVFkWEM2YURudnBNQjdDRHBORTZDZXplUTdqa1ZBSmd6djdPYWhOWEstTlR2TWFCWlRYU2VadTFYM3JaWDMxV2QyLUM2RVQ2ZmVuMUJfUHc?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=Recruiting+Buzz&type=athlete",
+        "uc_report": "https://www.google.com/search?q=Recruiting+Buzz+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=Recruiting+Buzz+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:00.815227+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
+      }
+    },
+    {
       "id": "d2f36e928412",
       "name": "Recruiting Scoop",
       "position": "ATH",
@@ -3278,38 +3538,6 @@
         "strengths": "SEC-level interest (2 offer(s)) \u2014 UT should act now",
         "weaknesses": "Height not confirmed; Weight not confirmed",
         "recommendation": "Target"
-      }
-    },
-    {
-      "id": "1c8f23703734",
-      "name": "SEC Rival",
-      "position": "ATH",
-      "state": "IN",
-      "year": "2027",
-      "stars": 0,
-      "height": "",
-      "height_inches": 0,
-      "weight": 0,
-      "offers": [
-        "LSU"
-      ],
-      "category": "sec",
-      "source": "Google News (Sports Illustrated)",
-      "source_url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxORmNGcW1yWnFvYVI5UlRSQXdwMmlKYW93emhCVWE4cnJUd1VyZS1XcmpYT2xyZFR0TFZYQ0NaMmFkcjJtcWJCbWZyeHN3b1A1R293SFpJRjhSRnRXNk5qWVJiZTVzdGZJSlFnSW1YMmY0d2VoY09RaS1wQWluWVBZU0FoMkVEWlRpNnJrUHpJcTNNUzJSNkFuWFJiZ2xWckttdTVFTVFDTkxtNnZ6d01tbGpOY0pxMVBKdUt3LU5MN2pNRlRmV0EyMDlIdFkyT0dnM2dFQ3ZPSUpJNTB5UXBCQU96ZnpXS1lNcTU4?oc=5",
-      "links": {
-        "hudl": "https://www.hudl.com/search?query=SEC+Rival&type=athlete",
-        "uc_report": "https://www.google.com/search?q=SEC+Rival+site%3Aucreport.com",
-        "x_profile": "https://x.com/search?q=SEC+Rival+football&src=typed_query"
-      },
-      "found_at": "2026-06-01T18:33:00.070892+00:00",
-      "gem_score": 50,
-      "evaluation": {
-        "strengths": [
-          "SEC-caliber talent \u2014 offers from LSU"
-        ],
-        "weaknesses": [
-          "Limited offer sheet \u2014 may still be early in recruitment"
-        ]
       }
     },
     {
@@ -3551,6 +3779,38 @@
         "strengths": "SEC-level interest (1 offer(s)) \u2014 UT should act now",
         "weaknesses": "Height not confirmed; Weight not confirmed",
         "recommendation": "Target"
+      }
+    },
+    {
+      "id": "01464bf63eb2",
+      "name": "The Columbus",
+      "position": "ATH",
+      "state": "IN",
+      "year": "2027",
+      "stars": 0,
+      "height": "",
+      "height_inches": 0,
+      "weight": 0,
+      "offers": [
+        "Ohio"
+      ],
+      "category": "g6",
+      "source": "Google News (The Columbus Dispatch)",
+      "source_url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNVDNiTS04elJ3QmFDSFZycHpvZkNxZE9scHl6cmQwNFZ4UjNnRnNHV3ZSMzVxNVc5RW1ES1ByNlNNR0RHUDFWLVlkMExSZnEwZTEybjZCTHZfX1ZteDlYaDVPSmRUS01oaEdTNk5ZMzlZVHpzUjRPS0drLWREOHh2SnNmXzVWYkJmektVcG5rcVFrb3BYdWcwVjVXTEdUeTNmT2dkUlI2cjJGa1J1RHRpdURwazl2dXJOcVRMUWl3VVR6SjZqY2k0UUdyRzNMLTZQU0R6eHlBOHpDc0pVSDQ1dkp6N2NGQVk?oc=5",
+      "links": {
+        "hudl": "https://www.hudl.com/search?query=The+Columbus&type=athlete",
+        "uc_report": "https://www.google.com/search?q=The+Columbus+site%3Aucreport.com",
+        "x_profile": "https://x.com/search?q=The+Columbus+football&src=typed_query"
+      },
+      "found_at": "2026-06-01T18:36:07.329502+00:00",
+      "gem_score": 50,
+      "evaluation": {
+        "strengths": [
+          "Prospect in Tennessee footprint \u2014 worth monitoring"
+        ],
+        "weaknesses": [
+          "Limited offer sheet \u2014 may still be early in recruitment"
+        ]
       }
     },
     {
@@ -4469,12 +4729,12 @@
       }
     }
   ],
-  "last_updated": "2026-06-01T18:33:07.973273+00:00",
+  "last_updated": "2026-06-01T18:36:09.084340+00:00",
   "sources": {
     "x": 0,
-    "news": 88,
+    "news": 89,
     "on3": 0,
     "247sports": 0
   },
-  "total": 144
+  "total": 152
 }
