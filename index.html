@@ -5,56 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vol Recruiting Monitor | Tennessee Football</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     OFFICIAL UT BRAND PALETTE
+     Source: brand.utk.edu/standards/colors/
+     "Black is not a color in our palette" — all darks use Smokey tones
+     ═══════════════════════════════════════════════════════════════════════════ */
   :root {
-    --orange:        #FF8200;
-    --orange-light:  #FF8200;
-    --orange-dim:    rgba(255,130,0,.1);
-    --orange-border: rgba(255,130,0,.28);
-    --white:         #FFFFFF;
-    --bg:            #111111;
-    --bg-mid:        #161616;
-    --bg-card:       #1C1C1C;
-    --bg-card2:      #222222;
-    --border:        #2A2A2A;
-    --border-mid:    #333333;
-    --text:          #EFEFEF;
-    --text-dim:      #888888;
-    --text-faint:    #505050;
-    --gold:          #C8922A;
-    --gold-dim:      rgba(200,146,42,.1);
-    --gold-border:   rgba(200,146,42,.28);
-    --silver:        #8A8A8A;
-    --silver-dim:    rgba(138,138,138,.08);
-    --silver-border: rgba(138,138,138,.22);
-    --gem:           #00C896;
-    --gem-dim:       rgba(0,200,150,.09);
-    --gem-border:    rgba(0,200,150,.28);
+    /* Primary */
+    --vol-orange:      #FF8200;
+    --vol-orange-light:#FF9A33;
+    --vol-orange-dim:  rgba(255,130,0,.10);
+    --vol-orange-mid:  rgba(255,130,0,.18);
+    --vol-orange-bdr:  rgba(255,130,0,.30);
+    --white:           #FFFFFF;
+
+    /* Smokey tones — brand.utk.edu says use Smokey Gray instead of black */
+    --smokey:          #58595B;
+    --smokey-dark:     #3A3A3C;
+    --smokey-deep:     #2A2A2C;
+    --smokey-deeper:   #1E1E20;
+    --smokey-base:     #161618;
+    --smokey-floor:    #111113;
+
+    /* Functional */
+    --text-primary:    #F0F0F0;
+    --text-secondary:  #A0A0A2;
+    --text-tertiary:   #6E6E70;
+    --border:          #33333A;
+    --border-light:    #44444A;
+
+    /* Category accents (no blue) */
+    --sec-accent:      #FF8200;
+    --p4-accent:       #C8922A;
+    --p4-dim:          rgba(200,146,42,.10);
+    --p4-bdr:          rgba(200,146,42,.28);
+    --g6-accent:       #8A8A8E;
+    --g6-dim:          rgba(138,138,142,.08);
+    --g6-bdr:          rgba(138,138,142,.22);
+    --gem-accent:      #00C896;
+    --gem-dim:         rgba(0,200,150,.09);
+    --gem-bdr:         rgba(0,200,150,.28);
   }
 
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--smokey-floor);
+    color: var(--text-primary);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ─── CHECKERBOARD STRIP — orange & white, 3 rows (42px) ─────────────────── */
+  /* ─── CHECKERBOARD ──────────────────────────────────────────────────────── */
   .checker-strip {
-    height: 55px;
-    background-image: repeating-conic-gradient(var(--orange) 0% 25%, #FFFFFF 0% 50%);
+    height: 42px;
+    background-image: repeating-conic-gradient(var(--vol-orange) 0% 25%, var(--white) 0% 50%);
     background-size: 14px 14px;
     flex-shrink: 0;
-    opacity: 1.0;
+    opacity: .92;
+  }
+  .checker-strip-sm {
+    height: 28px;
+    background-image: repeating-conic-gradient(var(--vol-orange) 0% 25%, var(--white) 0% 50%);
+    background-size: 10px 10px;
+    opacity: .35;
   }
 
-  /* ─── PASSWORD GATE ──────────────────────────────────────────────────────── */
+  /* ─── PASSWORD GATE ─────────────────────────────────────────────────────── */
   .gate {
     position: fixed; inset: 0;
-    background: var(--bg);
+    background: var(--smokey-floor);
     display: flex; justify-content: center; align-items: center;
     z-index: 99999;
     transition: opacity .4s, visibility .4s;
@@ -62,23 +87,23 @@
   .gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
   .gate-box {
-    background: var(--bg-card);
-    border: 1px solid var(--border-mid);
+    background: var(--smokey-deeper);
+    border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 2.75rem 2.5rem 2.25rem;
+    padding: 0 0 2.25rem;
     text-align: center;
     max-width: 400px; width: 90%;
     box-shadow: 0 28px 64px rgba(0,0,0,.65);
     animation: fadeUp .5s ease;
-    position: relative;
     overflow: hidden;
   }
-  .gate-box::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 55px;
-    background-image: repeating-conic-gradient(var(--orange) 0% 25%, #FFFFFF 0% 50%);
+
+  .gate-checker {
+    height: 42px;
+    background-image: repeating-conic-gradient(var(--vol-orange) 0% 25%, var(--white) 0% 50%);
     background-size: 14px 14px;
-    opacity: 1.0;
+    opacity: .92;
+    margin-bottom: 1.5rem;
   }
 
   @keyframes fadeUp {
@@ -88,74 +113,84 @@
 
   .gate-logo {
     width: 68px; height: 68px;
-    background: var(--orange);
+    background: var(--vol-orange);
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    margin: 1.5rem auto 1.2rem;
-    font-size: 2rem; font-weight: 900; color: #fff; font-style: italic;
+    margin: 0 auto 1.2rem;
+    font-family: 'Anton', sans-serif;
+    font-size: 2.2rem; color: #fff;
     box-shadow: 0 4px 20px rgba(255,130,0,.38);
     overflow: hidden;
-    position: relative; z-index: 1;
   }
   .gate-logo img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
 
-  .gate-title { font-size: 1.15rem; font-weight: 700; color: var(--white); position: relative; z-index: 1; }
-  .gate-sub   { font-size: .78rem; color: var(--text-dim); margin: .3rem 0 1.75rem; position: relative; z-index: 1; }
+  .gate-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.3rem; font-weight: 400; color: var(--white);
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .gate-sub {
+    font-size: .78rem; color: var(--text-secondary);
+    margin: .3rem 0 1.75rem;
+    padding: 0 2rem;
+  }
 
+  .gate-form { padding: 0 2rem; }
   .gate-wrap { position: relative; margin-bottom: .85rem; }
   .gate-input {
     width: 100%;
     padding: .78rem 2.75rem .78rem 1rem;
     background: rgba(255,255,255,.04);
-    border: 1.5px solid var(--border-mid);
+    border: 1.5px solid var(--border);
     border-radius: 8px;
     color: var(--white); font-size: .95rem; outline: none;
     transition: border-color .2s;
-    font-family: inherit;
+    font-family: 'Inter', sans-serif;
   }
-  .gate-input:focus { border-color: var(--orange); }
+  .gate-input:focus { border-color: var(--vol-orange); }
   .gate-toggle {
     position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; color: var(--text-dim);
+    background: none; border: none; color: var(--text-tertiary);
     cursor: pointer; font-size: .88rem; padding: .25rem;
     transition: color .2s;
   }
-  .gate-toggle:hover { color: var(--orange); }
+  .gate-toggle:hover { color: var(--vol-orange); }
 
   .gate-btn {
     width: 100%; padding: .78rem;
-    background: var(--orange); color: #fff;
+    background: var(--vol-orange); color: #fff;
     border: none; border-radius: 8px;
-    font-size: .95rem; font-weight: 700; cursor: pointer;
-    font-family: inherit;
+    font-family: 'Anton', sans-serif;
+    font-size: 1rem; letter-spacing: .06em; text-transform: uppercase;
+    cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: .45rem;
     transition: background .2s, transform .1s;
   }
-  .gate-btn:hover  { background: var(--orange-light); }
+  .gate-btn:hover  { background: var(--vol-orange-light); }
   .gate-btn:active { transform: scale(.98); }
 
   .gate-err {
     color: #ff5252; font-size: .78rem;
     margin-top: .65rem; min-height: 1.1rem;
-    font-weight: 600; letter-spacing: .01em;
+    font-weight: 600;
   }
   .gate-err.shake { animation: shake .4s ease; }
   @keyframes shake {
     0%,100%{ transform:translateX(0) }
-    20%    { transform:translateX(-7px) }
-    40%    { transform:translateX(7px) }
-    60%    { transform:translateX(-4px) }
-    80%    { transform:translateX(4px) }
+    20%{ transform:translateX(-7px) }
+    40%{ transform:translateX(7px) }
+    60%{ transform:translateX(-4px) }
+    80%{ transform:translateX(4px) }
   }
 
-  /* ─── DASHBOARD ──────────────────────────────────────────────────────────── */
+  /* ─── DASHBOARD ─────────────────────────────────────────────────────────── */
   .dash { display: none; }
   .dash.unlocked { display: flex; flex-direction: column; min-height: 100vh; }
 
-  /* ─── HEADER ─────────────────────────────────────────────────────────────── */
+  /* ─── HEADER ────────────────────────────────────────────────────────────── */
   .header {
-    background: #0D0D0D;
-    border-bottom: 2.5px solid var(--orange);
+    background: var(--smokey-base);
+    border-bottom: 3px solid var(--vol-orange);
     padding: 1rem 2rem;
     display: flex; justify-content: space-between; align-items: center;
     flex-wrap: wrap; gap: .9rem;
@@ -165,10 +200,11 @@
 
   #logo-container {
     width: 50px; height: 50px;
-    background: var(--orange);
+    background: var(--vol-orange);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.75rem; font-weight: 900; color: #fff; font-style: italic;
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem; color: #fff;
     flex-shrink: 0;
     box-shadow: 0 2px 14px rgba(255,130,0,.32);
     overflow: hidden;
@@ -176,772 +212,856 @@
   #logo-container img { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
 
   .header-title h1 {
-    font-size: 1.2rem; font-weight: 700; color: var(--white);
-    letter-spacing: .015em;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.35rem; font-weight: 400; color: var(--white);
+    letter-spacing: .05em; text-transform: uppercase;
   }
-  .header-title p { font-size: .73rem; color: var(--text-dim); margin-top: 1px; }
+  .header-title p { font-size: .73rem; color: var(--text-secondary); margin-top: 2px; }
 
   .header-right { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
 
   .live-badge {
     display: flex; align-items: center; gap: .38rem;
-    background: var(--gem-dim); border: 1px solid var(--gem-border);
+    background: var(--gem-dim); border: 1px solid var(--gem-bdr);
     padding: .32rem .75rem; border-radius: 20px;
-    font-size: .7rem; font-weight: 700; color: var(--gem);
+    font-size: .7rem; font-weight: 700; color: var(--gem-accent);
     letter-spacing: .02em; text-transform: uppercase;
   }
   .live-dot {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--gem);
-    animation: pulse 2s infinite;
-    flex-shrink: 0;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--gem-accent);
+    animation: pulse 2s infinite; flex-shrink: 0;
   }
   @keyframes pulse {
     0%,100%{ opacity:1; transform:scale(1) }
-    50%    { opacity:.35; transform:scale(.75) }
+    50%{ opacity:.35; transform:scale(.75) }
   }
 
   .last-upd {
-    font-size: .72rem; color: var(--text-dim);
+    font-size: .72rem; color: var(--text-secondary);
     display: flex; align-items: center; gap: .35rem;
   }
 
-  /* ─── SOURCE BAR ─────────────────────────────────────────────────────────── */
+  /* ─── SOURCE BAR ────────────────────────────────────────────────────────── */
   .source-bar {
-    background: #0D0D0D;
+    background: var(--smokey-base);
     border-bottom: 1px solid var(--border);
     padding: .48rem 2rem;
     display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap;
     flex-shrink: 0;
   }
   .src-label {
-    font-size: .65rem; color: var(--text-faint);
-    font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+    font-family: 'Anton', sans-serif;
+    font-size: .65rem; color: var(--text-tertiary);
+    letter-spacing: .07em; text-transform: uppercase;
     display: flex; align-items: center; gap: .3rem;
   }
   .src-pill {
     display: flex; align-items: center; gap: .35rem;
-    font-size: .7rem; color: var(--text-dim);
+    font-size: .7rem; color: var(--text-secondary);
   }
   .src-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .src-dot.on  { background: var(--gem); }
-  .src-dot.off { background: var(--text-faint); }
+  .src-dot.on  { background: var(--gem-accent); }
+  .src-dot.off { background: var(--text-tertiary); }
 
-  /* ─── FILTERS ────────────────────────────────────────────────────────────── */
+  /* ─── FILTERS ───────────────────────────────────────────────────────────── */
   .filters {
-    background: var(--bg-mid);
+    background: var(--smokey-deeper);
     border-bottom: 1px solid var(--border);
     padding: .85rem 2rem;
-    display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+    display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
     flex-shrink: 0;
   }
+  .filter-group {
+    display: flex; align-items: center; gap: .4rem;
+  }
   .filter-label {
-    font-size: .68rem; color: var(--text-faint);
-    font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
-    display: flex; align-items: center; gap: .3rem;
+    font-size: .68rem; color: var(--text-tertiary); font-weight: 700;
+    text-transform: uppercase; letter-spacing: .04em;
+    display: flex; align-items: center; gap: .25rem;
   }
-  .filter-group { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
-
-  .yr-btn, .pos-btn, .state-sel {
-    padding: .32rem .72rem;
+  .filter-btn {
+    padding: .32rem .7rem;
+    background: transparent;
+    border: 1px solid var(--border);
     border-radius: 6px;
-    border: 1px solid var(--border-mid);
-    background: var(--bg-card);
-    color: var(--text-dim);
-    font-size: .73rem; font-weight: 600;
-    cursor: pointer; transition: all .18s;
-    font-family: inherit;
+    color: var(--text-secondary);
+    font-size: .72rem; font-weight: 600;
+    cursor: pointer; transition: all .2s;
+    font-family: 'Inter', sans-serif;
   }
-  .yr-btn:hover, .pos-btn:hover  { border-color: var(--orange); color: var(--white); }
-  .yr-btn.active  { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
-  .pos-btn.active { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+  .filter-btn:hover { border-color: var(--vol-orange); color: var(--white); }
+  .filter-btn.active {
+    background: var(--vol-orange); border-color: var(--vol-orange);
+    color: #fff; font-weight: 700;
+  }
 
-  .state-sel {
-    padding: .3rem .6rem;
-    appearance: none; -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    padding-right: 24px;
+  .filter-select {
+    padding: .32rem .6rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: .72rem; font-weight: 600;
     cursor: pointer;
+    font-family: 'Inter', sans-serif;
   }
-  .state-sel option { background: var(--bg-card); }
+  .filter-select:focus { border-color: var(--vol-orange); outline: none; }
+  .filter-select option { background: var(--smokey-deep); color: var(--text-primary); }
 
   .export-btn {
     margin-left: auto;
-    padding: .34rem .9rem;
+    padding: .38rem .9rem;
+    background: transparent;
+    border: 1.5px solid var(--vol-orange);
     border-radius: 6px;
-    border: 1px solid var(--orange-border);
-    background: var(--orange-dim);
-    color: var(--orange);
-    font-size: .73rem; font-weight: 700;
-    cursor: pointer; transition: all .18s;
-    font-family: inherit;
-    display: flex; align-items: center; gap: .4rem;
+    color: var(--vol-orange);
+    font-size: .72rem; font-weight: 700;
+    cursor: pointer; transition: all .2s;
+    display: flex; align-items: center; gap: .35rem;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase; letter-spacing: .03em;
   }
-  .export-btn:hover { background: var(--orange); color: #fff; }
+  .export-btn:hover { background: var(--vol-orange); color: #fff; }
 
-  /* ─── TABS ───────────────────────────────────────────────────────────────── */
+  /* ─── TABS ──────────────────────────────────────────────────────────────── */
   .tabs {
-    background: var(--bg-mid);
+    display: flex; gap: 0;
+    background: var(--smokey-deeper);
     border-bottom: 1px solid var(--border);
     padding: 0 2rem;
-    display: flex; gap: 0;
+    flex-shrink: 0;
     overflow-x: auto;
-    flex-shrink: 0;
   }
-  .tab-btn {
-    padding: .85rem 1.35rem;
-    border: none; background: none;
-    color: var(--text-dim); font-size: .82rem; font-weight: 600;
-    cursor: pointer; transition: all .2s;
-    border-bottom: 2.5px solid transparent;
-    white-space: nowrap;
+  .tab {
     display: flex; align-items: center; gap: .45rem;
-    font-family: inherit; position: relative;
+    padding: .75rem 1.25rem;
+    font-size: .78rem; font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all .2s;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .03em;
   }
-  .tab-btn:hover { color: var(--white); }
-
-  /* SEC tab */
-  .tab-btn[data-tab="sec"].active        { color: var(--orange); border-bottom-color: var(--orange); }
-  .tab-btn[data-tab="sec"]:hover         { color: var(--orange); }
-  /* P4 tab */
-  .tab-btn[data-tab="p4"].active         { color: var(--gold); border-bottom-color: var(--gold); }
-  .tab-btn[data-tab="p4"]:hover          { color: var(--gold); }
-  /* G6 tab */
-  .tab-btn[data-tab="g6"].active         { color: var(--silver); border-bottom-color: var(--silver); }
-  .tab-btn[data-tab="g6"]:hover          { color: var(--silver); }
-  /* Gems tab */
-  .tab-btn[data-tab="gems"].active       { color: var(--gem); border-bottom-color: var(--gem); }
-  .tab-btn[data-tab="gems"]:hover        { color: var(--gem); }
-
+  .tab:hover { color: var(--white); }
+  .tab-icon { font-size: .82rem; }
+  .tab-logo { height: 16px; width: auto; opacity: .7; transition: opacity .2s; vertical-align: middle; }
+  .tab:hover .tab-logo { opacity: 1; }
   .tab-count {
-    font-size: .65rem; font-weight: 700;
-    padding: .12rem .42rem; border-radius: 10px;
-    background: var(--bg-card2);
+    font-size: .62rem; padding: .12rem .42rem;
+    border-radius: 8px; font-weight: 800;
+    background: rgba(255,255,255,.06);
+    color: var(--text-tertiary);
   }
-  .tab-btn[data-tab="sec"].active  .tab-count { background: var(--orange-dim);  color: var(--orange); }
-  .tab-btn[data-tab="p4"].active   .tab-count { background: var(--gold-dim);    color: var(--gold); }
-  .tab-btn[data-tab="g6"].active   .tab-count { background: var(--silver-dim);  color: var(--silver); }
-  .tab-btn[data-tab="gems"].active .tab-count { background: var(--gem-dim);     color: var(--gem); }
 
-  /* ─── CONF LOGO in tab ───────────────────────────────────────────────────── */
-  .tab-conf-logo {
-    width: 22px; height: 22px;
-    object-fit: contain;
-    filter: brightness(0) invert(.55);
-    transition: filter .2s;
-    flex-shrink: 0;
+  .tab.active-sec {
+    color: var(--vol-orange); border-bottom-color: var(--vol-orange);
   }
-  .tab-btn[data-tab="sec"]:hover  .tab-conf-logo,
-  .tab-btn[data-tab="sec"].active .tab-conf-logo { filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(5deg) brightness(1.1); }
-  .tab-btn[data-tab="p4"]:hover   .tab-conf-logo,
-  .tab-btn[data-tab="p4"].active  .tab-conf-logo { filter: brightness(0) sepia(1) saturate(3) hue-rotate(10deg) brightness(.85); }
+  .tab.active-sec .tab-count { background: var(--vol-orange-dim); color: var(--vol-orange); }
+  .tab.active-sec .tab-logo { opacity: 1; }
 
-  /* ─── MAIN CONTENT ───────────────────────────────────────────────────────── */
-  .main { flex: 1; padding: 1.75rem 2rem; }
+  .tab.active-p4 {
+    color: var(--p4-accent); border-bottom-color: var(--p4-accent);
+  }
+  .tab.active-p4 .tab-count { background: var(--p4-dim); color: var(--p4-accent); }
+  .tab.active-p4 .tab-logo { opacity: 1; }
 
-  /* ─── EMPTY STATE ────────────────────────────────────────────────────────── */
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    max-width: 520px; margin: 0 auto;
+  .tab.active-g6 {
+    color: var(--g6-accent); border-bottom-color: var(--g6-accent);
   }
-  .empty-checker {
-    height: 42px; border-radius: 6px; margin-bottom: 2rem;
-    background-image: repeating-conic-gradient(var(--orange) 0% 25%, #FFFFFF 0% 50%);
-    background-size: 14px 14px;
-    opacity: .22;
-  }
-  .empty-icon {
-    width: 60px; height: 60px;
-    background: var(--orange-dim); border: 1px solid var(--orange-border);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1.25rem;
-    font-size: 1.5rem; color: var(--orange);
-  }
-  .empty-state h2 { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
-  .empty-state p  { font-size: .82rem; color: var(--text-dim); line-height: 1.6; }
+  .tab.active-g6 .tab-count { background: var(--g6-dim); color: var(--g6-accent); }
 
-  /* ─── GRID ───────────────────────────────────────────────────────────────── */
+  .tab.active-gem {
+    color: var(--gem-accent); border-bottom-color: var(--gem-accent);
+  }
+  .tab.active-gem .tab-count { background: var(--gem-dim); color: var(--gem-accent); }
+
+  /* ─── GRID ──────────────────────────────────────────────────────────────── */
+  .grid-wrap {
+    flex: 1; overflow-y: auto; padding: 1.5rem 2rem 2rem;
+  }
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.1rem;
+    gap: 1rem;
   }
 
-  /* ─── PLAYER CARD ────────────────────────────────────────────────────────── */
+  /* ─── PLAYER CARD ───────────────────────────────────────────────────────── */
   .card {
-    background: var(--bg-card);
+    background: var(--smokey-deeper);
     border: 1px solid var(--border);
-    border-radius: 11px;
+    border-radius: 10px;
     overflow: hidden;
     transition: border-color .2s, transform .15s;
   }
-  .card:hover { border-color: var(--border-mid); transform: translateY(-2px); }
+  .card:hover { border-color: var(--border-light); transform: translateY(-2px); }
 
-  /* Top color bar by category */
-  .card-bar { height: 3px; }
-  .card-bar.sec  { background: var(--orange); }
-  .card-bar.p4   { background: var(--gold); }
-  .card-bar.g6   { background: var(--silver); }
-  .card-bar.gems { background: var(--gem); }
+  .card-accent {
+    height: 4px; width: 100%;
+  }
+  .card-accent.sec  { background: var(--vol-orange); }
+  .card-accent.p4   { background: var(--p4-accent); }
+  .card-accent.g6   { background: var(--g6-accent); }
+  .card-accent.gem  { background: var(--gem-accent); }
 
   .card-body { padding: 1rem 1.1rem; }
 
-  .card-top {
-    display: flex; justify-content: space-between;
-    align-items: flex-start; gap: .5rem; margin-bottom: .7rem;
+  .card-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: .6rem;
   }
-  .card-name { font-size: 1rem; font-weight: 700; color: var(--white); }
-  .card-pos-badge {
-    font-size: .68rem; font-weight: 700;
-    padding: .18rem .55rem; border-radius: 5px;
+  .card-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem; font-weight: 400; color: var(--white);
+    letter-spacing: .03em; text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .card-pos {
+    font-size: .62rem; font-weight: 800;
+    padding: .2rem .55rem; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: .05em;
     flex-shrink: 0;
   }
-  .card-pos-badge.sec  { background: var(--orange-dim);  color: var(--orange);  border: 1px solid var(--orange-border); }
-  .card-pos-badge.p4   { background: var(--gold-dim);    color: var(--gold);    border: 1px solid var(--gold-border); }
-  .card-pos-badge.g6   { background: var(--silver-dim);  color: var(--silver);  border: 1px solid var(--silver-border); }
-  .card-pos-badge.gems { background: var(--gem-dim);     color: var(--gem);     border: 1px solid var(--gem-border); }
+  .card-pos.sec  { background: var(--vol-orange-dim); color: var(--vol-orange); border: 1px solid var(--vol-orange-bdr); }
+  .card-pos.p4   { background: var(--p4-dim); color: var(--p4-accent); border: 1px solid var(--p4-bdr); }
+  .card-pos.g6   { background: var(--g6-dim); color: var(--g6-accent); border: 1px solid var(--g6-bdr); }
+  .card-pos.gem  { background: var(--gem-dim); color: var(--gem-accent); border: 1px solid var(--gem-bdr); }
 
   .card-meta {
-    display: flex; flex-wrap: wrap; gap: .55rem;
-    margin-bottom: .75rem;
+    display: flex; align-items: center; gap: .9rem;
+    font-size: .72rem; color: var(--text-secondary);
+    margin-bottom: .65rem;
   }
-  .meta-pill {
-    font-size: .7rem; color: var(--text-dim);
-    display: flex; align-items: center; gap: .28rem;
-  }
-  .meta-pill i { font-size: .65rem; color: var(--text-faint); }
+  .card-meta i { color: var(--text-tertiary); font-size: .65rem; width: 14px; text-align: center; }
 
-  /* Gem score */
+  .card-measurables {
+    display: flex; gap: .5rem; margin-bottom: .65rem; flex-wrap: wrap;
+  }
+  .measurable {
+    font-size: .65rem; font-weight: 700;
+    padding: .18rem .5rem; border-radius: 4px;
+    background: rgba(255,255,255,.04);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+
+  .card-stars {
+    display: flex; align-items: center; gap: .15rem;
+    margin-bottom: .7rem;
+  }
+  .card-stars i { font-size: .7rem; }
+  .star-filled { color: var(--vol-orange); }
+  .star-empty  { color: var(--border); }
+
   .gem-score {
-    display: flex; align-items: center; gap: .35rem;
-    font-size: .7rem; font-weight: 700;
-    padding: .2rem .6rem; border-radius: 5px;
-    background: var(--gem-dim); border: 1px solid var(--gem-border);
-    color: var(--gem); margin-bottom: .75rem;
-    width: fit-content;
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .65rem; font-weight: 800;
+    padding: .15rem .5rem; border-radius: 4px;
+    margin-left: .5rem;
   }
-
-  /* Stars */
-  .stars { display: flex; gap: 2px; margin-bottom: .75rem; }
-  .star-fill   { color: var(--gold); font-size: .72rem; }
-  .star-empty  { color: var(--text-faint); font-size: .72rem; }
+  .gem-score.high   { background: var(--gem-dim); color: var(--gem-accent); border: 1px solid var(--gem-bdr); }
+  .gem-score.medium { background: var(--vol-orange-dim); color: var(--vol-orange); border: 1px solid var(--vol-orange-bdr); }
+  .gem-score.low    { background: rgba(255,255,255,.04); color: var(--text-secondary); border: 1px solid var(--border); }
 
   /* Offers */
-  .offers-label {
-    font-size: .65rem; color: var(--text-faint);
-    font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
-    margin-bottom: .38rem;
+  .card-section-label {
+    font-size: .6rem; font-weight: 800; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: .08em;
+    margin-bottom: .35rem;
   }
-  .offers-list { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .8rem; }
+  .card-offers {
+    display: flex; flex-wrap: wrap; gap: .3rem;
+    margin-bottom: .7rem;
+  }
   .offer-tag {
-    font-size: .67rem; padding: .15rem .48rem;
-    border-radius: 4px; font-weight: 600;
+    font-size: .62rem; font-weight: 700;
+    padding: .18rem .48rem; border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: transparent;
   }
-  .offer-tag.sec-tag  { background: var(--orange-dim); color: var(--orange);  border: 1px solid var(--orange-border); }
-  .offer-tag.p4-tag   { background: var(--gold-dim);   color: var(--gold);    border: 1px solid var(--gold-border); }
-  .offer-tag.g6-tag   { background: var(--silver-dim); color: var(--silver);  border: 1px solid var(--silver-border); }
-  .offer-tag.tn-tag   { background: rgba(255,130,0,.22); color: #fff; border: 1px solid var(--orange); font-weight: 800; }
+  .offer-tag.sec {
+    border-color: var(--vol-orange-bdr);
+    color: var(--vol-orange);
+    background: var(--vol-orange-dim);
+  }
 
-  /* AI Eval */
-  .ai-eval {
-    background: rgba(255,130,0,.05);
-    border: 1px solid rgba(255,130,0,.14);
-    border-radius: 7px;
-    padding: .65rem .75rem;
-    margin-bottom: .8rem;
+  /* AI Evaluation */
+  .card-eval {
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .6rem .75rem;
+    margin-bottom: .7rem;
   }
-  .ai-eval-header {
-    font-size: .65rem; font-weight: 700; color: var(--orange);
+  .eval-header {
+    display: flex; align-items: center; gap: .35rem;
+    font-size: .62rem; font-weight: 800; color: var(--text-tertiary);
     text-transform: uppercase; letter-spacing: .06em;
-    display: flex; align-items: center; gap: .3rem; margin-bottom: .4rem;
+    margin-bottom: .35rem;
   }
-  .ai-eval-row { display: flex; gap: .5rem; margin-bottom: .25rem; }
-  .ai-eval-row:last-child { margin-bottom: 0; }
-  .ai-eval-label {
-    font-size: .67rem; font-weight: 700; min-width: 68px;
-    display: flex; align-items: center; gap: .28rem;
+  .eval-header i { color: var(--vol-orange); font-size: .68rem; }
+  .eval-text {
+    font-size: .7rem; color: var(--text-secondary);
+    line-height: 1.55;
   }
-  .ai-eval-label.str { color: var(--gem); }
-  .ai-eval-label.wk  { color: #FF6B6B; }
-  .ai-eval-text { font-size: .67rem; color: var(--text-dim); line-height: 1.45; }
+  .eval-str { color: var(--gem-accent); font-weight: 700; }
+  .eval-wk  { color: var(--vol-orange); font-weight: 700; }
 
-  /* Source citation */
-  .source-cite {
-    font-size: .65rem; color: var(--text-faint);
-    display: flex; align-items: center; gap: .28rem;
-    margin-bottom: .75rem;
+  /* Source */
+  .card-source {
+    font-size: .65rem; color: var(--text-tertiary);
+    display: flex; align-items: center; gap: .3rem;
+    margin-bottom: .65rem;
   }
-  .source-cite a { color: var(--text-dim); text-decoration: none; transition: color .15s; }
-  .source-cite a:hover { color: var(--orange); }
+  .card-source a {
+    color: var(--text-secondary); text-decoration: none;
+    transition: color .2s;
+  }
+  .card-source a:hover { color: var(--vol-orange); }
 
   /* Links */
-  .card-links { display: flex; gap: .45rem; flex-wrap: wrap; }
-  .card-link {
-    display: flex; align-items: center; gap: .32rem;
-    padding: .32rem .72rem;
-    border-radius: 6px; border: 1px solid var(--border-mid);
-    font-size: .7rem; font-weight: 600; color: var(--text-dim);
-    text-decoration: none; transition: all .18s;
-    background: var(--bg-card2);
+  .card-links {
+    display: flex; flex-wrap: wrap; gap: .4rem;
   }
-  .card-link:hover { border-color: var(--orange); color: var(--white); }
-  .card-link i { font-size: .68rem; }
+  .card-link {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .3rem .6rem;
+    font-size: .65rem; font-weight: 700;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all .2s;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: transparent;
+  }
+  .card-link:hover {
+    border-color: var(--vol-orange);
+    color: var(--vol-orange);
+    background: var(--vol-orange-dim);
+  }
+  .card-link i { font-size: .62rem; }
 
-  /* ─── RESPONSIVE ─────────────────────────────────────────────────────────── */
-  @media (max-width: 640px) {
-    .header  { padding: .85rem 1rem; }
-    .filters { padding: .75rem 1rem; }
-    .tabs    { padding: 0 1rem; }
-    .main    { padding: 1.25rem 1rem; }
-    .source-bar { padding: .4rem 1rem; }
+  /* ─── EMPTY STATE ───────────────────────────────────────────────────────── */
+  .empty {
+    text-align: center; padding: 4rem 2rem;
+    grid-column: 1 / -1;
+  }
+  .empty-icon {
+    font-size: 2.5rem; color: var(--text-tertiary);
+    margin-bottom: 1rem;
+  }
+  .empty h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem; color: var(--text-secondary);
+    letter-spacing: .04em; text-transform: uppercase;
+    margin-bottom: .4rem;
+  }
+  .empty p { font-size: .82rem; color: var(--text-tertiary); max-width: 380px; margin: 0 auto; line-height: 1.6; }
+
+  /* ─── RESPONSIVE ────────────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .header { padding: .8rem 1rem; }
+    .filters { padding: .65rem 1rem; gap: .6rem; }
+    .tabs { padding: 0 1rem; }
+    .grid-wrap { padding: 1rem; }
+    .grid { grid-template-columns: 1fr; }
+    .header-title h1 { font-size: 1.1rem; }
     .export-btn { margin-left: 0; }
   }
+
+  /* ─── SCROLLBAR ─────────────────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--smokey-base); }
+  ::-webkit-scrollbar-thumb { background: var(--smokey-dark); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--smokey); }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     PASSWORD GATE
-═══════════════════════════════════════════════════════════════ -->
+<!-- ═══ PASSWORD GATE ═══════════════════════════════════════════════════════ -->
 <div class="gate" id="gate">
   <div class="gate-box">
-    <div class="gate-logo">
-      <img src="logo.png" alt="Tennessee" onerror="this.style.display='none';this.parentElement.textContent='T'">
-    </div>
+    <div class="gate-checker"></div>
+    <div class="gate-logo" id="gate-logo">T</div>
     <div class="gate-title">Vol Recruiting Monitor</div>
-    <div class="gate-sub">Tennessee Football · Restricted Access</div>
-    <div class="gate-wrap">
-      <input class="gate-input" type="password" id="pwInput"
-             placeholder="Enter password" autocomplete="off"
-             onkeydown="if(event.key==='Enter')tryUnlock()">
-      <button class="gate-toggle" onclick="togglePw()" id="eyeBtn" type="button">
-        <i class="fa-solid fa-eye" id="eyeIcon"></i>
-      </button>
+    <div class="gate-sub">Authorized access only. Enter your credential to continue.</div>
+    <div class="gate-form">
+      <div class="gate-wrap">
+        <input class="gate-input" type="password" id="gate-pw" placeholder="Enter password" autocomplete="off" />
+        <button class="gate-toggle" id="gate-eye" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+      </div>
+      <button class="gate-btn" id="gate-btn"><i class="fa-solid fa-lock"></i> Authenticate</button>
+      <div class="gate-err" id="gate-err"></div>
     </div>
-    <button class="gate-btn" onclick="tryUnlock()">
-      <i class="fa-solid fa-lock-open"></i> Enter
-    </button>
-    <div class="gate-err" id="gateErr"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     DASHBOARD
-═══════════════════════════════════════════════════════════════ -->
+<!-- ═══ DASHBOARD ═══════════════════════════════════════════════════════════ -->
 <div class="dash" id="dash">
 
-  <!-- HEADER -->
-  <header class="header">
+  <!-- Checkerboard Strip -->
+  <div class="checker-strip"></div>
+
+  <!-- Header -->
+  <div class="header">
     <div class="header-left">
       <div id="logo-container">
-        <img src="logo.png" alt="Tennessee" onerror="this.style.display='none';this.parentElement.textContent='T'">
+        <img src="logo.png" alt="Tennessee Power T" onerror="this.style.display='none';this.parentNode.innerText='T';" />
       </div>
       <div class="header-title">
         <h1>Vol Recruiting Monitor</h1>
-        <p>Tennessee Football · 15-State Footprint · D1 Offer Tracker</p>
+        <p>Tennessee Football &middot; 15-State Footprint &middot; D1 Offer Tracker</p>
       </div>
     </div>
     <div class="header-right">
-      <div class="live-badge"><span class="live-dot"></span> Live</div>
-      <div class="last-upd" id="lastUpd">
-        <i class="fa-regular fa-clock"></i>
-        <span>Loading…</span>
-      </div>
+      <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+      <div class="last-upd"><i class="fa-regular fa-clock"></i> <span id="last-updated">Loading...</span></div>
     </div>
-  </header>
+  </div>
 
-  <!-- CHECKER STRIP -->
-  <div class="checker-strip"></div>
-
-  <!-- SOURCE STATUS BAR -->
-  <div class="source-bar">
+  <!-- Source Bar -->
+  <div class="source-bar" id="source-bar">
     <span class="src-label"><i class="fa-solid fa-satellite-dish"></i> Sources</span>
-    <span class="src-pill" id="src-x">
-      <span class="src-dot off"></span>
-      <i class="fa-brands fa-x-twitter"></i> X/Twitter — waiting
-    </span>
-    <span class="src-pill" id="src-news">
-      <span class="src-dot off"></span>
-      <i class="fa-solid fa-newspaper"></i> Google News — waiting
-    </span>
-    <span class="src-pill" id="src-on3">
-      <span class="src-dot off"></span>
-      <i class="fa-solid fa-ranking-star"></i> On3 — waiting
-    </span>
-    <span class="src-pill" id="src-247">
-      <span class="src-dot off"></span>
-      <i class="fa-solid fa-chart-bar"></i> 247Sports — waiting
-    </span>
+    <span class="src-pill"><span class="src-dot off" id="src-x"></span> <i class="fa-brands fa-x-twitter"></i> X/Twitter — <span id="src-x-ct">no results</span></span>
+    <span class="src-pill"><span class="src-dot off" id="src-news"></span> <i class="fa-solid fa-newspaper"></i> Google News — <span id="src-news-ct">no results</span></span>
+    <span class="src-pill"><span class="src-dot off" id="src-on3"></span> <i class="fa-solid fa-users"></i> On3 — <span id="src-on3-ct">no results</span></span>
+    <span class="src-pill"><span class="src-dot off" id="src-247"></span> <i class="fa-solid fa-chart-bar"></i> 247Sports — <span id="src-247-ct">no results</span></span>
   </div>
 
-  <!-- FILTERS -->
+  <!-- Filters -->
   <div class="filters">
-    <span class="filter-label"><i class="fa-solid fa-calendar"></i> Class</span>
-    <div class="filter-group" id="yearBtns">
-      <button class="yr-btn active" data-yr="all">All</button>
-      <button class="yr-btn" data-yr="2025">2025</button>
-      <button class="yr-btn" data-yr="2026">2026</button>
-      <button class="yr-btn" data-yr="2027">2027</button>
-      <button class="yr-btn" data-yr="2028">2028</button>
-      <button class="yr-btn" data-yr="2029">2029</button>
+    <div class="filter-group">
+      <span class="filter-label"><i class="fa-solid fa-calendar"></i> Class</span>
+      <button class="filter-btn active" data-year="all">All</button>
+      <button class="filter-btn" data-year="2025">2025</button>
+      <button class="filter-btn" data-year="2026">2026</button>
+      <button class="filter-btn" data-year="2027">2027</button>
+      <button class="filter-btn" data-year="2028">2028</button>
+      <button class="filter-btn" data-year="2029">2029</button>
     </div>
 
-    <span class="filter-label" style="margin-left:.5rem"><i class="fa-solid fa-person-running"></i> Position</span>
-    <div class="filter-group" id="posBtns">
-      <button class="pos-btn active" data-pos="all">All</button>
-      <button class="pos-btn" data-pos="QB">QB</button>
-      <button class="pos-btn" data-pos="RB">RB</button>
-      <button class="pos-btn" data-pos="WR">WR</button>
-      <button class="pos-btn" data-pos="TE">TE</button>
-      <button class="pos-btn" data-pos="OL">OL</button>
-      <button class="pos-btn" data-pos="DL">DL</button>
-      <button class="pos-btn" data-pos="EDGE">EDGE</button>
-      <button class="pos-btn" data-pos="LB">LB</button>
-      <button class="pos-btn" data-pos="CB">CB</button>
-      <button class="pos-btn" data-pos="S">S</button>
-      <button class="pos-btn" data-pos="ATH">ATH</button>
-      <button class="pos-btn" data-pos="K">K/P</button>
+    <div class="filter-group">
+      <span class="filter-label"><i class="fa-solid fa-football"></i> Position</span>
+      <button class="filter-btn active" data-pos="all">All</button>
+      <button class="filter-btn" data-pos="QB">QB</button>
+      <button class="filter-btn" data-pos="RB">RB</button>
+      <button class="filter-btn" data-pos="WR">WR</button>
+      <button class="filter-btn" data-pos="TE">TE</button>
+      <button class="filter-btn" data-pos="OL">OL</button>
+      <button class="filter-btn" data-pos="DL">DL</button>
+      <button class="filter-btn" data-pos="EDGE">EDGE</button>
+      <button class="filter-btn" data-pos="LB">LB</button>
+      <button class="filter-btn" data-pos="CB">CB</button>
+      <button class="filter-btn" data-pos="S">S</button>
+      <button class="filter-btn" data-pos="ATH">ATH</button>
+      <button class="filter-btn" data-pos="K/P">K/P</button>
     </div>
 
-    <span class="filter-label" style="margin-left:.5rem"><i class="fa-solid fa-location-dot"></i> State</span>
-    <select class="state-sel" id="stateSel">
-      <option value="all">All States</option>
-      <option value="TN">TN</option><option value="KY">KY</option>
-      <option value="VA">VA</option><option value="NC">NC</option>
-      <option value="GA">GA</option><option value="AL">AL</option>
-      <option value="MS">MS</option><option value="AR">AR</option>
-      <option value="MO">MO</option><option value="SC">SC</option>
-      <option value="FL">FL</option><option value="OH">OH</option>
-      <option value="IN">IN</option><option value="WV">WV</option>
-      <option value="LA">LA</option>
-    </select>
+    <div class="filter-group">
+      <span class="filter-label"><i class="fa-solid fa-location-dot"></i> State</span>
+      <select class="filter-select" id="state-filter">
+        <option value="all">All States</option>
+        <option value="TN">Tennessee</option>
+        <option value="KY">Kentucky</option>
+        <option value="VA">Virginia</option>
+        <option value="NC">North Carolina</option>
+        <option value="GA">Georgia</option>
+        <option value="AL">Alabama</option>
+        <option value="MS">Mississippi</option>
+        <option value="AR">Arkansas</option>
+        <option value="MO">Missouri</option>
+        <option value="SC">South Carolina</option>
+        <option value="FL">Florida</option>
+        <option value="OH">Ohio</option>
+        <option value="IN">Indiana</option>
+        <option value="WV">West Virginia</option>
+        <option value="LA">Louisiana</option>
+      </select>
+    </div>
 
-    <button class="export-btn" onclick="exportCSV()">
-      <i class="fa-solid fa-file-csv"></i> Export CSV
-    </button>
+    <button class="export-btn" id="export-btn"><i class="fa-solid fa-download"></i> Export CSV</button>
   </div>
 
-  <!-- TABS -->
+  <!-- Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" data-tab="sec" onclick="switchTab('sec')">
-      <img src="sec-logo.png" alt="SEC" class="tab-conf-logo"
-           onerror="this.style.display='none'">
-      SEC
-      <span class="tab-count" id="cnt-sec">0</span>
-    </button>
-    <button class="tab-btn" data-tab="p4" onclick="switchTab('p4')">
-      <img src="big10-logo.png" alt="Big Ten" class="tab-conf-logo"
-           onerror="this.style.display='none'">
-      Other P4
-      <span class="tab-count" id="cnt-p4">0</span>
-    </button>
-    <button class="tab-btn" data-tab="g6" onclick="switchTab('g6')">
-      <i class="fa-solid fa-football"></i>
-      G6 Footprint
-      <span class="tab-count" id="cnt-g6">0</span>
-    </button>
-    <button class="tab-btn" data-tab="gems" onclick="switchTab('gems')">
-      <i class="fa-solid fa-gem"></i>
-      Hidden Gems
-      <span class="tab-count" id="cnt-gems">0</span>
-    </button>
+    <div class="tab active-sec" data-tab="sec">
+      <img src="sec-logo.png" alt="SEC" class="tab-logo" onerror="this.style.display='none';" />
+      <span>SEC</span>
+      <span class="tab-count" id="ct-sec">0</span>
+    </div>
+    <div class="tab" data-tab="p4">
+      <img src="big10-logo.png" alt="P4" class="tab-logo" onerror="this.style.display='none';" />
+      <span>Other P4</span>
+      <span class="tab-count" id="ct-p4">0</span>
+    </div>
+    <div class="tab" data-tab="g6">
+      <i class="fa-solid fa-shield-halved tab-icon"></i>
+      <span>G6 Footprint</span>
+      <span class="tab-count" id="ct-g6">0</span>
+    </div>
+    <div class="tab" data-tab="gem">
+      <i class="fa-solid fa-gem tab-icon"></i>
+      <span>Hidden Gems</span>
+      <span class="tab-count" id="ct-gem">0</span>
+    </div>
   </div>
 
-  <!-- MAIN -->
-  <main class="main" id="mainContent">
-    <div class="empty-state" id="emptyState">
-      <div class="empty-checker"></div>
-      <div class="empty-icon"><i class="fa-solid fa-satellite-dish"></i></div>
-      <h2>Waiting for First Scrape</h2>
-      <p>The scraper runs every 20 minutes via GitHub Actions.<br>
-         Once it completes its first run, real recruits will appear here.<br>
-         Check the <strong style="color:var(--orange)">Actions</strong> tab on GitHub to watch progress.</p>
-    </div>
-    <div class="grid" id="playerGrid" style="display:none"></div>
-  </main>
+  <!-- Grid -->
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
 
-</div><!-- /dash -->
+</div>
 
 <script>
-/* ═══ PASSWORD ══════════════════════════════════════════════════════════════ */
-const CORRECT = "BelieveTheHeup26@UT";
+/* ═══════════════════════════════════════════════════════════════════════════
+   PASSWORD GATE
+   ═══════════════════════════════════════════════════════════════════════════ */
+const PASS = "BelieveTheHeup26@UT";
 
-function tryUnlock() {
-  const val = document.getElementById('pwInput').value;
-  const err = document.getElementById('gateErr');
-  if (val === CORRECT) {
-    document.getElementById('gate').classList.add('hidden');
-    document.getElementById('dash').classList.add('unlocked');
+const gateEl = document.getElementById('gate');
+const dashEl = document.getElementById('dash');
+const pwIn   = document.getElementById('gate-pw');
+const errEl  = document.getElementById('gate-err');
+
+function tryAuth() {
+  if (pwIn.value === PASS) {
+    gateEl.classList.add('hidden');
+    dashEl.classList.add('unlocked');
+    sessionStorage.setItem('vol_auth','1');
     loadData();
   } else {
-    err.textContent = "Incorrect password. Try again.";
-    err.classList.remove('shake');
-    void err.offsetWidth;
-    err.classList.add('shake');
-    document.getElementById('pwInput').value = '';
-    document.getElementById('pwInput').focus();
+    errEl.textContent = 'Incorrect password — check case and special characters';
+    errEl.classList.remove('shake');
+    void errEl.offsetWidth;
+    errEl.classList.add('shake');
+    pwIn.value = '';
+    pwIn.focus();
   }
 }
 
-function togglePw() {
-  const inp  = document.getElementById('pwInput');
-  const icon = document.getElementById('eyeIcon');
-  if (inp.type === 'password') {
-    inp.type = 'text';
-    icon.className = 'fa-solid fa-eye-slash';
-  } else {
-    inp.type = 'password';
-    icon.className = 'fa-solid fa-eye';
-  }
+document.getElementById('gate-btn').addEventListener('click', tryAuth);
+pwIn.addEventListener('keydown', e => { if (e.key==='Enter') tryAuth(); });
+
+document.getElementById('gate-eye').addEventListener('click', () => {
+  const isP = pwIn.type === 'password';
+  pwIn.type = isP ? 'text' : 'password';
+  document.querySelector('#gate-eye i').className = isP ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+});
+
+if (sessionStorage.getItem('vol_auth') === '1') {
+  gateEl.classList.add('hidden');
+  dashEl.classList.add('unlocked');
+  loadData();
 }
 
-/* ═══ STATE ═════════════════════════════════════════════════════════════════ */
-let allPlayers  = [];
-let activeTab   = 'sec';
-let activeYear  = 'all';
-let activePos   = 'all';
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONSTANTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+const SEC = new Set(['Tennessee','Alabama','Auburn','Florida','Georgia','Kentucky','LSU',
+  'Mississippi State','Missouri','Ole Miss','South Carolina','Vanderbilt',
+  'Arkansas','Texas','Texas A&M','Oklahoma']);
+
+const P4 = new Set([...SEC,
+  'Ohio State','Michigan','Penn State','Oregon','USC','Wisconsin','Iowa','Minnesota',
+  'Illinois','Indiana','Purdue','Nebraska','Northwestern','Maryland','Rutgers',
+  'Michigan State','UCLA','Washington',
+  'Clemson','Florida State','Miami','NC State','Duke','Wake Forest','Louisville',
+  'Virginia Tech','Virginia','Boston College','Pitt','Syracuse','Georgia Tech',
+  'North Carolina','Notre Dame','SMU','Stanford','Cal',
+  'Oklahoma State','Texas Tech','TCU','Baylor','Kansas','Kansas State','Iowa State',
+  'West Virginia','Cincinnati','UCF','Houston','BYU','Colorado','Arizona',
+  'Arizona State','Utah']);
+
+const OL_POS = new Set(['OL','OT','OG','C']);
+const DL_POS = new Set(['DL','DT','DE']);
+const KP_POS = new Set(['K','P']);
+
+let ALL_PLAYERS = [];
+let activeTab = 'sec';
+let activeYear = 'all';
+let activePos = 'all';
 let activeState = 'all';
 
-/* ═══ DATA LOAD ═════════════════════════════════════════════════════════════ */
-async function loadData() {
-  try {
-    const r = await fetch(`data/offers.json?t=${Date.now()}`);
-    if (!r.ok) throw new Error('not found');
-    const d = await r.json();
-    allPlayers = d.players || [];
-    updateSourceBar(d.sources || {});
-    document.getElementById('lastUpd').innerHTML =
-      `<i class="fa-regular fa-clock"></i> ${d.last_updated || 'Unknown'}`;
-    render();
-  } catch(e) {
-    showEmpty("Waiting for First Scrape",
-      "The scraper runs every 20 minutes via GitHub Actions. Real recruits will appear here after the first run.");
+/* ═══════════════════════════════════════════════════════════════════════════
+   DATA LOADING
+   ═══════════════════════════════════════════════════════════════════════════ */
+function loadData() {
+  fetch('data/offers.json?t=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => {
+      ALL_PLAYERS = (data.players || []).filter(p => p && p.name);
+      document.getElementById('last-updated').textContent = data.last_updated || 'Unknown';
+
+      const src = data.sources || {};
+      updateSrc('x', src.x || 0);
+      updateSrc('news', src.news || 0);
+      updateSrc('on3', src.on3 || 0);
+      updateSrc('247', src['247sports'] || 0);
+      render();
+    })
+    .catch(() => {
+      document.getElementById('last-updated').textContent = 'Awaiting first scrape...';
+      ALL_PLAYERS = [];
+      render();
+    });
+}
+
+function updateSrc(key, count) {
+  const dot = document.getElementById('src-' + key);
+  const ct  = document.getElementById('src-' + key + '-ct');
+  if (!dot || !ct) return;
+  if (count > 0) {
+    dot.className = 'src-dot on';
+    ct.textContent = count + ' found';
+  } else {
+    dot.className = 'src-dot off';
+    ct.textContent = 'no results';
   }
-  setTimeout(loadData, 20 * 60 * 1000);
 }
 
-function updateSourceBar(s) {
-  const map = { x:'src-x', news:'src-news', on3:'src-on3', '247sports':'src-247' };
-  const labels = { x:'X/Twitter', news:'Google News', on3:'On3', '247sports':'247Sports' };
-  const icons  = { x:'fa-brands fa-x-twitter', news:'fa-solid fa-newspaper',
-                   on3:'fa-solid fa-ranking-star', '247sports':'fa-solid fa-chart-bar' };
-  Object.keys(map).forEach(k => {
-    const el = document.getElementById(map[k]);
-    if (!el) return;
-    const n = s[k] || 0;
-    el.innerHTML = `
-      <span class="src-dot ${n > 0 ? 'on' : 'off'}"></span>
-      <i class="${icons[k]}"></i> ${labels[k]} — ${n > 0 ? n + ' found' : 'no results'}
-    `;
-  });
+/* ═══════════════════════════════════════════════════════════════════════════
+   CATEGORIZATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+function categorize(p) {
+  const offers = (p.offers || []).map(o => o.trim());
+  const hasSEC = offers.some(o => SEC.has(o));
+  const hasP4  = offers.some(o => P4.has(o));
+  const gem    = (p.gem_score || 0) >= 80 && !hasP4;
+
+  if (hasSEC) return 'sec';
+  if (hasP4)  return 'p4';
+  if (gem)    return 'gem';
+  return 'g6';
 }
 
-/* ═══ FILTER ════════════════════════════════════════════════════════════════ */
-function getFiltered(tab) {
-  return allPlayers.filter(p => {
-    if (tab === 'sec'  && p.category !== 'sec')  return false;
-    if (tab === 'p4'   && p.category !== 'p4')   return false;
-    if (tab === 'g6'   && p.category !== 'g6')   return false;
-    if (tab === 'gems' && (p.category !== 'g6' || (p.gem_score||0) < 80)) return false;
-    if (activeYear  !== 'all' && String(p.grad_year) !== activeYear)  return false;
-    if (activeState !== 'all' && p.state !== activeState)             return false;
-    if (activePos   !== 'all') {
-      const pos = (p.position||'').toUpperCase();
-      if (activePos === 'OL'   && !['OL','OT','OG','C'].includes(pos))             return false;
-      if (activePos === 'DL'   && !['DL','DT','DE'].includes(pos))                 return false;
-      if (activePos === 'LB'   && !['LB','ILB','OLB'].includes(pos))               return false;
-      if (activePos === 'K'    && !['K','P','LS'].includes(pos))                    return false;
-      if (!['OL','DL','LB','K'].includes(activePos) && pos !== activePos)          return false;
-    }
-    return true;
-  });
+function matchPos(p) {
+  if (activePos === 'all') return true;
+  const pos = (p.position || '').toUpperCase();
+  if (activePos === 'OL') return OL_POS.has(pos);
+  if (activePos === 'DL') return DL_POS.has(pos);
+  if (activePos === 'K/P') return KP_POS.has(pos);
+  return pos === activePos;
 }
 
-/* ═══ RENDER ════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════════════════════════════════ */
 function render() {
-  ['sec','p4','g6','gems'].forEach(t => {
-    document.getElementById('cnt-'+t).textContent = getFiltered(t).length;
-  });
-  const players = getFiltered(activeTab);
-  const grid    = document.getElementById('playerGrid');
-  const empty   = document.getElementById('emptyState');
+  const cats = { sec:[], p4:[], g6:[], gem:[] };
 
-  if (!players.length) {
-    grid.style.display  = 'none';
-    empty.style.display = '';
-    if (allPlayers.length === 0) {
-      showEmpty("Waiting for First Scrape",
-        "The scraper runs every 20 minutes. Check the Actions tab on GitHub to watch progress.");
-    } else {
-      showEmpty("No Players Match These Filters",
-        "Try adjusting your grad year, position, or state filter.");
-    }
+  ALL_PLAYERS.forEach(p => {
+    const cat = categorize(p);
+    const yr = String(p.grad_year || '');
+    const st = (p.state || '').toUpperCase();
+    if (activeYear !== 'all' && yr !== activeYear) return;
+    if (!matchPos(p)) return;
+    if (activeState !== 'all' && st !== activeState) return;
+    cats[cat].push(p);
+  });
+
+  document.getElementById('ct-sec').textContent = cats.sec.length;
+  document.getElementById('ct-p4').textContent  = cats.p4.length;
+  document.getElementById('ct-g6').textContent  = cats.g6.length;
+  document.getElementById('ct-gem').textContent = cats.gem.length;
+
+  const list = cats[activeTab] || [];
+  const grid = document.getElementById('grid');
+
+  if (ALL_PLAYERS.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+        <h3>Waiting for First Scrape</h3>
+        <p>The scraper runs every 20 minutes via GitHub Actions. Once it finds real recruiting offers in the 15-state footprint, player cards will appear here.</p>
+        <div class="checker-strip-sm" style="max-width:200px;margin:1.5rem auto 0;border-radius:4px;"></div>
+      </div>`;
     return;
   }
 
-  empty.style.display = 'none';
-  grid.style.display  = '';
-  grid.innerHTML = players.map(p => buildCard(p)).join('');
+  if (list.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon"><i class="fa-solid fa-filter"></i></div>
+        <h3>No Matches</h3>
+        <p>No players match the current filters. Try adjusting class year, position, or state.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(p => buildCard(p, activeTab)).join('');
 }
 
-function showEmpty(title, msg) {
-  const e = document.getElementById('emptyState');
-  e.style.display = '';
-  e.innerHTML = `
-    <div class="empty-checker"></div>
-    <div class="empty-icon"><i class="fa-solid fa-satellite-dish"></i></div>
-    <h2>${title}</h2>
-    <p>${msg}</p>
-  `;
-}
+function buildCard(p, cat) {
+  const name = esc(p.name || 'Unknown');
+  const pos  = esc(p.position || 'ATH');
+  const state = esc(p.state || '??');
+  const yr   = esc(String(p.grad_year || ''));
+  const ht   = p.height ? esc(p.height) : '';
+  const wt   = p.weight ? esc(p.weight + ' lbs') : '';
+  const stars = p.stars || 0;
+  const gem  = p.gem_score || 0;
 
-/* ═══ BUILD CARD ════════════════════════════════════════════════════════════ */
-function buildCard(p) {
-  const cat    = p.category || 'g6';
-  const offers = p.offers || [];
-  const stars  = p.stars  || 0;
-  const gem    = p.gem_score || 0;
+  const starsHtml = Array.from({length:5}, (_,i) =>
+    `<i class="fa-solid fa-star ${i < stars ? 'star-filled' : 'star-empty'}"></i>`
+  ).join('');
 
-  // Stars
-  let starsHtml = '<div class="stars">';
-  for (let i = 1; i <= 5; i++)
-    starsHtml += `<i class="fa-${i <= stars ? 'solid' : 'regular'} fa-star ${i <= stars ? 'star-fill' : 'star-empty'}"></i>`;
-  starsHtml += '</div>';
+  let gemClass = gem >= 80 ? 'high' : gem >= 50 ? 'medium' : 'low';
+  const gemHtml = gem > 0 ? `<span class="gem-score ${gemClass}"><i class="fa-solid fa-gem"></i> ${gem}</span>` : '';
 
-  // Offers
-  const SEC_SET = new Set(["Tennessee","Alabama","Auburn","Florida","Georgia","Kentucky","LSU",
-    "Mississippi State","Missouri","Ole Miss","South Carolina","Vanderbilt",
-    "Arkansas","Texas","Texas A&M","Oklahoma"]);
-  const P4_SET  = new Set(["Ohio State","Michigan","Penn State","Oregon","USC","Clemson",
-    "Florida State","Miami","Notre Dame","Oklahoma State","Texas Tech","TCU","Baylor"]);
-
-  const offerTags = offers.slice(0, 10).map(o => {
-    let cls = 'g6-tag';
-    if (o === 'Tennessee') cls = 'tn-tag';
-    else if (SEC_SET.has(o)) cls = 'sec-tag';
-    else if (P4_SET.has(o))  cls = 'p4-tag';
-    return `<span class="offer-tag ${cls}">${o}</span>`;
+  const offers = (p.offers || []).map(o => {
+    const isSec = SEC.has(o);
+    return `<span class="offer-tag ${isSec ? 'sec' : ''}">${esc(o)}</span>`;
   }).join('');
-  const moreOffers = offers.length > 10
-    ? `<span class="offer-tag g6-tag">+${offers.length - 10} more</span>` : '';
 
-  // Gem score
-  const gemHtml = gem >= 80
-    ? `<div class="gem-score"><i class="fa-solid fa-gem"></i> Gem Score: ${gem}/100</div>` : '';
-
-  // AI eval
-  const aiHtml = (p.strengths || p.weaknesses) ? `
-    <div class="ai-eval">
-      <div class="ai-eval-header"><i class="fa-solid fa-microchip"></i> AI Evaluation</div>
-      ${p.strengths ? `<div class="ai-eval-row">
-        <span class="ai-eval-label str"><i class="fa-solid fa-arrow-trend-up"></i> Strengths</span>
-        <span class="ai-eval-text">${p.strengths}</span>
-      </div>` : ''}
-      ${p.weaknesses ? `<div class="ai-eval-row">
-        <span class="ai-eval-label wk"><i class="fa-solid fa-triangle-exclamation"></i> Concerns</span>
-        <span class="ai-eval-text">${p.weaknesses}</span>
-      </div>` : ''}
+  const evalHtml = p.evaluation ? `
+    <div class="card-eval">
+      <div class="eval-header"><i class="fa-solid fa-microchip"></i> AI Evaluation</div>
+      <div class="eval-text">${formatEval(p.evaluation)}</div>
     </div>` : '';
 
-  // Source citation
-  const srcIcon = { x:'fa-brands fa-x-twitter', news:'fa-solid fa-newspaper',
-                    on3:'fa-solid fa-ranking-star', '247sports':'fa-solid fa-chart-bar' };
-  const srcLabel = { x:'X/Twitter', news:'Google News', on3:'On3', '247sports':'247Sports' };
-  const src = p.source || 'unknown';
-  const srcUrl = p.source_url || '#';
-  const citeHtml = `
-    <div class="source-cite">
-      <i class="${srcIcon[src] || 'fa-solid fa-link'}"></i>
-      Found via <a href="${srcUrl}" target="_blank" rel="noopener">${srcLabel[src] || src}</a>
-      ${p.source_date ? `· ${p.source_date}` : ''}
-    </div>`;
+  const srcText = esc(p.source || 'Unknown');
+  const srcDetail = p.source_detail ? esc(p.source_detail) : '';
+  const srcLink = p.source_url ? `<a href="${esc(p.source_url)}" target="_blank" rel="noopener">${srcDetail || srcText}</a>` : (srcDetail || srcText);
 
-  // Links
-  const xLink    = p.x_url    ? `<a class="card-link" href="${p.x_url}"    target="_blank"><i class="fa-brands fa-x-twitter"></i> Profile</a>` : '';
-  const hudlLink = p.hudl_url ? `<a class="card-link" href="${p.hudl_url}" target="_blank"><i class="fa-solid fa-film"></i> Hudl</a>` : '';
-  const ucLink   = p.uc_url   ? `<a class="card-link" href="${p.uc_url}"   target="_blank"><i class="fa-solid fa-file-lines"></i> UC Report</a>` : '';
+  const nameEnc = encodeURIComponent(p.name || '');
+  const hudlUrl = `https://www.hudl.com/search?query=${nameEnc}`;
+  const ucUrl   = p.uc_report_url || `https://www.google.com/search?q=site:ucreport.com+${nameEnc}`;
+  const xUrl    = p.x_url || `https://x.com/search?q=${nameEnc}+football`;
+
+  const measHtml = (ht || wt) ? `
+    <div class="card-measurables">
+      ${ht ? `<span class="measurable"><i class="fa-solid fa-ruler-vertical" style="margin-right:3px;font-size:.55rem;"></i> ${ht}</span>` : ''}
+      ${wt ? `<span class="measurable"><i class="fa-solid fa-weight-scale" style="margin-right:3px;font-size:.55rem;"></i> ${wt}</span>` : ''}
+    </div>` : '';
 
   return `
-  <div class="card">
-    <div class="card-bar ${cat}"></div>
-    <div class="card-body">
-      <div class="card-top">
-        <div class="card-name">${p.name || 'Unknown'}</div>
-        <span class="card-pos-badge ${cat}">${p.position || 'ATH'}</span>
+    <div class="card">
+      <div class="card-accent ${cat}"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-name">${name}</div>
+          <span class="card-pos ${cat}">${pos}</span>
+        </div>
+        <div class="card-meta">
+          <span><i class="fa-solid fa-location-dot"></i> ${state}</span>
+          <span><i class="fa-regular fa-calendar"></i> Class of ${yr}</span>
+        </div>
+        ${measHtml}
+        <div class="card-stars">${starsHtml}${gemHtml}</div>
+        <div class="card-section-label">Offers (${(p.offers||[]).length})</div>
+        <div class="card-offers">${offers || '<span style="color:var(--text-tertiary);font-size:.7rem;">None listed</span>'}</div>
+        ${evalHtml}
+        <div class="card-source"><i class="fa-solid fa-link"></i> Found via ${srcLink}</div>
+        <div class="card-links">
+          <a class="card-link" href="${xUrl}" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i> X Profile</a>
+          <a class="card-link" href="${hudlUrl}" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Hudl</a>
+          <a class="card-link" href="${ucUrl}" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> UC Report</a>
+        </div>
       </div>
-      <div class="card-meta">
-        <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> ${p.state || '—'}</span>
-        <span class="meta-pill"><i class="fa-solid fa-calendar"></i> Class of ${p.grad_year || '—'}</span>
-        ${p.height ? `<span class="meta-pill"><i class="fa-solid fa-ruler-vertical"></i> ${p.height}</span>` : ''}
-        ${p.weight ? `<span class="meta-pill"><i class="fa-solid fa-weight-scale"></i> ${p.weight} lbs</span>` : ''}
-        ${p.school ? `<span class="meta-pill"><i class="fa-solid fa-school"></i> ${p.school}</span>` : ''}
-      </div>
-      ${starsHtml}
-      ${gemHtml}
-      ${offers.length ? `<div class="offers-label">Offers (${offers.length})</div>
-      <div class="offers-list">${offerTags}${moreOffers}</div>` : ''}
-      ${aiHtml}
-      ${citeHtml}
-      <div class="card-links">${xLink}${hudlLink}${ucLink}</div>
-    </div>
-  </div>`;
+    </div>`;
 }
 
-/* ═══ TABS / FILTERS ════════════════════════════════════════════════════════ */
-function switchTab(tab) {
-  activeTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.tab === tab));
-  render();
+function formatEval(text) {
+  return esc(text)
+    .replace(/Strengths?:/gi, '<span class="eval-str">Strengths:</span>')
+    .replace(/Weaknesses?:/gi, '<span class="eval-wk">Weaknesses:</span>');
 }
 
-document.getElementById('yearBtns').addEventListener('click', e => {
-  if (!e.target.classList.contains('yr-btn')) return;
-  activeYear = e.target.dataset.yr;
-  document.querySelectorAll('.yr-btn').forEach(b =>
-    b.classList.toggle('active', b === e.target));
-  render();
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FILTERS & TABS
+   ═══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.className = 'tab');
+    const tab = t.dataset.tab;
+    const cls = { sec:'active-sec', p4:'active-p4', g6:'active-g6', gem:'active-gem' };
+    t.classList.add(cls[tab]);
+    activeTab = tab;
+    render();
+  });
 });
 
-document.getElementById('posBtns').addEventListener('click', e => {
-  if (!e.target.classList.contains('pos-btn')) return;
-  activePos = e.target.dataset.pos;
-  document.querySelectorAll('.pos-btn').forEach(b =>
-    b.classList.toggle('active', b === e.target));
-  render();
+document.querySelectorAll('[data-year]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('[data-year]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    activeYear = b.dataset.year;
+    render();
+  });
 });
 
-document.getElementById('stateSel').addEventListener('change', e => {
+document.querySelectorAll('[data-pos]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('[data-pos]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    activePos = b.dataset.pos;
+    render();
+  });
+});
+
+document.getElementById('state-filter').addEventListener('change', e => {
   activeState = e.target.value;
   render();
 });
 
-/* ═══ CSV EXPORT ════════════════════════════════════════════════════════════ */
-function exportCSV() {
-  const players = getFiltered(activeTab);
-  if (!players.length) { alert('No players to export with current filters.'); return; }
-  const headers = ['Name','Position','State','Grad Year','Height','Weight','Stars',
-                   'Gem Score','Offers','Category','Source','Source URL',
-                   'X URL','Hudl URL','UC URL','Strengths','Weaknesses'];
-  const rows = players.map(p => [
-    p.name, p.position, p.state, p.grad_year, p.height, p.weight,
-    p.stars, p.gem_score, (p.offers||[]).join(' | '), p.category,
-    p.source, p.source_url, p.x_url, p.hudl_url, p.uc_url,
-    p.strengths, p.weaknesses
-  ].map(v => `"${(v||'').toString().replace(/"/g,'""')}"`));
+/* ═══════════════════════════════════════════════════════════════════════════
+   CSV EXPORT
+   ═══════════════════════════════════════════════════════════════════════════ */
+document.getElementById('export-btn').addEventListener('click', () => {
+  const cats = { sec:[], p4:[], g6:[], gem:[] };
+  ALL_PLAYERS.forEach(p => {
+    const cat = categorize(p);
+    const yr = String(p.grad_year || '');
+    const st = (p.state || '').toUpperCase();
+    if (activeYear !== 'all' && yr !== activeYear) return;
+    if (!matchPos(p)) return;
+    if (activeState !== 'all' && st !== activeState) return;
+    cats[cat].push(p);
+  });
 
-  const csv  = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
-  a.download = `vol-recruiting-${activeTab}-${activeYear}-${new Date().toISOString().slice(0,10)}.csv`;
+  const list = cats[activeTab] || [];
+  if (!list.length) return alert('No data to export');
+
+  const header = 'Name,Position,State,Class,Height,Weight,Stars,Gem Score,Offers,Category,Source,Hudl,UC Report,X Profile';
+  const rows = list.map(p => {
+    const nameEnc = encodeURIComponent(p.name || '');
+    return [
+      `"${(p.name||'').replace(/"/g,'""')}"`,
+      p.position||'',
+      p.state||'',
+      p.grad_year||'',
+      p.height||'',
+      p.weight||'',
+      p.stars||'',
+      p.gem_score||'',
+      `"${(p.offers||[]).join(', ')}"`,
+      activeTab.toUpperCase(),
+      `"${(p.source||'').replace(/"/g,'""')}"`,
+      `https://www.hudl.com/search?query=${nameEnc}`,
+      p.uc_report_url || `https://www.google.com/search?q=site:ucreport.com+${nameEnc}`,
+      p.x_url || `https://x.com/search?q=${nameEnc}+football`
+    ].join(',');
+  });
+
+  const blob = new Blob([header + '\n' + rows.join('\n')], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `vol-recruits-${activeTab}-${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
-  URL.revokeObjectURL(url);
-}
+});
+
+/* Auto-refresh every 5 minutes */
+setInterval(() => { if (sessionStorage.getItem('vol_auth')==='1') loadData(); }, 300000);
 </script>
 </body>
 </html>
